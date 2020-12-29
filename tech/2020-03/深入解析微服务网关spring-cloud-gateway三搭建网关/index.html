@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关服务 网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。 依赖 需要引入的依赖： &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-actuator&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--依赖于webflux，必须引入--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-gateway-core&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--服务发现组件，排除web依赖--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-consul-discovery&lt;/artifactId&gt; &lt;version&gt;2.0.0.M6&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; //kotlin依赖 &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-stdlib&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-reflect&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; 如上引入了kotli">
+  
+  <meta property="og:title" content="深入解析微服务网关Spring Cloud Gateway（三）搭建网关" />
+<meta property="og:description" content="系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关服务 网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。 依赖 需要引入的依赖： &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-actuator&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--依赖于webflux，必须引入--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-gateway-core&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--服务发现组件，排除web依赖--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-consul-discovery&lt;/artifactId&gt; &lt;version&gt;2.0.0.M6&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; //kotlin依赖 &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-stdlib&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-reflect&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; 如上引入了kotli" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/" />
+<meta property="article:published_time" content="2020-03-02T10:01:15+08:00" />
+<meta property="article:modified_time" content="2020-03-02T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析微服务网关Spring Cloud Gateway（三）搭建网关 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（三）搭建网关</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Mar 2, 2020</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>2 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="网关服务">网关服务</h3>
+<p>网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。</p>
+<h4 id="依赖">依赖</h4>
+<p>需要引入的依赖：</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-actuator<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="c">&lt;!--依赖于webflux，必须引入--&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-webflux<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-gateway-core<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="c">&lt;!--服务发现组件，排除web依赖--&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-consul-discovery<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.0.0.M6<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;exclusions&gt;</span>
+        <span class="nt">&lt;exclusion&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-web<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;/exclusion&gt;</span>
+    <span class="nt">&lt;/exclusions&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+//kotlin依赖
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.jetbrains.kotlin<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>kotlin-stdlib<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;optional&gt;</span>true<span class="nt">&lt;/optional&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.jetbrains.kotlin<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>kotlin-reflect<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;optional&gt;</span>true<span class="nt">&lt;/optional&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div><p>如上引入了kotlin相关的依赖，这里需要支持kotlin的路由配置。Spring Cloud Gateway的使用需要排除web相关的配置，引入的是webflux的引用，应用启动时会检查，必须引入。</p>
+<h4 id="路由断言工厂">路由断言工厂</h4>
+<p>路由断言工厂有多种类型，根据请求的时间、host、路径、方法等等。如下定义的是一个基于路径的路由断言匹配。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="n">RouterFunction</span><span class="o">&lt;</span><span class="n">ServerResponse</span><span class="o">&gt;</span> <span class="nf">testFunRouterFunction</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RouterFunction</span><span class="o">&lt;</span><span class="n">ServerResponse</span><span class="o">&gt;</span> <span class="n">route</span> <span class="o">=</span> <span class="n">RouterFunctions</span><span class="o">.</span><span class="na">route</span><span class="o">(</span>
+                <span class="n">RequestPredicates</span><span class="o">.</span><span class="na">path</span><span class="o">(</span><span class="s">&#34;/testfun&#34;</span><span class="o">),</span>
+                <span class="n">request</span> <span class="o">-&gt;</span> <span class="n">ServerResponse</span><span class="o">.</span><span class="na">ok</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">BodyInserters</span><span class="o">.</span><span class="na">fromObject</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)));</span>
+        <span class="k">return</span> <span class="n">route</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div><p>当请求的路径为<code>/testfun</code>时，直接返回ok的状态码，且响应体为<code>hello</code>字符串。</p>
+<h4 id="过滤器工厂">过滤器工厂</h4>
+<p>网关经常需要对路由请求进行过滤，进行一些操作，如鉴权之后构造头部之类的，过滤的种类很多，如增加请求头、增加请求参数、增加响应头和断路器等等功能。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="n">RouteLocator</span> <span class="nf">customRouteLocator</span><span class="o">(</span><span class="n">RouteLocatorBuilder</span> <span class="n">builder</span><span class="o">,</span> <span class="n">ThrottleGatewayFilterFactory</span> <span class="n">throttle</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">routes</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">route</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span><span class="o">.</span><span class="na">path</span><span class="o">(</span><span class="s">&#34;/image/webp&#34;</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">filters</span><span class="o">(</span><span class="n">f</span> <span class="o">-&gt;</span>
+                                <span class="n">f</span><span class="o">.</span><span class="na">addResponseHeader</span><span class="o">(</span><span class="s">&#34;X-AnotherHeader&#34;</span><span class="o">,</span> <span class="s">&#34;baz&#34;</span><span class="o">))</span>
+                        <span class="o">.</span><span class="na">uri</span><span class="o">(</span><span class="s">&#34;http://httpbin.org:80&#34;</span><span class="o">)</span>
+                <span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div><p>如上实现了当请求路径为<code>/image/webp</code>时，会将请求转发到<code>http://httpbin.org:80</code>，并对响应进行过滤处理，增加响应的头部<code>X-AnotherHeader: baz</code>。</p>
+<h4 id="自定义路由">自定义路由</h4>
+<p>上面两小节属于API自定义路由，还可以通过配置进行定义：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">locator</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">      </span><span class="nt">default-filters</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="l">AddResponseHeader=X-Response-Default-Foo, Default-Bar</span><span class="w">
+</span><span class="w">      </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c"># =====================================</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">default_path_to_http</span><span class="w">
+</span><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">blueskykong.com</span><span class="w">
+</span><span class="w">        </span><span class="nt">order</span><span class="p">:</span><span class="w"> </span><span class="m">10000</span><span class="w">
+</span><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="l">Path=/**</span><span class="w">
+</span></code></pre></div><p>如上的配置定义了路由与过滤器。全局过滤器将所有的响应加上头部<code>X-Response-Default-Foo: Default-Bar</code>。定义了id为<code>default_path_to_http</code>的路由，只是优先级比较低，当该请求都不能匹配时，将会转发到<code>blueskykong.com</code>。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2020-03-02</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析微服务网关Spring Cloud Gateway（二）快速入门</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>深入解析微服务网关Spring Cloud Gateway（四）网关的其他应用</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%bd%91%e5%85%b3%e6%9c%8d%e5%8a%a1">
+												 网关服务
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%be%9d%e8%b5%96">
+												 依赖
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%b7%af%e7%94%b1%e6%96%ad%e8%a8%80%e5%b7%a5%e5%8e%82">
+												 路由断言工厂
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%bf%87%e6%bb%a4%e5%99%a8%e5%b7%a5%e5%8e%82">
+												 过滤器工厂
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e8%b7%af%e7%94%b1">
+												 自定义路由
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

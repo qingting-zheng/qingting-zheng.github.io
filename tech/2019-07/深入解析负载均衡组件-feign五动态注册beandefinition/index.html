@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 动态注册BeanDefinition Feign可以通过多种方式进行自定义配置，配置的变化会导致接口类初始化时使用不同的实现类，从而控制Feign的相关行为，比如说网络请求的编解码，压缩和日志处理。可以说，了解Feign配置和实例初始化的流程和原理对于我们学习和使用Feign有着至关重要的作用，而且Spring Cloud">
+  
+  <meta property="og:title" content="深入解析负载均衡组件 Feign（五）动态注册BeanDefinition" />
+<meta property="og:description" content="系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 动态注册BeanDefinition Feign可以通过多种方式进行自定义配置，配置的变化会导致接口类初始化时使用不同的实现类，从而控制Feign的相关行为，比如说网络请求的编解码，压缩和日志处理。可以说，了解Feign配置和实例初始化的流程和原理对于我们学习和使用Feign有着至关重要的作用，而且Spring Cloud" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/" />
+<meta property="article:published_time" content="2019-07-09T10:01:15+08:00" />
+<meta property="article:modified_time" content="2019-07-09T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析负载均衡组件 Feign（五）动态注册BeanDefinition | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Feign 解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Feign 解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析负载均衡组件 Feign（五）动态注册BeanDefinition</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jul 9, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>10 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="动态注册beandefinition">动态注册BeanDefinition</h3>
+<p><code>Feign</code>可以通过多种方式进行自定义配置，配置的变化会导致接口类初始化时使用不同的实现类，从而控制<code>Feign</code>的相关行为，比如说网络请求的编解码，压缩和日志处理。可以说，了解<code>Feign</code>配置和实例初始化的流程和原理对于我们学习和使用<code>Feign</code>有着至关重要的作用，而且<code>Spring Cloud</code>的所有项目的配置和实例初始化过程原理基本相同，了解了<code>Feign</code>的原理，就可以触类旁通，一通百通了。</p>
+<p>在快速入门一节已经介绍了<code>@EnableFeignClients</code>的基本作用，它就像是<code>Feign</code>的总开关，一切<code>Feign</code>的相关的操作都是从它开始的。<code>@EnableFeignClients</code>有三个作用，一是是引入<code>FeignClientsRegistrar</code>；二是指定扫描FeignClient的package信息，就是指定你所有FeignClient所在的包名；三是指定FeignClient的自定义配置类。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="c1">//ImportBeanDefinitionRegistrar的子类,用于处理@FeignClient注解。
+</span><span class="c1"></span><span class="nd">@Import</span><span class="o">(</span><span class="n">FeignClientsRegistrar</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">EnableFeignClients</span> <span class="o">{</span>
+
+	<span class="cm">/**
+</span><span class="cm">	 * 下面三个函数都是为了指定需要扫描的basepackage。
+</span><span class="cm">	 **/</span>
+	<span class="n">String</span><span class="o">[]</span> <span class="nf">value</span><span class="o">()</span> <span class="k">default</span> <span class="o">{};</span>
+	<span class="n">String</span><span class="o">[]</span> <span class="nf">basePackages</span><span class="o">()</span> <span class="k">default</span> <span class="o">{};</span>
+
+	<span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">basePackageClasses</span><span class="o">()</span> <span class="k">default</span> <span class="o">{};</span>
+
+
+	<span class="cm">/**
+</span><span class="cm">	 * 指定自定义feign client的自定义configuration，可以配置Decoder,Encoder和Contract,FeignClientsConfiguration是默认的配置类
+</span><span class="cm">	 */</span>
+	<span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">defaultConfiguration</span><span class="o">()</span> <span class="k">default</span> <span class="o">{};</span>
+
+	<span class="cm">/**
+</span><span class="cm">	 * 指定被@FeignClient修饰的类，如果不为空，那么路径自动检测机制会被关闭
+</span><span class="cm">	 * List of classes annotated with @FeignClient. If not empty, disables classpath scanning.
+</span><span class="cm">	 * @return
+</span><span class="cm">	 */</span>
+	<span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">clients</span><span class="o">()</span> <span class="k">default</span> <span class="o">{};</span>
+<span class="o">}</span>
+</code></pre></div><p><code>FeignClientsRegistrar</code>是<code>ImportBeanDefinitionRegistrar</code>的子类，Spring用<code>ImportBeanDefinitionRegistrar</code>来动态注册BeanDefinition。<code>Feign</code>通过<code>FeignClientsRegistrar</code>来处理<code>@FeignClient</code>修饰的FeignClient类，将这些接口的BeanDefinition注册到Spring容器中。这样就可以使用<code>@Autowired</code>来自动装载这些FeignClient的Bean实例，从而可以调用这些实例的方法发送网络请求。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">FeignClientsRegistrar</span> <span class="kd">implements</span> <span class="n">ImportBeanDefinitionRegistrar</span><span class="o">,</span>
+		<span class="n">ResourceLoaderAware</span><span class="o">,</span> <span class="n">BeanClassLoaderAware</span><span class="o">,</span> <span class="n">EnvironmentAware</span> <span class="o">{</span>
+	<span class="c1">//....代码有删减
+</span><span class="c1"></span>	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">registerBeanDefinitions</span><span class="o">(</span><span class="n">AnnotationMetadata</span> <span class="n">metadata</span><span class="o">,</span>
+			<span class="n">BeanDefinitionRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//从EnableFeignClients的属性值来构建Feign的自定义Configuration进行注册
+</span><span class="c1"></span>		<span class="n">registerDefaultConfiguration</span><span class="o">(</span><span class="n">metadata</span><span class="o">,</span> <span class="n">registry</span><span class="o">);</span>
+    <span class="c1">//扫描package，注册被@FeignClient修饰的接口类的bean信息
+</span><span class="c1"></span>		<span class="n">registerFeignClients</span><span class="o">(</span><span class="n">metadata</span><span class="o">,</span> <span class="n">registry</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="c1">//代码有删减
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p><code>FeignClientsRegistrar</code>的<code>registerBeanDefinitions</code>函数主要做了两个事情，一是注册<code>@EnableFeignClients</code>提供的自定义配置类中的相关Bean信息，二是根据<code>@EnableFeignClients</code>提供的包信息扫描被<code>@FeignClient</code>修饰的FeignCleint接口类，然后进行注册。</p>
+<p><code>@EnableFeignClients</code>的自定义配置类就是被<code>@Configuration</code>注解修饰的配置类，它会提供用来组装<code>FeignClient</code>的各类组件的自定义实例。它们包括：<code>Client</code>,<code>Targeter</code>，<code>Decoder</code>，<code>Encoder</code>和<code>Contract</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">registerDefaultConfiguration</span><span class="o">(</span><span class="n">AnnotationMetadata</span> <span class="n">metadata</span><span class="o">,</span>
+			<span class="n">BeanDefinitionRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">//获取到metadata中关于EnableFeignClients的属性值键值对。
+</span><span class="c1"></span>	<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">defaultAttrs</span> <span class="o">=</span> <span class="n">metadata</span>
+			<span class="o">.</span><span class="na">getAnnotationAttributes</span><span class="o">(</span><span class="n">EnableFeignClients</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+	<span class="c1">//如果EnableFeignClients配置了defaultConfiguration类，那么才进行下一步操作，如果没有，会使用
+</span><span class="c1"></span>	<span class="c1">//默认的FeignConfiguration
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(</span><span class="n">defaultAttrs</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">defaultAttrs</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&#34;defaultConfiguration&#34;</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">metadata</span><span class="o">.</span><span class="na">hasEnclosingClass</span><span class="o">())</span> <span class="o">{</span>
+			<span class="n">name</span> <span class="o">=</span> <span class="s">&#34;default.&#34;</span> <span class="o">+</span> <span class="n">metadata</span><span class="o">.</span><span class="na">getEnclosingClassName</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">else</span> <span class="o">{</span>
+			<span class="n">name</span> <span class="o">=</span> <span class="s">&#34;default.&#34;</span> <span class="o">+</span> <span class="n">metadata</span><span class="o">.</span><span class="na">getClassName</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="n">registerClientConfiguration</span><span class="o">(</span><span class="n">registry</span><span class="o">,</span> <span class="n">name</span><span class="o">,</span>
+				<span class="n">defaultAttrs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;defaultConfiguration&#34;</span><span class="o">));</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p><code>registerDefaultConfiguration</code>函数会判断<code>@EnableFeignClients</code>的<code>defaultConfiguration</code>属性是否被赋值。如果有，则将调用<code>registerClientConfiguration</code>函数，进行<code>BeanDefinitionRegistry</code>的注册。</p>
+<p><code>BeanDefinitionRegistry</code>是<code>Spring</code>框架中用于动态注册Bean信息的接口，调用其<code>registerBeanDefinition</code>函数可以将<code>BeanDefinition</code>注册到Spring容器中，name就是注册Bean的名称。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">registerClientConfiguration</span><span class="o">(</span><span class="n">BeanDefinitionRegistry</span> <span class="n">registry</span><span class="o">,</span> <span class="n">Object</span> <span class="n">name</span><span class="o">,</span>
+		<span class="n">Object</span> <span class="n">configuration</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">//使用BeanDefinitionBuilder来生成BeanDefinition并注册大registry上。
+</span><span class="c1"></span>	<span class="n">BeanDefinitionBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">BeanDefinitionBuilder</span>
+			<span class="o">.</span><span class="na">genericBeanDefinition</span><span class="o">(</span><span class="n">FeignClientSpecification</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+	<span class="n">builder</span><span class="o">.</span><span class="na">addConstructorArgValue</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+	<span class="n">builder</span><span class="o">.</span><span class="na">addConstructorArgValue</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+	<span class="n">registry</span><span class="o">.</span><span class="na">registerBeanDefinition</span><span class="o">(</span>
+			<span class="n">name</span> <span class="o">+</span> <span class="s">&#34;.&#34;</span> <span class="o">+</span> <span class="n">FeignClientSpecification</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">(),</span>
+			<span class="n">builder</span><span class="o">.</span><span class="na">getBeanDefinition</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div><p><code>FeignClientSpecification</code>类实现了<code>NamedContextFactory.Specification</code>接口，它是Feign组件示例化的重要一环，它会携带<code>@EnableFeignClients</code>中的<code>defaultConfiguration</code>值，供组件Bean初始化时使用。<code>Spring Cloud</code>通过<code>NamedContextFactory</code>来创建一些系列的子context，来让对应的<code>Specification</code>在这些子context中创建bean对象。这样使得各个子context中的Bean相互独立，互不影响，可以方便的通过子context管理一系列的Bean实例。<code>NamedContextFactory</code>有三个功能，一是创建<code>AnnotationConfigApplicationContext</code>子context；二是在子context中获取Bean实例；三是当子context消亡时清除其中的Bean信息。在<code>Feign</code>中，<code>FeignContext</code>继承了<code>NamedContextFactory</code>，是<code>Feign</code>中组件实例化的最为关键的类。下图就是<code>FeginContext</code>的相关类图。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/feign/FeignContext%E7%9B%B8%E5%85%B3%E7%B1%BB%E5%9B%BE.png" alt="FeignContext相关类图"></p>
+<p><code>FeignAutoConfiguration</code>是<code>Feign</code>的自动配置类，在其中生成了<code>FeignContext</code>实例。并且将之前注册的<code>FeignClientSpecification</code>通过<code>setConfigurations</code>函数设置给<code>FeignContext</code>实例。这里就处理了默认配置类<code>FeignClientsConfiguration</code>和自定义配置类的替换问题。如果<code>FeignClientsRegistrar</code>没有注册自定义配置类，那么<code>configurations</code>成员变量会是一个空队列。否则会在<code>setConfigurations</code>中进行默认配置类的替换。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//FeignAutoConfiguration.java
+</span><span class="c1"></span><span class="nd">@Autowired</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+<span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">FeignClientSpecification</span><span class="o">&gt;</span> <span class="n">configurations</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">FeignContext</span> <span class="nf">feignContext</span><span class="o">()</span> <span class="o">{</span>
+	<span class="n">FeignContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FeignContext</span><span class="o">();</span>
+  <span class="c1">//
+</span><span class="c1"></span>	<span class="n">context</span><span class="o">.</span><span class="na">setConfigurations</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">configurations</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">context</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">//FeignContext.java
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FeignContext</span> <span class="kd">extends</span> <span class="n">NamedContextFactory</span><span class="o">&lt;</span><span class="n">FeignClientSpecification</span><span class="o">&gt;</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nf">FeignContext</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">//将默认的FeignClientConfiguration作为参数传递给构造函数
+</span><span class="c1"></span>		<span class="kd">super</span><span class="o">(</span><span class="n">FeignClientsConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&#34;feign&#34;</span><span class="o">,</span> <span class="s">&#34;feign.client.name&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">//NamedContextFactory.java
+</span><span class="c1"></span><span class="kd">public</span> <span class="nf">NamedContextFactory</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">defaultConfigType</span><span class="o">,</span> <span class="n">String</span> <span class="n">propertySourceName</span><span class="o">,</span>
+        <span class="n">String</span> <span class="n">propertyName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">defaultConfigType</span> <span class="o">=</span> <span class="n">defaultConfigType</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">propertySourceName</span> <span class="o">=</span> <span class="n">propertySourceName</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">propertyName</span> <span class="o">=</span> <span class="n">propertyName</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="c1">//对于FeignContext，List&lt;C&gt;就是指List&lt;FeignClientSpecification&gt;
+</span><span class="c1"></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setConfigurations</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">C</span><span class="o">&gt;</span> <span class="n">configurations</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">for</span> <span class="o">(</span><span class="n">C</span> <span class="n">client</span> <span class="o">:</span> <span class="n">configurations</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">configurations</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">client</span><span class="o">);</span>
+		<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p><code>NamedContextFactory</code>的<code>createContext</code>会创建具有名称的<code>Spring</code>的<code>AnnotationConfigApplicationContext</code>作为当前Context的child。这些<code>AnnotationConfigApplicationContext</code>会被用来管理<code>Feign</code>组件的不同实例。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">protected</span> <span class="n">AnnotationConfigApplicationContext</span> <span class="nf">createContext</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">AnnotationConfigApplicationContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AnnotationConfigApplicationContext</span><span class="o">();</span>
+    <span class="c1">//获取该name所对应的configuration,如果有的话，就注册都子context中。
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">configurations</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">configuration</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">configurations</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">getConfiguration</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">context</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">//注册default的Configuration，也就是FeignClientsRegistrar类的registerDefaultConfiguration函数中注册的Configuration
+</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">C</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">configurations</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">().</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&#34;default.&#34;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">configuration</span> <span class="o">:</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getConfiguration</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">context</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">//注册PropertyPlaceholderAutoConfiguration和FeignClientsConfiguration配置类
+</span><span class="c1"></span>    <span class="n">context</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">PropertyPlaceholderAutoConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">defaultConfigType</span><span class="o">);</span>
+    <span class="c1">//设置子context的Environment的propertySource属性源
+</span><span class="c1"></span>    <span class="c1">//propertySourceName = feign; propertyName = feign.client.name
+</span><span class="c1"></span>    <span class="n">context</span><span class="o">.</span><span class="na">getEnvironment</span><span class="o">().</span><span class="na">getPropertySources</span><span class="o">().</span><span class="na">addFirst</span><span class="o">(</span><span class="k">new</span> <span class="n">MapPropertySource</span><span class="o">(</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">propertySourceName</span><span class="o">,</span>
+            <span class="n">Collections</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="nf">singletonMap</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">propertyName</span><span class="o">,</span> <span class="n">name</span><span class="o">)));</span>
+    <span class="c1">//所有context的parent都相同，这样的话，一些相同的Bean可以通过parent context来获取。
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">parent</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">setParent</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">parent</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">setDisplayName</span><span class="o">(</span><span class="n">generateDisplayName</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">refresh</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">context</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>而由于<code>NamedContextFactory</code>实现了<code>DisposableBean</code>接口，当该bean消亡时，会清除掉自己创建的所有子context。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="o">{</span>
+		<span class="n">Collection</span><span class="o">&lt;</span><span class="n">AnnotationConfigApplicationContext</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">contexts</span><span class="o">.</span><span class="na">values</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="n">AnnotationConfigApplicationContext</span> <span class="n">context</span> <span class="o">:</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">context</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">contexts</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+	<span class="o">}</span>
+</code></pre></div><p><code>NamedContextFactory</code>会创建出以<code>name</code>作为唯一标识的<code>AnnotationConfigApplicationContext</code>实例，然后每个<code>AnnotationConfigApplicationContext</code>实例都会register一些配置类，从而可以给出一系列的基于配置类生成的Bean实例，这样，我们就可以基于<code>name</code>来管理一系列的配置类Bean实例，从而可以为不同的<code>FeignClient</code>准备不同配置Bean实例，比如说<code>Decoder</code>，<code>Encoder</code>之类的。这些我们会在后续的讲解中详细介绍。</p>
+<p><code>FeignClientsRegistrar</code>做的第二件事情是扫描package并且注解被<code>@FeignClient</code>修饰的接口类的bean信息。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">registerFeignClients</span><span class="o">(</span><span class="n">AnnotationMetadata</span> <span class="n">metadata</span><span class="o">,</span>
+		<span class="n">BeanDefinitionRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">//1 生成自定义的ClassPathScanningProvider
+</span><span class="c1"></span>	<span class="n">ClassPathScanningCandidateComponentProvider</span> <span class="n">scanner</span> <span class="o">=</span> <span class="n">getScanner</span><span class="o">();</span>
+	<span class="n">scanner</span><span class="o">.</span><span class="na">setResourceLoader</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">resourceLoader</span><span class="o">);</span>
+
+	<span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">basePackages</span><span class="o">;</span>
+	<span class="c1">//获取EnableFeignClients所有属性的键值对
+</span><span class="c1"></span>	<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">attrs</span> <span class="o">=</span> <span class="n">metadata</span>
+			<span class="o">.</span><span class="na">getAnnotationAttributes</span><span class="o">(</span><span class="n">EnableFeignClients</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="c1">//依照Annotation来进行TypeFilter，只会扫描出被FeignClient修饰的类
+</span><span class="c1"></span>	<span class="n">AnnotationTypeFilter</span> <span class="n">annotationTypeFilter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AnnotationTypeFilter</span><span class="o">(</span>
+			<span class="n">FeignClient</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+	<span class="kd">final</span> <span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">clients</span> <span class="o">=</span> <span class="n">attrs</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">null</span>
+			<span class="o">:</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;[])</span> <span class="n">attrs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;clients&#34;</span><span class="o">);</span>
+	<span class="c1">//2.1 如果没有设置clients属性，那么需要扫描basePackage，所以设置了AnnotationTypeFilter,并且去获取basePackage。
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(</span><span class="n">clients</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">clients</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">scanner</span><span class="o">.</span><span class="na">addIncludeFilter</span><span class="o">(</span><span class="n">annotationTypeFilter</span><span class="o">);</span>
+		<span class="n">basePackages</span> <span class="o">=</span> <span class="n">getBasePackages</span><span class="o">(</span><span class="n">metadata</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="c1">//2.2 如果设置了Clients属性，那么久不在进行basePackage的扫描，而是直接使用这些类所在的package
+</span><span class="c1"></span>	<span class="k">else</span> <span class="o">{</span>
+		<span class="kd">final</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">clientClasses</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+		<span class="n">basePackages</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+		<span class="c1">//获取clients的值中的class信息，并将其所在package名称存储到basePackages中。
+</span><span class="c1"></span>		<span class="k">for</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">:</span> <span class="n">clients</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">basePackages</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ClassUtils</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">(</span><span class="n">clazz</span><span class="o">));</span>
+			<span class="n">clientClasses</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getCanonicalName</span><span class="o">());</span>
+		<span class="o">}</span>
+		<span class="c1">//添加对这些类的Filter设置
+</span><span class="c1"></span>		<span class="n">AbstractClassTestingTypeFilter</span> <span class="n">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AbstractClassTestingTypeFilter</span><span class="o">()</span> <span class="o">{</span>
+			<span class="nd">@Override</span>
+			<span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">ClassMetadata</span> <span class="n">metadata</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">String</span> <span class="n">cleaned</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="na">getClassName</span><span class="o">().</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">&#34;\\$&#34;</span><span class="o">,</span> <span class="s">&#34;.&#34;</span><span class="o">);</span>
+				<span class="k">return</span> <span class="n">clientClasses</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">cleaned</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">};</span>
+		<span class="n">scanner</span><span class="o">.</span><span class="na">addIncludeFilter</span><span class="o">(</span>
+				<span class="k">new</span> <span class="n">AllTypeFilter</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">filter</span><span class="o">,</span> <span class="n">annotationTypeFilter</span><span class="o">)));</span>
+	<span class="o">}</span>
+	<span class="c1">//3 遍历上述过程中获取的basePackages列表
+</span><span class="c1"></span>	<span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">basePackage</span> <span class="o">:</span> <span class="n">basePackages</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">//4.1 获取basepackage下的所有BeanDefinition
+</span><span class="c1"></span>		<span class="n">Set</span><span class="o">&lt;</span><span class="n">BeanDefinition</span><span class="o">&gt;</span> <span class="n">candidateComponents</span> <span class="o">=</span> <span class="n">scanner</span>
+				<span class="o">.</span><span class="na">findCandidateComponents</span><span class="o">(</span><span class="n">basePackage</span><span class="o">);</span>
+		<span class="k">for</span> <span class="o">(</span><span class="n">BeanDefinition</span> <span class="n">candidateComponent</span> <span class="o">:</span> <span class="n">candidateComponents</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">candidateComponent</span> <span class="k">instanceof</span> <span class="n">AnnotatedBeanDefinition</span><span class="o">)</span> <span class="o">{</span>
+				<span class="c1">// verify annotated class is an interface
+</span><span class="c1"></span>				<span class="n">AnnotatedBeanDefinition</span> <span class="n">beanDefinition</span> <span class="o">=</span> <span class="o">(</span><span class="n">AnnotatedBeanDefinition</span><span class="o">)</span> <span class="n">candidateComponent</span><span class="o">;</span>
+				<span class="n">AnnotationMetadata</span> <span class="n">annotationMetadata</span> <span class="o">=</span> <span class="n">beanDefinition</span><span class="o">.</span><span class="na">getMetadata</span><span class="o">();</span>
+				<span class="n">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(</span><span class="n">annotationMetadata</span><span class="o">.</span><span class="na">isInterface</span><span class="o">(),</span>
+						<span class="s">&#34;@FeignClient can only be specified on an interface&#34;</span><span class="o">);</span>
+				<span class="c1">//4.2 从这些BeanDefinition中获取到FeignClient的属性值
+</span><span class="c1"></span>				<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">annotationMetadata</span>
+						<span class="o">.</span><span class="na">getAnnotationAttributes</span><span class="o">(</span>
+								<span class="n">FeignClient</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getCanonicalName</span><span class="o">());</span>
+				<span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">getClientName</span><span class="o">(</span><span class="n">attributes</span><span class="o">);</span>
+				<span class="c1">//4.3 对于单独某个FeignClient的configuration进行配置
+</span><span class="c1"></span>				<span class="n">registerClientConfiguration</span><span class="o">(</span><span class="n">registry</span><span class="o">,</span> <span class="n">name</span><span class="o">,</span>
+						<span class="n">attributes</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;configuration&#34;</span><span class="o">));</span>
+				<span class="c1">//4.4 注册FeignClient的BeanDefinition
+</span><span class="c1"></span>				<span class="n">registerFeignClient</span><span class="o">(</span><span class="n">registry</span><span class="o">,</span> <span class="n">annotationMetadata</span><span class="o">,</span> <span class="n">attributes</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p><code>registerFeignClients</code>函数就是依据<code>@EnableFeignClients</code>的属性来获取<code>basePackages</code>,然后获取这些包下的所有<code>BeanDefinition</code>,获取修饰这些类的<code>@FeignClient</code>的属性，来注册动态的Bean信息。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2019-06-09</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/feign" role="button">Feign </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Feign（四）核心组件</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Feign（六）动态注册BeanDefinition续</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8a%a8%e6%80%81%e6%b3%a8%e5%86%8cbeandefinition">
+												 动态注册BeanDefinition
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server 配置类介绍 从spring-cloud-starter-netflix-eureka-server的spring.factories中 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\ org.springframework.cloud.netflix.eureka.server.EurekaServerAutoConfiguration 可以发现EurekaServerAutoConfiguration配置文件被激活。 打开SpringBoot的Debug模式： logging:level:org.springfram">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （十三） Eureka Server 配置类介绍" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server 配置类介绍 从spring-cloud-starter-netflix-eureka-server的spring.factories中 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\ org.springframework.cloud.netflix.eureka.server.EurekaServerAutoConfiguration 可以发现EurekaServerAutoConfiguration配置文件被激活。 打开SpringBoot的Debug模式： logging:level:org.springfram" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/" />
+<meta property="article:published_time" content="2018-05-24T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-05-24T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （十三） Eureka Server 配置类介绍 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （十三） Eureka Server 配置类介绍</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>May 24, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>5 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="eureka-server-配置类介绍">Eureka Server 配置类介绍</h3>
+<p>从spring-cloud-starter-netflix-eureka-server的<code>spring.factories</code>中</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">.</span><span class="na">autoconfigure</span><span class="o">.</span><span class="na">EnableAutoConfiguration</span><span class="o">=</span><span class="err">\</span>
+  <span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">cloud</span><span class="o">.</span><span class="na">netflix</span><span class="o">.</span><span class="na">eureka</span><span class="o">.</span><span class="na">server</span><span class="o">.</span><span class="na">EurekaServerAutoConfiguration</span>
+</code></pre></div><p>可以发现<code>EurekaServerAutoConfiguration</code>配置文件被激活。</p>
+<p>打开SpringBoot的Debug模式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">logging</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">org.springframework</span><span class="p">:</span><span class="w"> </span><span class="l">DEBUG</span><span class="w">
+</span></code></pre></div><p>在启动的时候会发现了一下几个很关键的配置类：</p>
+<ul>
+<li>EurekaServerAutoConfiguration</li>
+<li>EurekaServerInitializerConfiguration</li>
+<li>EurekaClientAutoConfiguration</li>
+<li>EurekaDiscoveryClientConfiguration</li>
+</ul>
+<p>首先对这些配置类分析，看一下SpringCloud为Eureka Server的做了哪些自动化的配置，上述配置类中后两个已经在Eureka Client的源码中进行解析，后面不再进行累述。</p>
+<h3 id="配置信息类">配置信息类</h3>
+<p><code>EurekaServerAutoConfiguration</code>，从类名就能知道这是SpringCloud为Eureka Server服务提供的自动默认配置类，在Eureka中，Server其实也是一个Client，所以会有相同的配置类或者bean如<code>ApplicationMangerInfo</code>、<code>EurekaClient</code>等等，由于在Client中已经介绍，在此不重复讲述。</p>
+<h4 id="eurekaserverconfig">EurekaServerConfig</h4>
+<p>提供了对于Eureka Server操作必须的配置信息，SpringCloud默认通过<code>EurekaServerConfigBean</code>的实现类提供了这部分的默认配置，如果想要自己手动配置，可以在配置文件中<code>application.yml</code>，通过前缀<code>eureka.server</code>+属性名进行配置。</p>
+<h4 id="eurekacontroller">EurekaController</h4>
+<p>这是一个controller，这个controller对我们来讲很熟悉，其实就是Eureka Server的首页，其中属性可以通过前缀<code>eureka.dashboard</code>进行配置。</p>
+<p>这个Controller上其实就两个endpoint，其中一个是上一个大节展示的关于当前注册实例信息以及服务器信息页，相对的地址为&quot;/&quot;，另一个是&quot;/lastn&quot;注册实例信息的历史数据</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">method</span> <span class="o">=</span> <span class="n">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">status</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+	<span class="o">...</span>
+	<span class="k">return</span> <span class="s">&#34;eureka/status&#34;</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;/lastn&#34;</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">lastn</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+	<span class="o">...</span>
+	<span class="k">return</span> <span class="s">&#34;eureka/lastn&#34;</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div><h4 id="instanceregistry">InstanceRegistry</h4>
+<p><code>InstanceRegistry</code>是SpringCloud中对Eureka Server的注册表实现类<code>PeerAwareInstanceRegistryImpl</code>进行了继承和扩展，使其适配与SpringCloud的使用环境，主要实现是由<code>PeerAwareInstanceRegistryImpl</code>提供，类图如下:</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/InstanceRegister.png" alt=""></p>
+<p>值得注意的是在<code>com.netflix.eureka.registry</code>中也有一个<code>InstanceRegistry</code>接口，这是定义在Eureka Server用于服务发现和注册的接口。</p>
+<h4 id="peereurekanodes">PeerEurekaNodes</h4>
+<p>管理了Eureka Server的<code>peer</code>节点生命周期的列表，其中<code>peer</code>的信息封装在<code>PeerEurekaNode</code>类中。</p>
+<h4 id="eurekaservercontext">EurekaServerContext</h4>
+<p>管理着本地的server所持有的信息的上下文，并提供访问的getter接口，例如<code>EurekaServerConfig</code>服务器配置、<code>PeerAwareInstanceRegistry</code>注册表和<code>ApplicationInfoManager</code>等等。默认实现为<code>DefaultEurekaServerContext</code>。</p>
+<h4 id="eurekaserverbootstrap">EurekaServerBootstrap</h4>
+<p><code>EurekaServerBootstrap</code>是由SpringCloud封装的对Eureka Server启动和关闭时的引导程序，是为了适配Eureka Server在SpringCloud环境的引导类，基本与Eureka Server中的<code>com.netflix.eureka.EurekaBootStrap</code>的一致，包括初始化Eureka的环境和上下文，以及服务关闭时销毁Eureka的环境和上下文
+主要有以下两个公开方法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">contextInitialized</span><span class="o">(</span><span class="n">ServletContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">try</span> <span class="o">{</span>
+	   <span class="c1">// 初始化Eureka环境
+</span><span class="c1"></span>		<span class="n">initEurekaEnvironment</span><span class="o">();</span>
+		<span class="c1">// 初始化Eureka Server上下文
+</span><span class="c1"></span>		<span class="n">initEurekaServerContext</span><span class="o">();</span>
+		<span class="n">context</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="n">EurekaServerContext</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="k">this</span><span class="o">.</span><span class="na">serverContext</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;Cannot bootstrap eureka server :&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+		<span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;Cannot bootstrap eureka server :&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">contextDestroyed</span><span class="o">(</span><span class="n">ServletContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">try</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Shutting down Eureka Server..&#34;</span><span class="o">);</span>
+		<span class="n">context</span><span class="o">.</span><span class="na">removeAttribute</span><span class="o">(</span><span class="n">EurekaServerContext</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+       <span class="c1">// 销毁Eureka Server环境
+</span><span class="c1"></span>		<span class="n">destroyEurekaServerContext</span><span class="o">();</span>
+		<span class="c1">// 销毁Eureka环境
+</span><span class="c1"></span>		<span class="n">destroyEurekaEnvironment</span><span class="o">();</span>
+
+	<span class="o">}</span>
+	<span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;Error shutting down eureka&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Eureka Service is now shutdown...&#34;</span><span class="o">);</span>
+<span class="o">}</span>
+
+
+</code></pre></div><p><strong>Application</strong></p>
+<p>SpringCloud为了适配Eureka Server，直接构建了一个Jersey应用，并将其放置到Spring Beans的管理中，这个Jersey的类都是来自<code>netflix</code>中的原生类，主要包括<code>com.netflix.discovery</code>、<code>com.netflix.eureka</code>，说明Eureka Server的关键实现代码来自这两个package内。</p>
+<p><strong>EurekaServerInitializerConfiguration</strong></p>
+<p>该配置类做的事情很简单，将<code>EurekaServerAutoConfiguration</code>中注入的bean通过<code>EurekaServerBootstrap</code>来初始化Eureka Server的应用上下文</p>
+<p>总结一下Eureka Server的启动流程，其中省略的对Client的启动配置过程的描述，这部分已经在Eureka Client的介绍中进行：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/Eureka_Server_Bootstrap.png" alt=""></p>
+<p><code>EurekaServerAutoConfiguration</code>负责注入Eureka Server所需要的各种Bean，<code>EurekaServerInitializerConfiguration</code>调用其中的<code>EurekaServerBootstrap</code>完成对Eureka Serve的环境和上下文的初始化，完成对Eureka Server的初始化配置。</p>
+<h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka Server 的主要配置类，下面我们开始分析 server 的具体实现。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-05-24</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十二）服务下线</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十四）服务端核心代码</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eureka-server-%e9%85%8d%e7%bd%ae%e7%b1%bb%e4%bb%8b%e7%bb%8d">
+												 Eureka Server 配置类介绍
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%85%8d%e7%bd%ae%e4%bf%a1%e6%81%af%e7%b1%bb">
+												 配置信息类
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eurekaserverconfig">
+												 EurekaServerConfig
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eurekacontroller">
+												 EurekaController
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#instanceregistry">
+												 InstanceRegistry
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#peereurekanodes">
+												 PeerEurekaNodes
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eurekaservercontext">
+												 EurekaServerContext
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eurekaserverbootstrap">
+												 EurekaServerBootstrap
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

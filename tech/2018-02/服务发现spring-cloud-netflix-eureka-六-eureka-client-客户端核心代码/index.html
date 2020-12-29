@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 包结构 主要的代码位于eureka-client中，项目的module为eureka-client，版本为v1.8.7，这是Finchley版本的Spring Cloud所依赖的eureka版本 包结构如下 简要的包介绍: com.netflix.appinfo: 主要是关于eureka-client的配置信息类，如上面提及的EurekaInstanceConfig，">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （六） Eureka Client 客户端核心代码" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 包结构 主要的代码位于eureka-client中，项目的module为eureka-client，版本为v1.8.7，这是Finchley版本的Spring Cloud所依赖的eureka版本 包结构如下 简要的包介绍: com.netflix.appinfo: 主要是关于eureka-client的配置信息类，如上面提及的EurekaInstanceConfig，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/" />
+<meta property="article:published_time" content="2018-02-26T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-02-26T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （六） Eureka Client 客户端核心代码 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （六） Eureka Client 客户端核心代码</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Feb 26, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>6 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="包结构">包结构</h3>
+<p>主要的代码位于<code>eureka-client</code>中，项目的module为<code>eureka-client</code>，版本为v1.8.7，这是Finchley版本的Spring Cloud所依赖的eureka版本</p>
+<p>包结构如下</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/eureka_client_package.png" alt=""></p>
+<p>简要的包介绍:</p>
+<ul>
+<li><code>com.netflix.appinfo</code>: 主要是关于eureka-client的配置信息类，如上面提及的<code>EurekaInstanceConfig</code>，<code>InstanceInfo</code>，其中也包含了类似<code>AmazonInfo</code>、<code>DataCenterInfo</code>等与AWS中的架构适配密切相关的接口，在此不做详解的介绍，有兴趣读者可以自行去了解。</li>
+<li><code>com.netflix.discovery</code>: 主要实现Eureka-Client的服务发现和服务注册功能。
+<ul>
+<li><code>com.netflix.discovery.converters</code>: 主要解决Eureka服务之间的数据传输的编码与解码，支持JSON、XML等格式。</li>
+<li><code>com.netflix.discovery.guice</code>: <code>Google</code>的<code>guice</code>依赖注入配置包，类似<code>Spring</code>的configuration。</li>
+<li><code>com.netflix.discovery.provider</code>: 提供的Jersey中请求与响应的序列化与反序列化实现，默认实现是<code>DefaultJerseyProvider</code>。</li>
+<li><code>com.netflix.discovery.providers</code>: 目前只有<code>DefaultEurekaClientConfigProvider</code>，提供<code>EurekaClientConfig</code>工厂生成方法。</li>
+<li><code>com.netflix.discovery.shared</code>: Eureka Client与Eureka Server共享重用的方法。
+<ul>
+<li><code>com.netflix.discovery.shared.dns</code>: DNS解析器。</li>
+<li><code>com.netflix.discovery.shared.resolver</code>: Euraka Endpoint解析器，<code>EurekaEndpoint</code>指的是服务端点，一般指的是Eureka Server的访问地址，默认实现为<code>DefaultEndpoint</code>，<code>ClusterResolver</code>将配置的Eureka Server地址解析为<code>EurekaEndpoint</code>，这里面用到了委托者设计模式，类图如下，有很明显的请求委托的处理过程。</li>
+<li><code>com.netflix.discovery.shared.transport</code>： Eureka Client与Eureka Server之间进行HTTP通信的客户端以及通信的request和response的封装类。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/ClusterResolver.png" alt=""></p>
+<h3 id="discoveryclient">DiscoveryClient</h3>
+<p><code>DiscoveryClient</code>可以说是Eureka Client的核心类，负责了与Eureka Server交互的关键逻辑，具备了以下的职能:</p>
+<ul>
+<li>注册服务实例到Eureka Server中；</li>
+<li>更新与Eureka Server的契约；</li>
+<li>在服务关闭时从Eureka Server中取消契约；</li>
+<li>查询在Eureka Server中注册的服务/实例的列表。</li>
+</ul>
+<p><code>DiscoverClient</code>的核心类图如下：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/LookupService.png" alt=""></p>
+<p><code>DiscoveryClient</code>的顶层接口为<code>LookupService</code>，主要的目的是为了发现活跃中的服务实例。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">LookupService</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+
+	<span class="c1">//根据服务实例注册的appName来获取，获取一个封装有相同appName的服务实例信息的容器
+</span><span class="c1"></span>   <span class="n">Application</span> <span class="nf">getApplication</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">);</span>
+	<span class="c1">//返回当前注册的所有的服务实例信息
+</span><span class="c1"></span>   <span class="n">Applications</span> <span class="nf">getApplications</span><span class="o">();</span>
+   	<span class="c1">//根据服务实例的id获取
+</span><span class="c1"></span>   	<span class="n">List</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="nf">getInstancesById</span><span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">);</span>
+   <span class="c1">//获取下一个可能的Eureka Server来处理当前对注册表信息的处理，一般是通过循环的方式来获取下一个Server
+</span><span class="c1"></span>   <span class="n">InstanceInfo</span> <span class="nf">getNextServerFromEureka</span><span class="o">(</span><span class="n">String</span> <span class="n">virtualHostname</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">secure</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div><p><code>Application</code>中持有一个特定应用的多个实例的列表，可以理解成同一个服务的集群信息，它们都挂在同一个服务名appName下，<code>InstanceInfo</code>代表一个服务实例，部分代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Application</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Random</span> <span class="n">shuffleRandom</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Random</span><span class="o">();</span>
+
+    <span class="c1">//服务名
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@XStreamOmitField</span>
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">isDirty</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+    <span class="nd">@XStreamImplicit</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="n">instances</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;&gt;</span> <span class="n">shuffledInstances</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="n">instancesMap</span><span class="o">;</span>
+
+    <span class="o">.....</span>
+<span class="o">}</span>
+
+</code></pre></div><p>为了保证原子性操作以及数据的唯一性，防止脏数据，<code>Application</code>中对<code>InstanceInfo</code>的操作都是同步操作，感受一下<code>Application.addInstance</code>方法。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">addInstance</span><span class="o">(</span><span class="n">InstanceInfo</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">instancesMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">i</span><span class="o">);</span>
+	<span class="kd">synchronized</span> <span class="o">(</span><span class="n">instances</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">instances</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+	<span class="n">instances</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+	<span class="n">isDirty</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>通过同步代码块，保证每次只有有一个线程对instances进行修改，同时注意instancesMap采用的是<code>ConcurrentHashMap</code>实现，保证了原子性的操作，所以不需要通过同步代码块进行控制。</p>
+<p><code>Applications</code>中代表的是Eureka Server中已注册的服务实例的集合信息，主要是对<code>Application</code>的封装，里面的操作大多也是的同步操作。</p>
+<p><code>EurekaClient</code>继承了<code>LookupService</code>接口，为<code>DiscoveryClient</code>提供了一个上层的接口，目的是试图方便从eureka 1.x 到eureka 2.x 的过渡，这说明<code>EurekaClient</code>这个接口属于比较稳定的接口，即使在下一大阶段也会被依旧保留。</p>
+<p><code>EurekaCient</code>在<code>LookupService</code>的基础上扩充了更多的接口，提供了更丰富的获取服务实例的功能，主要有:</p>
+<ul>
+<li>提供了多种的方式获取<code>InstanceInfo</code>，例如根据region，Eureka Server地址等获取；</li>
+<li>提供了本地客户端(位于的区域，可用区等)的数据，这部分与AWS密切相关；</li>
+<li>提供了为客户端注册和获取健康检查处理器；</li>
+</ul>
+<p>除去查询相关的接口，关注<code>EurekaClient</code>中的以下两个接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">    <span class="c1">// 为Eureka Client注册健康检查处理器
+</span><span class="c1"></span>    <span class="c1">// 一旦注册，客户端将通过调用新注册的健康检查处理器来对注册中instanceInfo
+</span><span class="c1"></span>    <span class="c1">// 进行一个按需更新，随后按照eurekaclientconfig.getinstanceinforeplicationintervalseconds()
+</span><span class="c1"></span>    <span class="c1">// 中配置的指定时间调用HealthCheckHandler
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">registerHealthCheck</span><span class="o">(</span><span class="n">HealthCheckHandler</span> <span class="n">healthCheckHandler</span><span class="o">);</span>
+
+    <span class="c1">// 为eureka client注册一个EurekaEventListener(事件监听器)
+</span><span class="c1"></span>    <span class="c1">// 一旦注册，当eureka client的内部状态发生改变的时候，将会调用EurekaEventListener.onEvent()
+</span><span class="c1"></span>    <span class="c1">// 触发一定的事件。可以通过这种方式监听client的更新而非通过轮询的方式询问client
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">registerEventListener</span><span class="o">(</span><span class="n">EurekaEventListener</span> <span class="n">eventListener</span><span class="o">);</span>
+
+</code></pre></div><p>Eureka Server一般通过心跳(heartbeats)来识别一个实例的状态。Eureka Client中存在一个定时任务定时通过<code>HealthCheckHandler</code>检测当前client的状态，如果client的状态发生改变，将会触发新的注册事件，同步Eureka Server的注册表中该服务实例的相关信息。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">HealthCheckHandler</span> <span class="o">{</span>
+    <span class="n">InstanceInfo</span><span class="o">.</span><span class="na">InstanceStatus</span> <span class="nf">getStatus</span><span class="o">(</span><span class="n">InstanceInfo</span><span class="o">.</span><span class="na">InstanceStatus</span> <span class="n">currentStatus</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div><p>在<code>spring-cloud-netflix-eureka-client</code>中实现了这个的接口，<code>EurekaHealthCheckHandler</code>，主要的组合了<code>spring-boot-actuator</code>中的<code>HealthAggregator</code>和<code>HealthIndicator</code>实现了对<code>spring-boot</code>应用的状态检测。</p>
+<p>主要有以下的状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">InstanceStatus</span> <span class="o">{</span>
+	<span class="n">UP</span><span class="o">,</span> <span class="c1">// 可以接受服务请求
+</span><span class="c1"></span>	<span class="n">DOWN</span><span class="o">,</span> <span class="c1">// 无法发送流量-健康检查失败
+</span><span class="c1"></span>	<span class="n">STARTING</span><span class="o">,</span> <span class="c1">// 正在启动，无法发送流量
+</span><span class="c1"></span>	<span class="n">OUT_OF_SERVICE</span><span class="o">,</span> <span class="c1">// 服务关闭，不接受流量
+</span><span class="c1"></span>	<span class="n">UNKNOWN</span><span class="o">;</span> <span class="c1">// 未知状态
+</span><span class="c1"></span>    <span class="o">}</span>
+
+</code></pre></div><p>Eureka中的事件模式，这是一个很明显的观察者模式，以下为它的类图类图：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/EurekaEvent.png" alt=""></p>
+<h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka 客户端的核心代码，这主要包括的就是 DiscoveryClient，我们主要介绍了其核心功能。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-02-26</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （五） Eureka Client 源码分析</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%83eureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （七）Eureka 客户端的服务注册与发现</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8c%85%e7%bb%93%e6%9e%84">
+												 包结构
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#discoveryclient">
+												 DiscoveryClient
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ribbon on QingTing</title>
+    <link>https://qingting-zheng.github.io:443/tags/ribbon/</link>
+    <description>Recent content in Ribbon on QingTing</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-Hans</language>
+    <lastBuildDate>Wed, 01 May 2019 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:443/tags/ribbon/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（十三）完结</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%89%E5%AE%8C%E7%BB%93/</link>
+      <pubDate>Wed, 01 May 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%89%E5%AE%8C%E7%BB%93/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 只读数据库的负载均衡实现 读者在学习了FeignLoadBalancer的原理和Ribbon的API之后，可以为任何需要负载均衡策略的项目添加Ribbon的集成。 比如一个的数据库中间件项目，它支持多个读库的数据读取，它希望对多个的读库进行数据读取时可以支持一定的负载均衡策略。那么，读者就可以通过集成Ribbon来实现读库之间的负载均</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（十二）使用Netty发送网络请求</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%BA%8C%E4%BD%BF%E7%94%A8netty%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</link>
+      <pubDate>Sat, 27 Apr 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%BA%8C%E4%BD%BF%E7%94%A8netty%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 使用Netty发送网络请求 Ribbon除了可以和RestTemplate，Feign一起使用之外，还可以与Netty进行集成，也就是说，Ribbon使用负载均衡策略选择完服务器之后，然后再交给Netty进行网络请求。 其实，上一小节的介绍的Ribbon的LoadBalancerCommand的submit函数可以直接使用Netty框</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（十一）应用进阶之Ribbon API</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%80%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bribbon-api/</link>
+      <pubDate>Wed, 10 Apr 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%80%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bribbon-api/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 本节主要有关Ribbon的高级应用，主要有Ribbon的API使用，底层网络请求层的实现，和为已有spring系统集成Ribbon功能。 Ribbon API Ribbon除了与RestTemplate和Fegin一同使用之外，还可以依靠自己独立的API接口来实现一定的代码逻辑。 比如下面的代码中，使用LoadBalancerBuilder的build</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（十）ServerListFilter 服务列表过滤</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/</link>
+      <pubDate>Mon, 04 Mar 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务列表 DomainExtractingServerList的getInitialListOfServers的实现十分简单，就是直接返回从Eureka中获取的服务器列表。 @Override public List&amp;lt;DiscoveryEnabledServer&amp;gt; getInitialListOfServers() { List&amp;lt;DiscoveryEnabledServer&amp;gt; servers = setZones(this.list .getInitialListOfServers()); return servers; } @Override public List&amp;lt;DiscoveryEnabledServer&amp;gt; getUpdatedListOfServers() { List&amp;lt;DiscoveryEnabledServer&amp;gt; servers = setZones(this.list .getUpdatedListOfServers()); return servers; } //添加zone相关的信息 private List&amp;lt;DiscoveryEnabledServer&amp;gt; setZones(List&amp;lt;DiscoveryEnabledServer&amp;gt; servers) { List&amp;lt;DiscoveryEnabledServer&amp;gt; result = new ArrayList&amp;lt;&amp;gt;(); //判断是否secure和是否使用ip地址 boolean isSecure = this.clientConfig.getPropertyAsBoolean( CommonClientConfigKey.IsSecure, Boolean.TRUE); boolean shouldUseIpAddr = this.clientConfig.getPropertyAsBoolean( CommonClientConfigKey.UseIPAddrForServer,</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（九）IPing与server列表</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/</link>
+      <pubDate>Fri, 22 Feb 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 IPing IPing是Ribbon用来定义检查server是否可用的接口。 public interface IPing { //检查server是否可用。 public boolean isAlive(Server server); } Ribbon默认提供IPing接口的实现类是DummyPing。其实它并没有去真正的判断server是否是可用的，而是直接返回了true。 public class DummyPing extends AbstractLoadBalancerPing { public DummyPing() { } public boolean isAlive(Server server) { return true; } @Override public void initWithNiwsConfig(IClientConfig clientConfig) { } } 除了DummyPing之外，</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（八）负载均衡策略实现</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Wed, 06 Feb 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 负载均衡策略实现 IRule是定义Ribbon负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在RibbonClientConfiguration中给出。IRule接口的choose函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（七）ILoadBalancer</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/</link>
+      <pubDate>Mon, 04 Feb 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 ILoadBalancer ILoadBalancer是RIbbon的关键类之一，它是定义软负载均衡操作过程的接口。 在上一小节中，读者应该已经了解到可以通过SpringClientFactory工厂类的getLoadBalancer函数获取ILoadBalancer实例。根据Ribbon的实例化机制，ILoadBalnacer实例是在RibbonAutoC</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（六）LoadBalancerClient</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%ADloadbalancerclient/</link>
+      <pubDate>Sun, 27 Jan 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%ADloadbalancerclient/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 LoadBalancerClient 通过之前两个小节的讲述，相信读者已经对Ribbon与RestTemplate和Feign之间的工作原理有了一定的了解。接下来，本小节会对LoadBalancerClient进行负载均衡的具体原理和实现。 LoadBalancerClient是Ribbon项目的核心类之一，可以在RestTemplate发送网络请求时替代RestTe</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（五） 和Feign一起使用</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 16 Jan 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 和Feign一起使用 Ribbon除了显示的和RestTemplate一起使用之外，还会是Feign有关负载均衡的默认实现。 在前面的文章有关Feign的中讲解了Feign相关实例的初始化过程。FeignClientFactoryBean是创造FeignClient的工厂类。在其getObject方法中有一个分支判断，如果请求URL不</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（四）和RestTemplate一起使用</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 04 Jan 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 和RestTemplate一起使用 在前面快速入门一节中已经说明了Ribbon和RestTemplate之间的关系，而使二者产生联系的就是@LoadBalanced注解。@LoadBalanced是一个标记注解，可以表明被修饰的RestTemplate应该使用RibbonLoadBalancerClient来发送HTTP请求。Rib</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（三）源码解析之配置和实例初始化</title>
+      <link>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
+      <pubDate>Thu, 27 Dec 2018 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 配置和实例初始化 @RibbonClient用来声明Ribbon Client，用来声明Ribbon client的名称和配置，标记一个@Configuration的配置类，进行Ribbon相关的配置。@RibbonClient还会importRibbonClientConfigurationRegistrar类来进行动态的BeanDe</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（二）快速入门</title>
+      <link>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Wed, 26 Dec 2018 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 快速入门 Ribbon可以和RestTemplate一起使用，也可以集成到Feign中使用。下面两小结将会分别讲述Ribbon在这两种使用方法下的示例。 RestTemplate是Spring的同步客户端HTTP请求接口，它可以简化客户端与HTTP服务器之间的交互，并且它强制使用RESTful风格，它会处理HTTP连接，只需要使用者提</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Ribbon（一）总体介绍</title>
+      <link>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
+      <pubDate>Thu, 06 Dec 2018 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
+      <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Ribbon是一个可以管理Http和TCP客户端的客户端负载均衡器。Feign已经在使用Ribbon了，如果你使用过@FeignClient,那么Ribbon也会被使用。 Ribbon的核心思想就是named client，也就是带有名称的Ribbon Client。每个Client由可配置的组件构成，负责一类服务的调用请求。Sprin</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 增量式拉取注册表信息 接着查看一下增量式的拉取方式，一般发生在第一次拉取注册表信息之后，拉取的信息定义为从某一段时间之后发生的所有变更的信息，通常来讲是3分钟，在获取到更新的delta，会根据delta中的增量更新对本地的数据进行更新，与getAndStoreFullRegistry()一样，也通过fetchRegist">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （九）Eureka 客户端增量式拉取注册表信息" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 增量式拉取注册表信息 接着查看一下增量式的拉取方式，一般发生在第一次拉取注册表信息之后，拉取的信息定义为从某一段时间之后发生的所有变更的信息，通常来讲是3分钟，在获取到更新的delta，会根据delta中的增量更新对本地的数据进行更新，与getAndStoreFullRegistry()一样，也通过fetchRegist" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B9%9Deureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%8B%89%E5%8F%96%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF/" />
+<meta property="article:published_time" content="2018-03-11T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-03-11T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （九）Eureka 客户端增量式拉取注册表信息 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B9%9Deureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%8B%89%E5%8F%96%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （九）Eureka 客户端增量式拉取注册表信息</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Mar 11, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>4 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="增量式拉取注册表信息">增量式拉取注册表信息</h3>
+<p>接着查看一下增量式的拉取方式，一般发生在第一次拉取注册表信息之后，拉取的信息定义为从某一段时间之后发生的所有变更的信息，通常来讲是3分钟，在获取到更新的<code>delta</code>，会根据<code>delta</code>中的增量更新对本地的数据进行更新，与<code>getAndStoreFullRegistry()</code>一样，也通过<code>fetchRegistryGeneration</code>对更新的版本进行控制。增量式拉取是为了维护Eureka Client本地的注册表信息与Eureka Server注册表信息的一致性，防止数据过久而失效，同时减少拉取注册表信息的通信量，client中有一个注册表缓存刷新定时器专门负责维护两者之间的信息的同步性。但是当增量式拉取出现意外时，定时器将执行全量拉取更新本地缓存的注册表信息。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="k">if</span> <span class="o">(</span><span class="n">fetchRegistryUpdateLock</span><span class="o">.</span><span class="na">tryLock</span><span class="o">())</span> <span class="o">{</span>
+	<span class="k">try</span> <span class="o">{</span>
+		<span class="n">updateDelta</span><span class="o">(</span><span class="n">delta</span><span class="o">);</span>
+		<span class="n">reconcileHashCode</span> <span class="o">=</span> <span class="n">getReconcileHashCode</span><span class="o">(</span><span class="n">applications</span><span class="o">);</span>
+	<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+		<span class="n">fetchRegistryUpdateLock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+	<span class="o">}</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+		<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;Cannot acquire update lock, aborting getAndUpdateDelta&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
+</code></pre></div><p>同理，在相同的位置也发现了增量式更新的url，也是可以直接访问的。
+<img src="https://qingting-zheng.github.io:443/images/series/eureka/Delta.png" alt=""></p>
+<p>由于更新的过程过于漫长，时间成本为大O(N^2)，所以加了一把锁<code>fetchRegistryUpdateLock</code>通过同步代码块进行控制，防止多个线程同时进行更新，污染数据。</p>
+<p>在根据从Eureka Server拉取的delta信息更新本地缓存的时候，Eureka为了标记变更的状态，定义了<code>ActionType</code>来标记变更状态，位于<code>InstanceInfo</code>类中。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">ActionType</span> <span class="o">{</span>
+	<span class="n">ADDED</span><span class="o">,</span> <span class="c1">// 添加Eureka Server
+</span><span class="c1"></span>	<span class="n">MODIFIED</span><span class="o">,</span> <span class="c1">// 在Euerka Server中的信息发生改变
+</span><span class="c1"></span>	<span class="n">DELETED</span><span class="c1">// 被从Eureka Server中剔除
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p>更改本地的cache之后，Eureka Client会通过<code>getReconcileHashCode()</code>计算合并后的<code>applications</code>的<code>appsHashCode</code>，称为<code>reconcileHashCode</code>，和Server传递的delta上的<code>appsHashCode</code>，用来比较客户端和服务端上注册表的差异，如果不同的话将再进行一次<code>getAndStoreFullRegistry()</code>获取全量数据保证Eureka Client与Eureka Server之间的数据一致，并打印出两者的差异性。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="k">if</span> <span class="o">(!</span><span class="n">reconcileHashCode</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">delta</span><span class="o">.</span><span class="na">getAppsHashCode</span><span class="o">())</span> <span class="o">||</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">shouldLogDeltaDiff</span><span class="o">())</span> <span class="o">{</span>
+	<span class="n">reconcileAndLogDifference</span><span class="o">(</span><span class="n">delta</span><span class="o">,</span> <span class="n">reconcileHashCode</span><span class="o">);</span>  <span class="c1">// this makes a remoteCall
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p><code>reconcileAndLogDifference()</code>方法中拉取全量的注册表信息的操作。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">reconcileAndLogDifference</span><span class="o">(</span><span class="n">Applications</span> <span class="n">delta</span><span class="o">,</span> <span class="n">String</span> <span class="n">reconcileHashCode</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+	<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;The Reconcile hashcodes do not match, client : {}, server : {}. Getting the full registry&#34;</span><span class="o">,</span><span class="n">reconcileHashCode</span><span class="o">,</span> <span class="n">delta</span><span class="o">.</span><span class="na">getAppsHashCode</span><span class="o">());</span>
+
+	<span class="n">RECONCILE_HASH_CODES_MISMATCH</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+
+	<span class="kt">long</span> <span class="n">currentUpdateGeneration</span> <span class="o">=</span> <span class="n">fetchRegistryGeneration</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+	<span class="n">EurekaHttpResponse</span><span class="o">&lt;</span><span class="n">Applications</span><span class="o">&gt;</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getRegistryRefreshSingleVipAddress</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">eurekaTransport</span><span class="o">.</span><span class="na">queryClient</span><span class="o">.</span><span class="na">getApplications</span><span class="o">(</span><span class="n">remoteRegionsRef</span><span class="o">.</span><span class="na">get</span><span class="o">())</span> <span class="o">:</span> <span class="n">eurekaTransport</span><span class="o">.</span><span class="na">queryClient</span><span class="o">.</span><span class="na">getVip</span><span class="o">(</span><span class="n">clientConfig</span><span class="o">.</span><span class="na">getRegistryRefreshSingleVipAddress</span><span class="o">(),</span> <span class="n">remoteRegionsRef</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+	<span class="n">Applications</span> <span class="n">serverApps</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">serverApps</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;Cannot fetch full registry from the server; reconciliation failure&#34;</span><span class="o">);</span>
+		<span class="k">return</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="o">....</span>
+</code></pre></div><p>这里简单介绍<code>Application.appsHashCode</code>，应用集合一致性哈希码，一般的表示方式为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">appsHashCode</span> <span class="o">=</span> <span class="n">$</span><span class="o">{</span><span class="n">status</span><span class="o">}</span><span class="n">_$</span><span class="o">{</span><span class="n">count</span><span class="o">}</span><span class="n">_</span>
+</code></pre></div><p>表示应用状态和数量拼接出来的一致性哈希码。举个简答的例子，有10个应用实例的状态为UP，有5个应用实例状态为DOWN，其他的状态的数量为0(不进行表示)，那么：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">appsHashCode</span> <span class="o">=</span> <span class="n">UP_10_DOWN_5_</span>
+</code></pre></div><p>现在回到<code>fetchRegistry()</code>方法中，关注一下<code>updateInstanceRemoteStatus()</code>，在该方法中，对比的本地缓存的<code>lastRemoteInstanceStatus</code>与刚刚更新的Server中的注册表<code>Applications</code>中的当前服务实例的状态，如发生不同，触发<code>StatusChangeEvent</code>事件(默认没有提供事件的监听器)，更新<code>lastRemoteInstanceStatus</code>的状态，但是并不更新当时本地实例的状态(即<code>applicationInfoManager</code>中<code>instanceInfo</code>的实例状态)。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">	<span class="k">if</span> <span class="o">(</span><span class="n">lastRemoteInstanceStatus</span> <span class="o">!=</span> <span class="n">currentRemoteInstanceStatus</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">onRemoteStatusChanged</span><span class="o">(</span><span class="n">lastRemoteInstanceStatus</span><span class="o">,</span> <span class="n">currentRemoteInstanceStatus</span><span class="o">);</span>
+		<span class="n">lastRemoteInstanceStatus</span> <span class="o">=</span> <span class="n">currentRemoteInstanceStatus</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div><p>接着返回到<code>DiscoveryClient</code>的构造方法中，即拉取完Eureka Server中的注册表信息后，将对服务实例进行注册。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">preRegistrationHandler</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">this</span><span class="o">.</span><span class="na">preRegistrationHandler</span><span class="o">.</span><span class="na">beforeRegistration</span><span class="o">();</span>
+<span class="o">}</span>
+	<span class="o">...</span>
+	<span class="n">initScheduledTasks</span><span class="o">();</span>
+</code></pre></div><p>在服务注册之间会进行注册预处理，Eureka没有对此提供默认实现。</p>
+<h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka 客户端增量从注册表拉取信息，增量的方式较为复杂，但是对于网络通信减轻了压力。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-03-11</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%ABeureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%89%E5%8F%96%E4%BF%A1%E6%81%AF/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （八）Eureka 客户端拉取信息</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>慢学Docker(3) Docker Hub速度蜗牛爬怎么办?</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%a2%9e%e9%87%8f%e5%bc%8f%e6%8b%89%e5%8f%96%e6%b3%a8%e5%86%8c%e8%a1%a8%e4%bf%a1%e6%81%af">
+												 增量式拉取注册表信息
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

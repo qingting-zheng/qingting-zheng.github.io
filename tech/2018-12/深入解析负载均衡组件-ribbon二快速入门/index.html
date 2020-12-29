@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 快速入门 Ribbon可以和RestTemplate一起使用，也可以集成到Feign中使用。下面两小结将会分别讲述Ribbon在这两种使用方法下的示例。 RestTemplate是Spring的同步客户端HTTP请求接口，它可以简化客户端与HTTP服务器之间的交互，并且它强制使用RESTful风格，它会处理HTTP连接，只需要使用者提">
+  
+  <meta property="og:title" content="深入解析负载均衡组件 Ribbon（二）快速入门" />
+<meta property="og:description" content="系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 快速入门 Ribbon可以和RestTemplate一起使用，也可以集成到Feign中使用。下面两小结将会分别讲述Ribbon在这两种使用方法下的示例。 RestTemplate是Spring的同步客户端HTTP请求接口，它可以简化客户端与HTTP服务器之间的交互，并且它强制使用RESTful风格，它会处理HTTP连接，只需要使用者提" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" />
+<meta property="article:published_time" content="2018-12-26T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-12-26T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析负载均衡组件 Ribbon（二）快速入门 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析负载均衡组件 Ribbon（二）快速入门</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Dec 26, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>4 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="快速入门">快速入门</h3>
+<p><code>Ribbon</code>可以和<code>RestTemplate</code>一起使用，也可以集成到<code>Feign</code>中使用。下面两小结将会分别讲述<code>Ribbon</code>在这两种使用方法下的示例。</p>
+<p><code>RestTemplate</code>是Spring的同步客户端HTTP请求接口，它可以简化客户端与HTTP服务器之间的交互，并且它强制使用RESTful风格，它会处理HTTP连接，只需要使用者提供URLs和一些模板变量。</p>
+<p><code>Spring Cloud</code>为客户端负载均衡创建了特定的注解<code>@LoadBalanced</code>，我们只需要使用该注解修饰创建<code>RestTemplate</code>实例的<code>@Bean</code>函数，<code>Spring Cloud</code>就会让<code>RestTemplate</code>使用相关的负载均衡策略,在示例当中就是使用<code>Ribbon</code>。</p>
+<p>除了<code>@LoadBalanced</code>之外，<code>Ribbon</code>还提供<code>@RibbonClient</code>注解。该注解是为ribbon client声明名称和配置的。，<code>name</code>属性可以设置client的名称，<code>configuration</code>属性则会设置<code>Ribbon</code>相关的配置类。</p>
+<pre><code>@SpringBootApplication
+@RestController
+@RibbonClient(name = &quot;say-hello&quot;, configuration = RibbonConfiguration.class)
+public class Chapter7RibbonApplication {
+
+	@LoadBalanced
+	@Bean
+	RestTemplate restTemplate(){
+		return new RestTemplate();
+	}
+
+	@Autowired
+	RestTemplate restTemplate;
+
+	@RequestMapping(&quot;/hi&quot;)
+	public String hi(@RequestParam(value=&quot;name&quot;, defaultValue=&quot;Artaban&quot;) String name) {
+		String greeting = this.restTemplate.getForObject(&quot;http://say-hello/greeting&quot;, String.class);
+		return String.format(&quot;%s, %s!&quot;, greeting, name);
+	}
+}
+</code></pre><p>如上边代码所示，由于<code>restTemplate</code>的Bean实例化函数<code>restTemplate()</code>被<code>@LoadBalanced</code>修饰，所以当调用<code>restTemplate</code>的<code>getForObject</code>函数发送HTTP请求时，会使用<code>Ribbon</code>进行负载均衡。
+<code>@RibbonClient</code>修饰了代码中的<code>Chapter7RibbonApplication</code>类，声明了一个名为<code>say-hello</code>的ribbon client，并且设置它的配置类为<code>RibbonConfiguration</code>。</p>
+<pre><code>public class RibbonConfiguration {
+    @Autowired
+    IClientConfig ribbonClientConfig;
+
+    @Bean
+    public IPing ribbonPing(IClientConfig config) {
+        return new PingUrl();
+    }
+
+    @Bean
+    public IRule ribbonRule(IClientConfig config) {
+        return new AvailabilityFilteringRule();
+    }
+}
+</code></pre><p>使用者可以通过配置创建Bean实例来重载<code>Spring Cloud Netflix</code>提供给使用者的所有<code>Ribbon</code>相关的Bean实例。<code>RibbonConfiguration</code>配置类重载了<code>IPing</code>和<code>IRule</code>两个实例，通过<code>@Bean</code>函数创建了<code>PingUrl</code>实例和<code>AvailabilityFilteringRule</code>实例，来替换<code>Ribbon</code>默认提供的<code>NoOpPing</code>实例和<code>ZoneAvoidanceRule</code>实例。通过这种方式，使用者可以依据自己的需求，更改<code>Ribbon</code>的相关组件Bean实例，这就是<code>Ribbon</code>提供给使用者的高可扩展性的架构。</p>
+<p>使用者可以在<code>application.yml</code>文件中对<code>Ribbon</code>进行相关的配置，比如设置服务端列表或者使用<code>eureka</code>来获取服务端列表。</p>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">say-hello</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">ribbon</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">eureka</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="l">//将eureka关闭，则ribbon无法从eureka中获取服务端列表信息</span><span class="w">
+</span><span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">    </span><span class="l">//listOfServers可以设置服务端列表</span><span class="w">
+</span><span class="w">    </span><span class="nt">listOfServers</span><span class="p">:</span><span class="w"> </span><span class="l">localhost:8090,localhost:9092,localhost:9999</span><span class="w">
+</span><span class="w">    </span><span class="nt">ServerListRefreshInterval</span><span class="p">:</span><span class="w"> </span><span class="m">15000</span><span class="w">
+</span></code></pre></div><p><code>Ribbon</code>可以和服务注册中心<code>eureka</code>一起工作，从服务注册中心获取关于服务端的地址信息，也可以在配置文件中使用<code>listOfServers</code>来设置服务端地址。由于<code>listOfServers</code>字段可以随意指定服务端地址，所以使用者往往在项目开发和测试阶段使用该字段。</p>
+<p>除了和<code>RestTemplate</code>进行配套使用之外，<code>Ribbon</code>还默认被集成到了<code>Feign</code>中，当你使用<code>@FeignClient</code>时，<code>Ribbon</code>也会被使用。下一章节的源码分析中会按着上述两种使用方式进行，即分别讲述<code>Ribbon</code>与<code>RestTemplate</code>和<code>Feign</code>的合作的原理与机制。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-12-26</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Ribbon（一）总体介绍</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Ribbon（三）源码解析之配置和实例初始化</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%bf%ab%e9%80%9f%e5%85%a5%e9%97%a8">
+												 快速入门
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 在Finchley版本的SpringCloud中，不需要添加任何的额外的注解就可以登记为Eureka Client，只需要在pom文件中添加spring-cloud-starter-netflix-eureka-client的依赖。 为了跟踪Eureka的运行机制，读者可以打开SpringBoot的Debug模式来查看更多">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （五） Eureka Client 源码分析" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 在Finchley版本的SpringCloud中，不需要添加任何的额外的注解就可以登记为Eureka Client，只需要在pom文件中添加spring-cloud-starter-netflix-eureka-client的依赖。 为了跟踪Eureka的运行机制，读者可以打开SpringBoot的Debug模式来查看更多" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" />
+<meta property="article:published_time" content="2018-02-20T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-02-20T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （五） Eureka Client 源码分析 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （五） Eureka Client 源码分析</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Feb 20, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>12 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<p>在Finchley版本的SpringCloud中，不需要添加任何的额外的注解就可以登记为Eureka Client，只需要在pom文件中添加<code>spring-cloud-starter-netflix-eureka-client</code>的依赖。</p>
+<p>为了跟踪Eureka的运行机制，读者可以打开SpringBoot的Debug模式来查看更多的输出日志：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">logging</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">org.springframework</span><span class="p">:</span><span class="w"> </span><span class="l">DEBUG</span><span class="w">
+</span></code></pre></div><p>查看<code>spring-cloud-netflix-eureka-client</code>的<code>src/main/resource.META-INF/spring.factories</code>，查看Eureka Client有哪些自动配置类：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.netflix.eureka.config.EurekaClientConfigServerAutoConfiguration,\</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.netflix.eureka.config.EurekaDiscoveryClientConfigServiceAutoConfiguration,\</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration,\</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.netflix.ribbon.eureka.RibbonEurekaAutoConfiguration,\</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.netflix.eureka.EurekaDiscoveryClientConfiguration</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.bootstrap.BootstrapConfiguration=\</span><span class="w">
+</span><span class="w"></span><span class="l">org.springframework.cloud.netflix.eureka.config.EurekaDiscoveryClientConfigServiceBootstrapConfiguration</span><span class="w">
+</span><span class="w">
+</span></code></pre></div><p>排除掉与配置中心相关的自动配置类，从中可以找到三个与Eureka Client密切相关的自动配置类：</p>
+<ul>
+<li>EurekaClientAutoConfiguration</li>
+<li>RibbonEurekaAutoConfiguration</li>
+<li>EurekaDiscoveryClientConfiguration</li>
+</ul>
+<p>下面将对这些类进行分析，看看一个正常的Eureka Client需要做哪一些初始化配置。</p>
+<h4 id="eurekaclientautoconfiguration">EurekaClientAutoConfiguration</h4>
+<p>Eureke Client的自动配置类，负责了Eureka Client中关键的bean的配置和初始化，以下是其内比较重要的bean的介绍与作用。</p>
+<p><strong>EurekaClientConfig</strong></p>
+<p>提供了Eureka Client注册到Eureka Server所需要的配置信息，SpringCloud为其提供了一个默认配置类的<code>EurekaClientConfigBean</code>，可以在配置文件中通过前缀<code>eureka.client</code>+属性名进行覆盖。</p>
+<p><strong>ApplicationInfoManager</strong></p>
+<p>该类管理了服务实例的信息类<code>InstanceInfo</code>，其内包括Eureka Server上的注册表所需要的信息，代表了每个Eureka Client提交到注册中心的数据，用以供服务发现。同时管理了实例的配置信息<code>EurekaInstanceConfig</code>，SpringCloud提供了一个<code>EurekaInstanceConfigBean</code>的配置类进行默认配置，也可以在配置文件<code>application.yml</code>中通过<code>eureka.instance</code>+属性名进行自定义配置。</p>
+<p><strong>EurekaInstanceConfigBean</strong></p>
+<p>继承了<code>EurekaInstanceConfig</code>接口，是Eureka Client注册到服务器上需要提交的关于服务实例自身的相关信息，主要用于服务发现：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/EurekaInstanceConfigBean.png" alt=""></p>
+<p>通常这些信息在配置文件中的<code>eureka.instance</code>前缀下进行设置，SpringCloud通过<code>EurekaInstanceConfigBean</code>配置类提供了相关的默认配置。以下是一些比较关键的属性，这些信息都将注册到注册中心上。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EurekaInstanceConfigBean</span> <span class="kd">implements</span> <span class="n">CloudEurekaInstanceConfig</span><span class="o">,</span> <span class="n">EnvironmentAware</span> <span class="o">{</span>
+
+<span class="c1">// 服务实例的应用名
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">String</span> <span class="n">appname</span><span class="o">;</span>
+<span class="c1">// 服务实例的Id，通常和appname共同唯一标记一个服务实例
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">String</span> <span class="n">instanceId</span><span class="o">;</span>
+<span class="c1">// 自定义添加的元数据，由用户使用以适配扩展业务需求
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">metadataMap</span><span class="o">;</span>
+<span class="c1">// 如果服务实例部署在AWS上，该类将持有服务实例部署所在的数据中心的准确信息
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">DataCenterInfo</span> <span class="n">dataCenterInfo</span><span class="o">;</span>
+<span class="c1">// 服务实例的Ip地址
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">String</span> <span class="n">ipAddress</span><span class="o">;</span>
+<span class="c1">// 服务实例主页地址
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">String</span> <span class="n">homePageUrl</span><span class="o">;</span>
+<span class="c1">// 服务实例健康检查地址
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">String</span> <span class="n">healthCheckUrlPath</span><span class="o">;</span>
+<span class="c1">// 服务实例的状态地址
+</span><span class="c1"></span><span class="kd">private</span> <span class="n">String</span> <span class="n">statusPageUrlPath</span>
+
+<span class="o">.....</span>
+<span class="o">}</span>
+</code></pre></div><h3 id="discoveryclient">DiscoveryClient</h3>
+<p>这是SpringCloud定义的用来服务发现的顶级接口，在Netflix Eureka或者consul都有相应的具体实现类，提供的方法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DiscoveryClient</span> <span class="o">{</span>
+
+   <span class="c1">// 获取实现类的描述
+</span><span class="c1"></span>	<span class="n">String</span> <span class="nf">description</span><span class="o">();</span>
+
+	<span class="c1">// 通过服务Id获取服务实例的信息
+</span><span class="c1"></span>	<span class="n">List</span><span class="o">&lt;</span><span class="n">ServiceInstance</span><span class="o">&gt;</span> <span class="nf">getInstances</span><span class="o">(</span><span class="n">String</span> <span class="n">serviceId</span><span class="o">);</span>
+
+	<span class="c1">// 获取所有的服务实例的Id
+</span><span class="c1"></span>	<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getServices</span><span class="o">();</span>
+
+<span class="o">}</span>
+</code></pre></div><p>其在Eureka方面的实现的相关的类结构图：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/DiscoveryClient.png" alt=""></p>
+<p><code>EurekaDiscoveryClient</code>继承了<code>DiscoveryClient</code>，但是通过查看<code>EurekaDiscoveryClient</code>中的代码，会发现它是通过组合类<code>EurekaClient</code>实现接口的功能，如下的<code>getInstance</code>接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">ServiceInstance</span><span class="o">&gt;</span> <span class="nf">getInstances</span><span class="o">(</span><span class="n">String</span> <span class="n">serviceId</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">List</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="n">infos</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">eurekaClient</span><span class="o">.</span><span class="na">getInstancesByVipAddress</span><span class="o">(</span><span class="n">serviceId</span><span class="o">,</span><span class="kc">false</span><span class="o">);</span>
+	<span class="n">List</span><span class="o">&lt;</span><span class="n">ServiceInstance</span><span class="o">&gt;</span> <span class="n">instances</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+	<span class="k">for</span> <span class="o">(</span><span class="n">InstanceInfo</span> <span class="n">info</span> <span class="o">:</span> <span class="n">infos</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">instances</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">EurekaServiceInstance</span><span class="o">(</span><span class="n">info</span><span class="o">));</span>
+	<span class="o">}</span>
+	<span class="k">return</span> <span class="n">instances</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div><p><code>EurekaClient</code>来自于<code>com.netflix.discovery</code>包中，其默认实现为<code>com.netflix.discovery.DiscoveryClient</code>，这属于eureka-client的源代码，它提供了Eureka Client注册到Server上、续租，下线以及获取Server中注册表信息等诸多关键功能。SpringCloud通过组合方式调用了Eureka中的的服务发现方法，关于<code>EurekaClient</code>的详细代码分析将放在客户端核心代码中介绍。为了适配<code>spring-cloud</code>，spring提供了一个<code>CloudEurekaClient</code>继承了<code>com.netflix.discovery.DiscoveryClient</code>，同时覆盖了<code>onCacheRefreshed</code>防止在<code>spring-boot</code>还没初始化时调用该接口出现<code>NullPointException</code>。</p>
+<p>上述的几个配置类之间的关系非常紧密，数据之间存在一定的耦合，所以下面介绍一下它们之间的关系</p>
+<p>首先是<code>EurekaInstanceConfig</code>，代码位于<code>EurekaClientAutoConfiguration</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Bean</span>
+<span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">EurekaInstanceConfig</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">search</span> <span class="o">=</span> <span class="n">SearchStrategy</span><span class="o">.</span><span class="na">CURRENT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">EurekaInstanceConfigBean</span> <span class="nf">eurekaInstanceConfigBean</span><span class="o">(</span><span class="n">InetUtils</span> <span class="n">inetUtils</span><span class="o">,</span> <span class="n">ManagementMetadataProvider</span> <span class="n">managementMetadataProvider</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">// 从配置文件中读取属性
+</span><span class="c1"></span>	<span class="n">String</span> <span class="n">hostname</span> <span class="o">=</span> <span class="n">getProperty</span><span class="o">(</span><span class="s">&#34;eureka.instance.hostname&#34;</span><span class="o">);</span>
+	<span class="kt">boolean</span> <span class="n">preferIpAddress</span> <span class="o">=</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">parseBoolean</span><span class="o">(</span><span class="n">getProperty</span><span class="o">(</span><span class="s">&#34;eureka.instance.prefer-ip-address&#34;</span><span class="o">));</span>
+	<span class="n">String</span> <span class="n">ipAddress</span> <span class="o">=</span> <span class="n">getProperty</span><span class="o">(</span><span class="s">&#34;eureka.instance.ipAddress&#34;</span><span class="o">);</span>
+	<span class="kt">boolean</span> <span class="n">isSecurePortEnabled</span> <span class="o">=</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">parseBoolean</span><span class="o">(</span><span class="n">getProperty</span><span class="o">(</span><span class="s">&#34;eureka.instance.secure-port-enabled&#34;</span><span class="o">));</span>
+
+	<span class="n">String</span> <span class="n">serverContextPath</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;server.context-path&#34;</span><span class="o">,</span> <span class="s">&#34;/&#34;</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">serverPort</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;server.port&#34;</span><span class="o">,</span> <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;port&#34;</span><span class="o">,</span> <span class="s">&#34;8080&#34;</span><span class="o">)));</span>
+
+	<span class="n">Integer</span> <span class="n">managementPort</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;management.server.port&#34;</span><span class="o">,</span> <span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span><span class="c1">// nullable. should be wrapped into optional
+</span><span class="c1"></span>	<span class="n">String</span> <span class="n">managementContextPath</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;management.server.context-path&#34;</span><span class="o">);</span><span class="c1">// nullable. should be wrapped into optional
+</span><span class="c1"></span>	<span class="n">Integer</span> <span class="n">jmxPort</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;com.sun.management.jmxremote.port&#34;</span><span class="o">,</span> <span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span><span class="c1">//nullable
+</span><span class="c1"></span>	<span class="n">EurekaInstanceConfigBean</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">EurekaInstanceConfigBean</span><span class="o">(</span><span class="n">inetUtils</span><span class="o">);</span>
+   <span class="c1">// 设置非空属性
+</span><span class="c1"></span>	<span class="n">instance</span><span class="o">.</span><span class="na">setNonSecurePort</span><span class="o">(</span><span class="n">serverPort</span><span class="o">);</span>
+	<span class="n">instance</span><span class="o">.</span><span class="na">setInstanceId</span><span class="o">(</span><span class="n">getDefaultInstanceId</span><span class="o">(</span><span class="n">env</span><span class="o">));</span>
+	<span class="n">instance</span><span class="o">.</span><span class="na">setPreferIpAddress</span><span class="o">(</span><span class="n">preferIpAddress</span><span class="o">);</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">ipAddress</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">instance</span><span class="o">.</span><span class="na">setIpAddress</span><span class="o">(</span><span class="n">ipAddress</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="k">if</span><span class="o">(</span><span class="n">isSecurePortEnabled</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">instance</span><span class="o">.</span><span class="na">setSecurePort</span><span class="o">(</span><span class="n">serverPort</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">hostname</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">instance</span><span class="o">.</span><span class="na">setHostname</span><span class="o">(</span><span class="n">hostname</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="n">String</span> <span class="n">statusPageUrlPath</span> <span class="o">=</span> <span class="n">getProperty</span><span class="o">(</span><span class="s">&#34;eureka.instance.status-page-url-path&#34;</span><span class="o">);</span>
+	<span class="n">String</span> <span class="n">healthCheckUrlPath</span> <span class="o">=</span> <span class="n">getProperty</span><span class="o">(</span><span class="s">&#34;eureka.instance.health-check-url-path&#34;</span><span class="o">);</span>
+
+	<span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">statusPageUrlPath</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">instance</span><span class="o">.</span><span class="na">setStatusPageUrlPath</span><span class="o">(</span><span class="n">statusPageUrlPath</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">healthCheckUrlPath</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">instance</span><span class="o">.</span><span class="na">setHealthCheckUrlPath</span><span class="o">(</span><span class="n">healthCheckUrlPath</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="n">ManagementMetadata</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">managementMetadataProvider</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">instance</span><span class="o">,</span> <span class="n">serverPort</span><span class="o">,</span> <span class="n">serverContextPath</span><span class="o">,</span> <span class="n">managementContextPath</span><span class="o">,</span> <span class="n">managementPort</span><span class="o">);</span>
+
+   <span class="o">.....</span>
+	<span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div><p>从上面的代码可以发现，<code>EurekaInstanceConfig</code>的属性主要通过<code>EurekaInstanceConfigBean</code>的实现提供，同时也会尝试从配置文件中读取一部分配置，在例如<code>eureka.instance.hostname</code>、<code>eureka.instance.status-page-url-path</code>、<code>eureka.instance.health-check-url-path</code>等等，它代表了应用实例的应该具备的信息，然后这部分信息会被封装成<code>InstanceInfo</code>，被注册到Eureka Server中。</p>
+<p><code>InstanceInfo</code>是通过<code>InstanceInfoFactory</code>(org.springframework.cloud.netflix.eureka)封装<code>EurekaInstanceConfig</code>中的属性创建的，其中<code>InstanceInfo</code>的属性基本是<code>volatile</code>，保证了内存中的该类信息的一致性和原子性。</p>
+<p>代码位于<code>InstanceInfoFactory</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">InstanceInfo</span> <span class="nf">create</span><span class="o">(</span><span class="n">EurekaInstanceConfig</span> <span class="n">config</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">LeaseInfo</span><span class="o">.</span><span class="na">Builder</span> <span class="n">leaseInfoBuilder</span> <span class="o">=</span> <span class="n">LeaseInfo</span><span class="o">.</span><span class="na">Builder</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+				<span class="o">.</span><span class="na">setRenewalIntervalInSecs</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getLeaseRenewalIntervalInSeconds</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setDurationInSecs</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getLeaseExpirationDurationInSeconds</span><span class="o">());</span>
+		<span class="c1">// 创建服务实例的信息用来注册到eureka server上
+</span><span class="c1"></span>		<span class="n">InstanceInfo</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">InstanceInfo</span><span class="o">.</span><span class="na">Builder</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">();</span>
+
+		<span class="n">String</span> <span class="n">namespace</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">getNamespace</span><span class="o">();</span>
+		<span class="k">if</span> <span class="o">(!</span><span class="n">namespace</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&#34;.&#34;</span><span class="o">))</span> <span class="o">{</span>
+			<span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span> <span class="o">+</span> <span class="s">&#34;.&#34;</span><span class="o">;</span>
+		<span class="o">}</span>
+		<span class="n">builder</span><span class="o">.</span><span class="na">setNamespace</span><span class="o">(</span><span class="n">namespace</span><span class="o">).</span><span class="na">setAppName</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getAppname</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setInstanceId</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getInstanceId</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setAppGroupName</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getAppGroupName</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setDataCenterInfo</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getDataCenterInfo</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setIPAddr</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getIpAddress</span><span class="o">()).</span><span class="na">setHostName</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getHostName</span><span class="o">(</span><span class="kc">false</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getNonSecurePort</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">enablePort</span><span class="o">(</span><span class="n">InstanceInfo</span><span class="o">.</span><span class="na">PortType</span><span class="o">.</span><span class="na">UNSECURE</span><span class="o">,</span>
+						<span class="n">config</span><span class="o">.</span><span class="na">isNonSecurePortEnabled</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setSecurePort</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getSecurePort</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">enablePort</span><span class="o">(</span><span class="n">InstanceInfo</span><span class="o">.</span><span class="na">PortType</span><span class="o">.</span><span class="na">SECURE</span><span class="o">,</span> <span class="n">config</span><span class="o">.</span><span class="na">getSecurePortEnabled</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setVIPAddress</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getVirtualHostName</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setSecureVIPAddress</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getSecureVirtualHostName</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setHomePageUrl</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getHomePageUrlPath</span><span class="o">(),</span> <span class="n">config</span><span class="o">.</span><span class="na">getHomePageUrl</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setStatusPageUrl</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getStatusPageUrlPath</span><span class="o">(),</span>
+						<span class="n">config</span><span class="o">.</span><span class="na">getStatusPageUrl</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setHealthCheckUrls</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getHealthCheckUrlPath</span><span class="o">(),</span>
+						<span class="n">config</span><span class="o">.</span><span class="na">getHealthCheckUrl</span><span class="o">(),</span> <span class="n">config</span><span class="o">.</span><span class="na">getSecureHealthCheckUrl</span><span class="o">())</span>
+				<span class="o">.</span><span class="na">setASGName</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getASGName</span><span class="o">());</span>
+
+       <span class="o">....</span>
+		<span class="n">InstanceInfo</span> <span class="n">instanceInfo</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+		<span class="n">instanceInfo</span><span class="o">.</span><span class="na">setLeaseInfo</span><span class="o">(</span><span class="n">leaseInfoBuilder</span><span class="o">.</span><span class="na">build</span><span class="o">());</span>
+		<span class="k">return</span> <span class="n">instanceInfo</span><span class="o">;</span>
+	<span class="o">}</span>
+
+</code></pre></div><p>接着是<code>ApplicationInfoManager</code>，代码位于<code>EurekaClientAutoConfiguration</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Bean</span>
+<span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">ApplicationInfoManager</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">search</span> <span class="o">=</span> <span class="n">SearchStrategy</span><span class="o">.</span><span class="na">CURRENT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">ApplicationInfoManager</span> <span class="nf">eurekaApplicationInfoManager</span><span class="o">(</span><span class="n">EurekaInstanceConfig</span> <span class="n">config</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">InstanceInfo</span> <span class="n">instanceInfo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InstanceInfoFactory</span><span class="o">().</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="n">ApplicationInfoManager</span><span class="o">(</span><span class="n">config</span><span class="o">,</span> <span class="n">instanceInfo</span><span class="o">);</span>
+		<span class="o">}</span>
+</code></pre></div><p>通过组合<code>EurekaInstanceConfig</code>和<code>InstanceInfo</code>创建了<code>ApplicationInfoManager</code>，属于应用信息管理器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Bean</span>
+<span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">EurekaClientConfig</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">search</span> <span class="o">=</span> <span class="n">SearchStrategy</span><span class="o">.</span><span class="na">CURRENT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">EurekaClientConfigBean</span> <span class="nf">eurekaClientConfigBean</span><span class="o">()</span> <span class="o">{</span>
+	<span class="n">EurekaClientConfigBean</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">EurekaClientConfigBean</span><span class="o">();</span>
+	<span class="k">if</span> <span class="o">(</span><span class="s">&#34;bootstrap&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">propertyResolver</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;spring.config.name&#34;</span><span class="o">)))</span> <span class="o">{</span>
+		<span class="c1">// We don&#39;t register during bootstrap by default, but there will be another
+</span><span class="c1"></span>		<span class="c1">// chance later.
+</span><span class="c1"></span>		<span class="n">client</span><span class="o">.</span><span class="na">setRegisterWithEureka</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="k">return</span> <span class="n">client</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>前面有讲到，<code>EurekaClientConfig</code>持有Eureka Client与Eureka Server进行交互的关键性配置信息，类似<code>serviceUrl</code>(Server地址)，<code>EurekaClient</code>通过<code>EurekaClientConfig</code>中配置信息与Eureka Server进行服务注册与发现。</p>
+<p>最后是<code>EurekaClient</code>，通过<code>ApplicationInfoManager</code>与<code>EurekaClientConfig</code>组合创建，即<code>EurekaClient</code>同时持有了client的服务实例信息用于服务发现，与Eureka Server注册的配置用于服务注册。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Bean</span><span class="o">(</span><span class="n">destroyMethod</span> <span class="o">=</span> <span class="s">&#34;shutdown&#34;</span><span class="o">)</span>
+<span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">EurekaClient</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">search</span> <span class="o">=</span> <span class="n">SearchStrategy</span><span class="o">.</span><span class="na">CURRENT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">EurekaClient</span> <span class="nf">eurekaClient</span><span class="o">(</span><span class="n">ApplicationInfoManager</span> <span class="n">manager</span><span class="o">,</span> <span class="n">EurekaClientConfig</span> <span class="n">config</span><span class="o">){</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="n">CloudEurekaClient</span><span class="o">(</span><span class="n">manager</span><span class="o">,</span> <span class="n">config</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">optionalArgs</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">context</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div><p>整体的类结构如下</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/ApplicationInfoManager.png" alt=""></p>
+<h3 id="eurekaregistrationeurekaserviceregistryeurekaautoserviceregistration">EurekaRegistration、EurekaServiceRegistry、EurekaAutoServiceRegistration</h3>
+<p>这是SpringCloud适配Eureka所加的将服务注册到服务注册中心的相关类，先来看一下相关的类结构</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/Registry.png" alt=""></p>
+<p><code>Registration</code>继承了<code>ServiceInstance</code>，代表了一个被注册到服务发现系统的一个服务实例，必须具备的信息如hostname和port等，<code>Registration</code>是<code>ServiceInstance</code>的一个门面类</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ServiceInstance</span> <span class="o">{</span>
+
+	<span class="c1">//获取服务实例的serviceId
+</span><span class="c1"></span>	<span class="n">String</span> <span class="nf">getServiceId</span><span class="o">();</span>
+
+	<span class="c1">//获取服务实例的hostname
+</span><span class="c1"></span>	<span class="n">String</span> <span class="nf">getHost</span><span class="o">();</span>
+
+   <span class="c1">//获取服务实例的端口号
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="nf">getPort</span><span class="o">();</span>
+
+	<span class="kt">boolean</span> <span class="nf">isSecure</span><span class="o">();</span>
+
+	<span class="c1">//获取服务实例的uri地址
+</span><span class="c1"></span>	<span class="n">URI</span> <span class="nf">getUri</span><span class="o">();</span>
+
+	<span class="c1">//获取服务实例的元数据key-value对
+</span><span class="c1"></span>	<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="nf">getMetadata</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div><p>对应Eureka，<code>EurekaRegistration</code>实现了<code>Registration </code>，查看其中的代码，只是照搬了<code>EurekaInstanceConfigBean</code>中的配置信息，同时注入了<code>EurekaClient</code>，为Eureka Client的服务注册提供实现。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Bean</span>
+<span class="nd">@ConditionalOnBean</span><span class="o">(</span><span class="n">AutoServiceRegistrationProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;spring.cloud.service-registry.auto-registration.enabled&#34;</span><span class="o">,</span> <span class="n">matchIfMissing</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">EurekaRegistration</span> <span class="nf">eurekaRegistration</span><span class="o">(</span><span class="n">EurekaClient</span> <span class="n">eurekaClient</span><span class="o">,</span> <span class="n">CloudEurekaInstanceConfig</span> <span class="n">instanceConfig</span><span class="o">,</span> <span class="n">ApplicationInfoManager</span> <span class="n">applicationInfoManager</span><span class="o">,</span> <span class="n">ObjectProvider</span><span class="o">&lt;</span><span class="n">HealthCheckHandler</span><span class="o">&gt;</span> <span class="n">healthCheckHandler</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">EurekaRegistration</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">instanceConfig</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">applicationInfoManager</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">eurekaClient</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">healthCheckHandler</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span>
+
+
+</code></pre></div><p><code>ServiceRegistry</code>里面提供了将服务实例注册到服务注册中心的相关接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ServiceRegistry</span><span class="o">&lt;</span><span class="n">R</span> <span class="kd">extends</span> <span class="n">Registration</span><span class="o">&gt;</span> <span class="o">{</span>
+
+	<span class="c1">//注册服务实例，registration当中通常有关于服务实例的信息，例如hostname和port
+</span><span class="c1"></span>	<span class="kt">void</span> <span class="nf">register</span><span class="o">(</span><span class="n">R</span> <span class="n">registration</span><span class="o">);</span>
+
+   <span class="c1">//注销服务实例
+</span><span class="c1"></span>	<span class="kt">void</span> <span class="nf">deregister</span><span class="o">(</span><span class="n">R</span> <span class="n">registration</span><span class="o">);</span>
+
+	<span class="c1">//关闭ServiceRegistry，通常在服务关闭的时候被调用
+</span><span class="c1"></span>	<span class="kt">void</span> <span class="nf">close</span><span class="o">();</span>
+
+	<span class="c1">//设置服务实例的状态
+</span><span class="c1"></span>	<span class="kt">void</span> <span class="nf">setStatus</span><span class="o">(</span><span class="n">R</span> <span class="n">registration</span><span class="o">,</span> <span class="n">String</span> <span class="n">status</span><span class="o">);</span>
+
+	<span class="c1">//获取服务实例的状态
+</span><span class="c1"></span>	<span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getStatus</span><span class="o">(</span><span class="n">R</span> <span class="n">registration</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div><p>其中在<code>EurekaServiceRegistry</code>的注册和下线的实现如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">register</span><span class="o">(</span><span class="n">EurekaRegistration</span> <span class="n">reg</span><span class="o">)</span> <span class="o">{</span>
+   <span class="c1">// 初始化EurekaRegistration中的EurekaClient，如果为null
+</span><span class="c1"></span>	<span class="n">maybeInitializeClient</span><span class="o">(</span><span class="n">reg</span><span class="o">);</span>
+
+    <span class="c1">// 修改服务的状态为UP
+</span><span class="c1"></span>	<span class="n">reg</span><span class="o">.</span><span class="na">getApplicationInfoManager</span><span class="o">()</span>
+			<span class="o">.</span><span class="na">setInstanceStatus</span><span class="o">(</span><span class="n">reg</span><span class="o">.</span><span class="na">getInstanceConfig</span><span class="o">().</span><span class="na">getInitialStatus</span><span class="o">());</span>
+    <span class="c1">// 设置健康检查
+</span><span class="c1"></span>	<span class="n">reg</span><span class="o">.</span><span class="na">getHealthCheckHandler</span><span class="o">().</span><span class="na">ifAvailable</span><span class="o">(</span><span class="n">healthCheckHandler</span> <span class="o">-&gt;</span>
+			<span class="n">reg</span><span class="o">.</span><span class="na">getEurekaClient</span><span class="o">().</span><span class="na">registerHealthCheck</span><span class="o">(</span><span class="n">healthCheckHandler</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">maybeInitializeClient</span><span class="o">(</span><span class="n">EurekaRegistration</span> <span class="n">reg</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">reg</span><span class="o">.</span><span class="na">getApplicationInfoManager</span><span class="o">().</span><span class="na">getInfo</span><span class="o">();</span>
+	<span class="n">reg</span><span class="o">.</span><span class="na">getEurekaClient</span><span class="o">().</span><span class="na">getApplications</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deregister</span><span class="o">(</span><span class="n">EurekaRegistration</span> <span class="n">reg</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">reg</span><span class="o">.</span><span class="na">getApplicationInfoManager</span><span class="o">().</span><span class="na">getInfo</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 设置服务的状态为DOWN
+</span><span class="c1"></span>		<span class="n">reg</span><span class="o">.</span><span class="na">getApplicationInfoManager</span><span class="o">().</span><span class="na">setInstanceStatus</span><span class="o">(</span><span class="n">InstanceInfo</span><span class="o">.</span><span class="na">InstanceStatus</span><span class="o">.</span><span class="na">DOWN</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>在上面的代码中可以发现，对服务的注册和下线仅仅是修改了服务当前的状态，其实在<code>EurekaClient</code>的接口实现类中有专门对<code>InstanceStatus</code>状态修改的监听，当服务实例的信息改变时就会触发不同的事件进行处理。</p>
+<p><code>EurekaAutoServiceRegistration</code>，顾名思义，就是服务实例的自动注册，由前面的类图可知，该类继承了<code>SmartLifecycle</code>的接口，这是<code>org.springframework.context</code>包中的相关类，说明<code>EurekaAutoServiceRegistration</code>类受到了Spring的生命周期的管理。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="o">...</span>
+<span class="nd">@EventListener</span><span class="o">(</span><span class="n">ServletWebServerInitializedEvent</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onApplicationEvent</span><span class="o">(</span><span class="n">ServletWebServerInitializedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kt">int</span> <span class="n">localPort</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getWebServer</span><span class="o">().</span><span class="na">getPort</span><span class="o">();</span>
+	<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">port</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Updating port to &#34;</span> <span class="o">+</span> <span class="n">localPort</span><span class="o">);</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">port</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">localPort</span><span class="o">);</span>
+		<span class="n">start</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nd">@EventListener</span><span class="o">(</span><span class="n">ContextClosedEvent</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onApplicationEvent</span><span class="o">(</span><span class="n">ContextClosedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">if</span><span class="o">(</span> <span class="n">event</span><span class="o">.</span><span class="na">getApplicationContext</span><span class="o">()</span> <span class="o">==</span> <span class="n">context</span> <span class="o">)</span> <span class="o">{</span>
+		<span class="n">stop</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>在上述代码中，该类监听了<code>ServletWebServerInitializedEvent</code>和<code>ContextClosedEvent</code>两个事件，即在应用初始化阶段调用<code>start()</code>和应用上下文关闭阶段调用<code>stop()</code>，其实就是在应用启动和关闭时分别进行服务的注册和下线的自动操作。</p>
+<p><code>EurekaAutoServiceRegistration</code>的服务注册和下线是直接调用了EurekaServiceRegistry中的方法。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
+	<span class="c1">// only set the port if the nonSecurePort or securePort is 0 and this.port != 0
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">port</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">!=</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">getNonSecurePort</span><span class="o">()</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">setNonSecurePort</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">port</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">getSecurePort</span><span class="o">()</span> <span class="o">==</span> <span class="n">0</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">isSecure</span><span class="o">())</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">setSecurePort</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">port</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="k">if</span> <span class="o">(!</span><span class="k">this</span><span class="o">.</span><span class="na">running</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">getNonSecurePort</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+
+       <span class="c1">// 注册服务
+</span><span class="c1"></span>		<span class="k">this</span><span class="o">.</span><span class="na">serviceRegistry</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">);</span>
+
+		<span class="k">this</span><span class="o">.</span><span class="na">context</span><span class="o">.</span><span class="na">publishEvent</span><span class="o">(</span>
+				<span class="k">new</span> <span class="n">InstanceRegisteredEvent</span><span class="o">&lt;&gt;(</span><span class="k">this</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">.</span><span class="na">getInstanceConfig</span><span class="o">()));</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">running</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="o">()</span> <span class="o">{</span>
+   <span class="c1">// 服务下线
+</span><span class="c1"></span>	<span class="k">this</span><span class="o">.</span><span class="na">serviceRegistry</span><span class="o">.</span><span class="na">deregister</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registration</span><span class="o">);</span>
+	<span class="k">this</span><span class="o">.</span><span class="na">running</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div><p><strong>EurekaDiscoveryClientConfiguration</strong></p>
+<p><code>EurekaDiscoveryClientConfiguration</code>只做了两件事，监听了<code>RefreshScopeRefreshedEvent</code>事件以及注入<code>EurekaHealthCheckHandler</code>接口的实现类。</p>
+<p><code>RefreshScopeRefreshedEvent</code>事件一般在spring管理的bean被刷新的时候被抛出，此时说明应用环境的配置和参数有可能发生变化，于是需要重新注册服务，防止注册中心的服务实例信息与本地信息不一致。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@EventListener</span><span class="o">(</span><span class="n">RefreshScopeRefreshedEvent</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onApplicationEvent</span><span class="o">(</span><span class="n">RefreshScopeRefreshedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">// 保证了一个刷新事件发生后client的重新注册
+</span><span class="c1"></span>	<span class="k">if</span><span class="o">(</span><span class="n">eurekaClient</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">eurekaClient</span><span class="o">.</span><span class="na">getApplications</span><span class="o">();</span>
+	<span class="o">}</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">autoRegistration</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 重新注册防止本地信息与注册表中的信息不一致
+</span><span class="c1"></span>		<span class="k">this</span><span class="o">.</span><span class="na">autoRegistration</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">autoRegistration</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka 客户端的核心配置类，包括注解 <code>@DiscoveryClient</code>，EurekaRegistration/EurekaServiceRegistry/eEurekaAutoServiceRegistration。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-02-20</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%9B%9B-eureka-%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%9B%BE/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （四） Eureka 核心架构图</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （六） Eureka Client 客户端核心代码</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eurekaclientautoconfiguration">
+												 EurekaClientAutoConfiguration
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#discoveryclient">
+												 DiscoveryClient
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eurekaregistrationeurekaserviceregistryeurekaautoserviceregistration">
+												 EurekaRegistration、EurekaServiceRegistry、EurekaAutoServiceRegistration
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

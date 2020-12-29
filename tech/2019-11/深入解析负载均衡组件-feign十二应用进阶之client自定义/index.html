@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Client自定义 Spring Cloud Feign的核心概念之一就是各类命名的Client。每个feign client都是由一组可以协作向远程服务发送请求的组件构成。每个client都能通过@FeignClient注解提供一个名称。Spring Cloud通过FeignClientsConfiguration来为每个命名的client新建">
+  
+  <meta property="og:title" content="深入解析负载均衡组件 Feign（十二）应用进阶之Client自定义" />
+<meta property="og:description" content="系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Client自定义 Spring Cloud Feign的核心概念之一就是各类命名的Client。每个feign client都是由一组可以协作向远程服务发送请求的组件构成。每个client都能通过@FeignClient注解提供一个名称。Spring Cloud通过FeignClientsConfiguration来为每个命名的client新建" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/" />
+<meta property="article:published_time" content="2019-11-04T10:01:15+08:00" />
+<meta property="article:modified_time" content="2019-11-04T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析负载均衡组件 Feign（十二）应用进阶之Client自定义 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Feign 解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Feign 解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析负载均衡组件 Feign（十二）应用进阶之Client自定义</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 4, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>4 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="client自定义">Client自定义</h3>
+<p><code>Spring Cloud Feign</code>的核心概念之一就是各类命名的<code>Client</code>。每个feign client都是由一组可以协作向远程服务发送请求的组件构成。每个client都能通过<code>@FeignClient</code>注解提供一个名称。<code>Spring Cloud</code>通过<code>FeignClientsConfiguration</code>来为每个命名的client新建一个<code>ApplicationContext</code>来存储组成该client的一套组件。这些组件包括<code>feign.Decoder</code>，<code>feign.Encoder</code>和<code>feign.Contract</code>。
+<code>Spring Cloud</code>通过让你在<code>@FeignClient</code>中给出自定义配置类来完全掌控feign client的配置。这些自定义配置类会优先于<code>FeignClientsConfiguration</code>生效。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@FeignClient</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;stores&#34;</span><span class="o">,</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">FooConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">StoreClient</span> <span class="o">{</span>
+    <span class="c1">//..
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p>在这种情况下，client会将已经存在于<code>FeignClientsConfiguration</code>的组件和<code>FooConfiguration</code>中的组件进行整合装配。
+<code>FooConfiguration</code>不需要使用<code>@Configuration</code>来标注。但是如果你使用了该注解，那么你需要将它交由<code>@ComponentScan</code>处理，以免该configuration被当做了feign的默认配置。
+<code>Spring Cloud Netflix</code>为feign提供了下列默认的bean。下列信息分别为<code>BeanType</code>beanName:<code>ClassName</code></p>
+<ul>
+<li>
+<p><code>Decoder</code>feignDecoder:<code>ResponseEntityDecoder</code></p>
+</li>
+<li>
+<p><code>Encoder</code>feignEncoder:<code>SpringEncoder</code></p>
+</li>
+<li>
+<p><code>Logger</code>feignLogger:<code>Slf4jLogger</code></p>
+</li>
+<li>
+<p><code>Contract</code>feignContract:<code>SpringMvcContract</code></p>
+</li>
+<li>
+<p><code>Feign.Builder</code>feignBuilder:<code>HystrixFeign.Builder</code></p>
+</li>
+<li>
+<p><code>Client</code>feignClient:如果使用了Ribbon那么就是<code>LoadBalancerFeignClient</code>,否则是默认的Client。</p>
+<p>OkhttpClient和ApacheHttpClient可以通过设置<code>feign.okhttp.enabled</code>和<code>feign.httpclient.enabled</code>为true来激活使用。你可以通过提供<code>ClosableHttpClient</code>Bean实例来使用Apache或者提供<code>OkHttpClient</code>实例来使用OkHttp。
+<code>Spring Cloud Netflix</code>并不为提供下列的默认Bean实例，但是它仍然会从application context中查询这个实例类型并使用它们创建client。</p>
+</li>
+<li>
+<p><code>Logger.Level</code></p>
+</li>
+<li>
+<p><code>Retryer</code></p>
+</li>
+<li>
+<p><code>ErrorDecoder</code></p>
+</li>
+<li>
+<p><code>Request.Options</code></p>
+</li>
+<li>
+<p><code>Collection&lt;RequestInterceptor&gt;</code></p>
+</li>
+<li>
+<p><code>SetterFactory</code></p>
+<p>创建一个上述类型的Bean实例并且将它放在<code>@FeignClient</code>的配置中类(比如说上边的<code>FooConfiguration</code>)，就可以替换上述的默认配置的实例。</p>
+</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FooConfiguration</span> <span class="o">{</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="n">Contract</span> <span class="nf">feignContract</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">feign</span><span class="o">.</span><span class="na">Contract</span><span class="o">.</span><span class="na">Default</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="n">BasicAuthRequestInterceptor</span> <span class="nf">basicAuthRequestInterceptor</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">BasicAuthRequestInterceptor</span><span class="o">(</span><span class="s">&#34;user&#34;</span><span class="o">,</span> <span class="s">&#34;password&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>上述的配置会使用<code>feign.Contract.Default</code>来替换<code>SpringMvcContract</code>，并且给<code>RequestInterceptor</code>集合中添加一个<code>RequestInterceptor</code>实例。<code>@FeignClient</code>也可以使用configuration properties来配置。</p>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">feign</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">client</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">config</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">feignName</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">connectTimeout</span><span class="p">:</span><span class="w"> </span><span class="m">5000</span><span class="w">
+</span><span class="w">        </span><span class="nt">readTimeout</span><span class="p">:</span><span class="w"> </span><span class="m">5000</span><span class="w">
+</span><span class="w">        </span><span class="nt">loggerLevel</span><span class="p">:</span><span class="w"> </span><span class="l">full</span><span class="w">
+</span><span class="w">        </span><span class="nt">errorDecoder</span><span class="p">:</span><span class="w"> </span><span class="l">com.example.SimpleErrorDecoder</span><span class="w">
+</span><span class="w">        </span><span class="nt">retryer</span><span class="p">:</span><span class="w"> </span><span class="l">com.example.SimpleRetryer</span><span class="w">
+</span><span class="w">        </span><span class="nt">requestInterceptors</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="l">com.example.FooRequestInterceptor</span><span class="w">
+</span><span class="w">          </span>- <span class="l">com.example.BarRequestInterceptor</span><span class="w">
+</span><span class="w">        </span><span class="nt">decode404</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">        </span><span class="nt">encoder</span><span class="p">:</span><span class="w"> </span><span class="l">com.example.SimpleEncoder</span><span class="w">
+</span><span class="w">        </span><span class="nt">decoder</span><span class="p">:</span><span class="w"> </span><span class="l">com.example.SimpleDecoder</span><span class="w">
+</span><span class="w">        </span><span class="nt">contract</span><span class="p">:</span><span class="w"> </span><span class="l">com.example.SimpleContract</span><span class="w">
+</span></code></pre></div><p>默认的configurations可以通过<code>@EnableFeignClients</code>的<code>defaultConfiguration</code>属性来进行配置。区别是这个配置会影响到所有的feign client。
+如果你想用configuration properties来配置所有的<code>@FeignClient</code>，你可以使用<code>default</code>属性来配置。</p>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">feign</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">client</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">config</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">connectTimeout</span><span class="p">:</span><span class="w"> </span><span class="m">5000</span><span class="w">
+</span><span class="w">        </span><span class="nt">readTimeout</span><span class="p">:</span><span class="w"> </span><span class="m">5000</span><span class="w">
+</span><span class="w">        </span><span class="nt">loggerLevel</span><span class="p">:</span><span class="w"> </span><span class="l">basic</span><span class="w">
+</span></code></pre></div><p>如果你既使用了<code>@Configuration</code>又使用configuration properties，那么configuration properties会生效。它会覆盖<code>@Configuration</code>的值。
+有些时候只通过上述这些途径来自定义Feign Client是不足够的，这种情况下你可以通过<code>Feign Builder API</code>来创建Clients。下面这个例子使用两个request interceptor来创建两个Feign Clients。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Import</span><span class="o">(</span><span class="n">FeignClientsConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nc">FooController</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="n">FooClient</span> <span class="n">fooClient</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="n">FooClient</span> <span class="n">adminClient</span><span class="o">;</span>
+
+    	<span class="nd">@Autowired</span>
+	<span class="kd">public</span> <span class="nf">FooController</span><span class="o">(</span>
+			<span class="n">Decoder</span> <span class="n">decoder</span><span class="o">,</span> <span class="n">Encoder</span> <span class="n">encoder</span><span class="o">,</span> <span class="n">Client</span> <span class="n">client</span><span class="o">,</span> <span class="n">Contract</span> <span class="n">contract</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">fooClient</span> <span class="o">=</span> <span class="n">Feign</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">client</span><span class="o">(</span><span class="n">client</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">encoder</span><span class="o">(</span><span class="n">encoder</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">decoder</span><span class="o">(</span><span class="n">decoder</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">contract</span><span class="o">(</span><span class="n">contract</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">requestInterceptor</span><span class="o">(</span><span class="k">new</span> <span class="n">BasicAuthRequestInterceptor</span><span class="o">(</span><span class="s">&#34;user&#34;</span><span class="o">,</span> <span class="s">&#34;user&#34;</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">target</span><span class="o">(</span><span class="n">FooClient</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&#34;http://PROD-SVC&#34;</span><span class="o">);</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">adminClient</span> <span class="o">=</span> <span class="n">Feign</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">client</span><span class="o">(</span><span class="n">client</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">encoder</span><span class="o">(</span><span class="n">encoder</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">decoder</span><span class="o">(</span><span class="n">decoder</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">contract</span><span class="o">(</span><span class="n">contract</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">requestInterceptor</span><span class="o">(</span><span class="k">new</span> <span class="n">BasicAuthRequestInterceptor</span><span class="o">(</span><span class="s">&#34;admin&#34;</span><span class="o">,</span> <span class="s">&#34;admin&#34;</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">target</span><span class="o">(</span><span class="n">FooClient</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&#34;http://PROD-SVC&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2019-11-04</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/feign" role="button">Feign </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Feign（十一）函数调用和网络请求</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Feign（完结）应用进阶之Decoder与Encoder的自定制化、日志记录与请求/响应压缩</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#client%e8%87%aa%e5%ae%9a%e4%b9%89">
+												 Client自定义
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

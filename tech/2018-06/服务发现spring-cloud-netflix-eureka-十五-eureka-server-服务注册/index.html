@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册 // AbstractInstanceRegistry public void register(InstanceInfo registrant, int leaseDuration, boolean isReplication) { try { // 获取读锁 read.lock(); // 这里的registry是 // ConcurrentHashMap&lt;String, Map&lt;String, Lease&lt;InstanceInfo&gt;&gt;&gt; registry // 根据appName对服务实例集群进行分类 Map&lt;String, Lease&lt;InstanceInfo&gt;&gt; gMap = registry.get(registrant.getAppName()); REGISTER.increment(isReplication); if (gMap == null) { final ConcurrentHashMap&lt;String, Lease&lt;InstanceInfo&gt;&gt; gNewMap = new ConcurrentHashMap&lt;String, Lease&lt;InstanceInfo&gt;&gt;(); // 这里有一个比较严谨操作的，防止在添加新的服务实例集群租约时把已有其他的线程 // 添加的集群租约覆盖掉， // 这与putIfAbsent的机制相关 // 如果存在该键值，直">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （十五） Eureka Server 服务注册" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册 // AbstractInstanceRegistry public void register(InstanceInfo registrant, int leaseDuration, boolean isReplication) { try { // 获取读锁 read.lock(); // 这里的registry是 // ConcurrentHashMap&lt;String, Map&lt;String, Lease&lt;InstanceInfo&gt;&gt;&gt; registry // 根据appName对服务实例集群进行分类 Map&lt;String, Lease&lt;InstanceInfo&gt;&gt; gMap = registry.get(registrant.getAppName()); REGISTER.increment(isReplication); if (gMap == null) { final ConcurrentHashMap&lt;String, Lease&lt;InstanceInfo&gt;&gt; gNewMap = new ConcurrentHashMap&lt;String, Lease&lt;InstanceInfo&gt;&gt;(); // 这里有一个比较严谨操作的，防止在添加新的服务实例集群租约时把已有其他的线程 // 添加的集群租约覆盖掉， // 这与putIfAbsent的机制相关 // 如果存在该键值，直" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%94-eureka-server-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/" />
+<meta property="article:published_time" content="2018-06-20T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-06-20T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （十五） Eureka Server 服务注册 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%94-eureka-server-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （十五） Eureka Server 服务注册</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jun 20, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>3 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="服务注册">服务注册</h3>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// AbstractInstanceRegistry
+</span><span class="c1"></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">register</span><span class="o">(</span><span class="n">InstanceInfo</span> <span class="n">registrant</span><span class="o">,</span> <span class="kt">int</span> <span class="n">leaseDuration</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">isReplication</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">try</span> <span class="o">{</span>
+	   <span class="c1">// 获取读锁
+</span><span class="c1"></span>		<span class="n">read</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+		<span class="c1">// 这里的registry是
+</span><span class="c1"></span>		<span class="c1">// ConcurrentHashMap&lt;String, Map&lt;String, Lease&lt;InstanceInfo&gt;&gt;&gt; registry
+</span><span class="c1"></span>		<span class="c1">// 根据appName对服务实例集群进行分类
+</span><span class="c1"></span>       <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Lease</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;&gt;</span> <span class="n">gMap</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getAppName</span><span class="o">());</span>
+       <span class="n">REGISTER</span><span class="o">.</span><span class="na">increment</span><span class="o">(</span><span class="n">isReplication</span><span class="o">);</span>
+       <span class="k">if</span> <span class="o">(</span><span class="n">gMap</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+       	<span class="kd">final</span> <span class="n">ConcurrentHashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Lease</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;&gt;</span> <span class="n">gNewMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConcurrentHashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Lease</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;&gt;();</span>
+       	<span class="c1">// 这里有一个比较严谨操作的，防止在添加新的服务实例集群租约时把已有其他的线程
+</span><span class="c1"></span>       	<span class="c1">// 添加的集群租约覆盖掉，
+</span><span class="c1"></span>       	<span class="c1">// 这与putIfAbsent的机制相关
+</span><span class="c1"></span>       	<span class="c1">// 如果存在该键值，直接返回已存在的值；否则添加该键值对，返回null
+</span><span class="c1"></span>          <span class="n">gMap</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="na">putIfAbsent</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getAppName</span><span class="o">(),</span> <span class="n">gNewMap</span><span class="o">);</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">gMap</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          	<span class="n">gMap</span> <span class="o">=</span> <span class="n">gNewMap</span><span class="o">;</span>
+          <span class="o">}</span>
+       <span class="o">}</span>
+		<span class="n">Lease</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="n">existingLease</span> <span class="o">=</span> <span class="n">gMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+		<span class="c1">// 根据instanceId获取实例的租约
+</span><span class="c1"></span>		<span class="c1">// 如果该实例的租约已经存在，那么使用的更新时间LastDirtyTimestamp最大的
+</span><span class="c1"></span>      	<span class="c1">// 服务实例的注册信息为有效
+</span><span class="c1"></span>		<span class="k">if</span> <span class="o">(</span><span class="n">existingLease</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">existingLease</span><span class="o">.</span><span class="na">getHolder</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">))</span> <span class="o">{</span>
+       	<span class="n">Long</span> <span class="n">existingLastDirtyTimestamp</span> <span class="o">=</span> <span class="n">existingLease</span><span class="o">.</span><span class="na">getHolder</span><span class="o">().</span><span class="na">getLastDirtyTimestamp</span><span class="o">();</span>
+          <span class="n">Long</span> <span class="n">registrationLastDirtyTimestamp</span> <span class="o">=</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getLastDirtyTimestamp</span><span class="o">();</span>
+          <span class="c1">// 比较最后更新时间戳的大小，取最大值的注册信息为有效
+</span><span class="c1"></span>         	<span class="k">if</span> <span class="o">(</span><span class="n">existingLastDirtyTimestamp</span> <span class="o">&gt;</span> <span class="n">registrationLastDirtyTimestamp</span><span class="o">)</span> <span class="o">{</span>
+              <span class="n">registrant</span> <span class="o">=</span> <span class="n">existingLease</span><span class="o">.</span><span class="na">getHolder</span><span class="o">();</span>
+           <span class="o">}</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+         	<span class="c1">// 如果租约不存在，这是一个新的注册实例
+</span><span class="c1"></span>			<span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+          	<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">expectedNumberOfRenewsPerMin</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+          	<span class="c1">// 自我保护机制
+</span><span class="c1"></span>					<span class="k">this</span><span class="o">.</span><span class="na">expectedNumberOfRenewsPerMin</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">expectedNumberOfRenewsPerMin</span> <span class="o">+</span> <span class="n">2</span><span class="o">;</span>
+					<span class="k">this</span><span class="o">.</span><span class="na">numberOfRenewsPerMinThreshold</span> <span class="o">=</span>
+					<span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">expectedNumberOfRenewsPerMin</span> <span class="o">*</span> <span class="n">serverConfig</span><span class="o">.</span><span class="na">getRenewalPercentThreshold</span><span class="o">());</span>
+              <span class="o">}</span>
+          <span class="o">}</span>
+                <span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;No previous lease information found; it is new registration&#34;</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="c1">// 创建新的租约
+</span><span class="c1"></span>       <span class="n">Lease</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="n">lease</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Lease</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;(</span><span class="n">registrant</span><span class="o">,</span> <span class="n">leaseDuration</span><span class="o">);</span>
+       <span class="k">if</span> <span class="o">(</span><span class="n">existingLease</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="c1">// 如果租约存在，继承租约的服务上线初始时间
+</span><span class="c1"></span>       	<span class="n">lease</span><span class="o">.</span><span class="na">setServiceUpTimestamp</span><span class="o">(</span><span class="n">existingLease</span><span class="o">.</span><span class="na">getServiceUpTimestamp</span><span class="o">());</span>
+       <span class="o">}</span>
+       <span class="c1">// 保存租约
+</span><span class="c1"></span>       <span class="n">gMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">lease</span><span class="o">);</span>
+       <span class="c1">// 添加最近注册队列
+</span><span class="c1"></span>       <span class="c1">// private final CircularQueue&lt;Pair&lt;Long, String&gt;&gt; recentRegisteredQueue;
+</span><span class="c1"></span>       <span class="c1">// 用来统计最近注册服务实例的数据
+</span><span class="c1"></span>       <span class="kd">synchronized</span> <span class="o">(</span><span class="n">recentRegisteredQueue</span><span class="o">)</span> <span class="o">{</span>
+       	<span class="n">recentRegisteredQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;(</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">(),</span>
+			<span class="n">registrant</span><span class="o">.</span><span class="na">getAppName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;(&#34;</span> <span class="o">+</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;)&#34;</span><span class="o">));</span>
+       <span class="o">}</span>
+       <span class="c1">// 添加到服务实例覆盖状态map中
+</span><span class="c1"></span>       <span class="c1">// 是覆盖状态的初始状态转移发生的地方
+</span><span class="c1"></span>       <span class="c1">// 这将用于peer之间的数据同步
+</span><span class="c1"></span>       <span class="c1">//  protected final ConcurrentMap&lt;String, InstanceStatus&gt; overriddenInstanceStatusMap
+</span><span class="c1"></span>       <span class="k">if</span> <span class="o">(!</span><span class="n">InstanceStatus</span><span class="o">.</span><span class="na">UNKNOWN</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getOverriddenStatus</span><span class="o">()))</span> <span class="o">{</span>
+       	<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;Found overridden status {} for instance {}. Checking to see if needs to be add to the &#34;</span>
+                                <span class="o">+</span> <span class="s">&#34;overrides&#34;</span><span class="o">,</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getOverriddenStatus</span><span class="o">(),</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+          <span class="k">if</span> <span class="o">(!</span><span class="n">overriddenInstanceStatusMap</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">()))</span> <span class="o">{</span>
+				<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Not found overridden id {} and hence adding it&#34;</span><span class="o">,</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+				<span class="n">overriddenInstanceStatusMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getOverriddenStatus</span><span class="o">());</span>
+          <span class="o">}</span>
+		<span class="o">}</span>
+       <span class="n">InstanceStatus</span> <span class="n">overriddenStatusFromMap</span> <span class="o">=</span> <span class="n">overriddenInstanceStatusMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">overriddenStatusFromMap</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">registrant</span><span class="o">.</span><span class="na">setOverriddenStatus</span><span class="o">(</span><span class="n">overriddenStatusFromMap</span><span class="o">);</span>
+       <span class="o">}</span>
+
+       <span class="c1">// Set the status based on the overridden status rules
+</span><span class="c1"></span>       <span class="c1">// 根据覆盖状态规则得到服务实例的最终状态，并设置
+</span><span class="c1"></span>       <span class="n">InstanceStatus</span> <span class="n">overriddenInstanceStatus</span> <span class="o">=</span> <span class="n">getOverriddenInstanceStatus</span><span class="o">(</span><span class="n">registrant</span><span class="o">,</span> <span class="n">existingLease</span><span class="o">,</span> <span class="n">isReplication</span><span class="o">);</span>
+       <span class="n">registrant</span><span class="o">.</span><span class="na">setStatusWithoutDirty</span><span class="o">(</span><span class="n">overriddenInstanceStatus</span><span class="o">);</span>
+
+		<span class="c1">// 如果服务实例状态为UP，设置租约的服务上线时间，只有第一次设置有效
+</span><span class="c1"></span>		<span class="k">if</span> <span class="o">(</span><span class="n">InstanceStatus</span><span class="o">.</span><span class="na">UP</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()))</span> <span class="o">{</span>
+			<span class="n">lease</span><span class="o">.</span><span class="na">serviceUp</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="n">registrant</span><span class="o">.</span><span class="na">setActionType</span><span class="o">(</span><span class="n">ActionType</span><span class="o">.</span><span class="na">ADDED</span><span class="o">);</span>
+		<span class="c1">// 添加最近租约变更记录队列，标识ActionType为ADDED
+</span><span class="c1"></span>		<span class="c1">// 这将用与Eureka Client增量式获取注册表getDelta
+</span><span class="c1"></span>		<span class="c1">// private ConcurrentLinkedQueue&lt;RecentlyChangedItem&gt; recentlyChangedQueue
+</span><span class="c1"></span>		<span class="n">recentlyChangedQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RecentlyChangedItem</span><span class="o">(</span><span class="n">lease</span><span class="o">));</span>
+		<span class="c1">// 设置服务实例信息更新时间
+</span><span class="c1"></span>		<span class="n">registrant</span><span class="o">.</span><span class="na">setLastUpdatedTimestamp</span><span class="o">();</span>
+		<span class="c1">// 设置response缓存过期
+</span><span class="c1"></span>		<span class="c1">// 这将用于Eureka Client全量获取注册表getFull
+</span><span class="c1"></span>		<span class="n">invalidateCache</span><span class="o">(</span><span class="n">registrant</span><span class="o">.</span><span class="na">getAppName</span><span class="o">(),</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getVIPAddress</span><span class="o">(),</span> <span class="n">registrant</span><span class="o">.</span><span class="na">getSecureVipAddress</span><span class="o">());</span>
+	<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+		<span class="c1">// 释放锁
+</span><span class="c1"></span>		<span class="n">read</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>在<code>register()</code>方法中，首先是检测对应的<code>InstanceInfo</code>的租约<code>Lease</code>，如果不存在就创建新的租约，否则比较两个租约中的<code>InstanceInfo</code>的最后更新时间<code>lastDirtyTimestamp</code>，保留时间戳大的服务实例信息，之后一系列的缓存操作以及根据覆盖状态的规则<code>overridden status rules</code>设置服务实例的状态，缓存操作包括用于Eureka Server间同步的<code>overriddenInstanceStatusMap</code>，Eureka Client增量式获取注册表信息的<code>recentlyChangedQueue</code>和全量获取注册表信息的<code>responseCache</code>。</p>
+<p>在<code>register()</code>方法中有诸多的同步操作，为了防止数据的被错误的覆盖，有兴趣的读者可以细细研究一下，在此不做展开讲述。</p>
+<h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka Server 服务注册，这部分是每个服务启动时都要注意的，也需要处理幂等性。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-06-20</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十四）服务端核心代码</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AD-eureka-server%E6%9C%8D%E5%8A%A1%E7%BB%AD%E7%BA%A6/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十六） Eureka Server服务续约</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%9c%8d%e5%8a%a1%e6%b3%a8%e5%86%8c">
+												 服务注册
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

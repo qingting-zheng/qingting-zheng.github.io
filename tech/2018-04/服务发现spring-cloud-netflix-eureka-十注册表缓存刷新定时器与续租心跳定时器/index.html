@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 注册表缓存刷新定时器与续租(心跳)定时器 很明显，服务注册应该是一个持续的过程，所以DiscoveryClient中通过一个定时任务完成，不间断地与Eureka Server进行通信，维持自己在注册表上的租约。 在initScheduledTasks()方法中初始化了两个定时器任务，一个用于刷新本地注册表的信息，一个用于注册">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （十）注册表缓存刷新定时器与续租(心跳)定时器" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 注册表缓存刷新定时器与续租(心跳)定时器 很明显，服务注册应该是一个持续的过程，所以DiscoveryClient中通过一个定时任务完成，不间断地与Eureka Server进行通信，维持自己在注册表上的租约。 在initScheduledTasks()方法中初始化了两个定时器任务，一个用于刷新本地注册表的信息，一个用于注册" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%BC%93%E5%AD%98%E5%88%B7%E6%96%B0%E5%AE%9A%E6%97%B6%E5%99%A8%E4%B8%8E%E7%BB%AD%E7%A7%9F%E5%BF%83%E8%B7%B3%E5%AE%9A%E6%97%B6%E5%99%A8/" />
+<meta property="article:published_time" content="2018-04-11T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-04-11T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （十）注册表缓存刷新定时器与续租(心跳)定时器 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%BC%93%E5%AD%98%E5%88%B7%E6%96%B0%E5%AE%9A%E6%97%B6%E5%99%A8%E4%B8%8E%E7%BB%AD%E7%A7%9F%E5%BF%83%E8%B7%B3%E5%AE%9A%E6%97%B6%E5%99%A8/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （十）注册表缓存刷新定时器与续租(心跳)定时器</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Apr 11, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>5 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="注册表缓存刷新定时器与续租心跳定时器">注册表缓存刷新定时器与续租(心跳)定时器</h3>
+<p>很明显，服务注册应该是一个持续的过程，所以<code>DiscoveryClient</code>中通过一个定时任务完成，不间断地与Eureka Server进行通信，维持自己在注册表上的租约。</p>
+<p>在<code>initScheduledTasks()</code>方法中初始化了两个定时器任务，一个用于刷新本地注册表的信息，一个用于注册服务实例以及维持与Eureka Server之间的心跳。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">initScheduledTasks</span><span class="o">()</span> <span class="o">{</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">clientConfig</span><span class="o">.</span><span class="na">shouldFetchRegistry</span><span class="o">())</span> <span class="o">{</span>
+		<span class="c1">// 注册表缓存刷新定时器
+</span><span class="c1"></span>
+		<span class="c1">// 获取配置文件中刷新间隔，默认为30s，可以通过eureka.client.registry-fetch-interval-seconds
+</span><span class="c1"></span>		<span class="c1">// 进行设置
+</span><span class="c1"></span>		<span class="kt">int</span> <span class="n">registryFetchIntervalSeconds</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getRegistryFetchIntervalSeconds</span><span class="o">();</span>
+		<span class="kt">int</span> <span class="n">expBackOffBound</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getCacheRefreshExecutorExponentialBackOffBound</span><span class="o">();</span>
+		<span class="n">scheduler</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span>
+			<span class="k">new</span> <span class="n">TimedSupervisorTask</span><span class="o">(</span>
+				<span class="s">&#34;cacheRefresh&#34;</span><span class="o">,</span>
+ 				<span class="n">scheduler</span><span class="o">,</span>
+				<span class="n">cacheRefreshExecutor</span><span class="o">,</span>
+				<span class="n">registryFetchIntervalSeconds</span><span class="o">,</span>
+				<span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">,</span>
+				<span class="n">expBackOffBound</span><span class="o">,</span>
+				<span class="k">new</span> <span class="n">CacheRefreshThread</span><span class="o">()</span>
+			<span class="o">),</span>
+			<span class="n">registryFetchIntervalSeconds</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+  	<span class="o">}</span>
+
+	<span class="k">if</span> <span class="o">(</span><span class="n">clientConfig</span><span class="o">.</span><span class="na">shouldRegisterWithEureka</span><span class="o">())</span> <span class="o">{</span>
+		<span class="c1">// 服务注册和续约定时器
+</span><span class="c1"></span>		<span class="kt">int</span> <span class="n">renewalIntervalInSecs</span> <span class="o">=</span> <span class="n">instanceInfo</span><span class="o">.</span><span class="na">getLeaseInfo</span><span class="o">().</span><span class="na">getRenewalIntervalInSecs</span><span class="o">();</span>
+       <span class="kt">int</span> <span class="n">expBackOffBound</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getHeartbeatExecutorExponentialBackOffBound</span><span class="o">();</span>
+       <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Starting heartbeat executor: &#34;</span> <span class="o">+</span> <span class="s">&#34;renew interval is: &#34;</span> <span class="o">+</span> <span class="n">renewalIntervalInSecs</span><span class="o">);</span>
+
+       <span class="c1">//  心跳定时器
+</span><span class="c1"></span>		<span class="n">scheduler</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span>
+			<span class="k">new</span> <span class="n">TimedSupervisorTask</span><span class="o">(</span>
+				<span class="s">&#34;heartbeat&#34;</span><span class="o">,</span>
+				<span class="n">scheduler</span><span class="o">,</span>
+				<span class="n">heartbeatExecutor</span><span class="o">,</span>
+				<span class="n">renewalIntervalInSecs</span><span class="o">,</span>
+				<span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">,</span>
+				<span class="n">expBackOffBound</span><span class="o">,</span>
+				<span class="k">new</span> <span class="n">HeartbeatThread</span><span class="o">()</span>
+			<span class="o">),</span>
+			<span class="n">renewalIntervalInSecs</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+
+		<span class="c1">// InstanceInfo 复制器
+</span><span class="c1"></span>      	<span class="n">instanceInfoReplicator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InstanceInfoReplicator</span><span class="o">(</span>
+			<span class="k">this</span><span class="o">,</span>
+			<span class="n">instanceInfo</span><span class="o">,</span>
+			<span class="n">clientConfig</span><span class="o">.</span><span class="na">getInstanceInfoReplicationIntervalSeconds</span><span class="o">(),</span>
+ 			<span class="n">2</span><span class="o">);</span> <span class="c1">// burstSize
+</span><span class="c1"></span>
+		<span class="n">statusChangeListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplicationInfoManager</span><span class="o">.</span><span class="na">StatusChangeListener</span><span class="o">()</span> <span class="o">{</span>
+       	<span class="nd">@Override</span>
+			<span class="kd">public</span> <span class="n">String</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+				<span class="k">return</span> <span class="s">&#34;statusChangeListener&#34;</span><span class="o">;</span>
+          <span class="o">}</span>
+
+			<span class="nd">@Override</span>
+			<span class="kd">public</span> <span class="kt">void</span> <span class="nf">notify</span><span class="o">(</span><span class="n">StatusChangeEvent</span> <span class="n">statusChangeEvent</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">InstanceStatus</span><span class="o">.</span><span class="na">DOWN</span> <span class="o">==</span> <span class="n">statusChangeEvent</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">||</span> <span class="n">InstanceStatus</span><span class="o">.</span><span class="na">DOWN</span> <span class="o">==</span> <span class="n">statusChangeEvent</span><span class="o">.</span><span class="na">getPreviousStatus</span><span class="o">())</span> <span class="o">{</span>
+					<span class="c1">// log at warn level if DOWN was involved
+</span><span class="c1"></span>					<span class="c1">// 日志
+</span><span class="c1"></span>             	<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+					<span class="c1">// 日志
+</span><span class="c1"></span>             <span class="o">}</span>
+					<span class="n">instanceInfoReplicator</span><span class="o">.</span><span class="na">onDemandUpdate</span><span class="o">();</span>
+				<span class="o">}</span>
+          <span class="o">};</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">clientConfig</span><span class="o">.</span><span class="na">shouldOnDemandUpdateStatusChange</span><span class="o">())</span> <span class="o">{</span>
+       	<span class="n">applicationInfoManager</span><span class="o">.</span><span class="na">registerStatusChangeListener</span><span class="o">(</span><span class="n">statusChangeListener</span><span class="o">);</span>
+		<span class="o">}</span>
+			<span class="n">instanceInfoReplicator</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">clientConfig</span><span class="o">.</span><span class="na">getInitialInstanceInfoReplicationIntervalSeconds</span><span class="o">());</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+		<span class="c1">// 日志
+</span><span class="c1"></span>   	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>看完这段代码是不是就会产生一种错觉，因为因为无论是注册表缓存刷新定时器还是心跳定时器的任务提交的方式是<code>ScheduledExecutorService.schedule()</code>，于是这只是一次的延迟执行任务，并不是想象中的按固定的频率进行，所以这必定在<code>TimedSupervisorTask</code>类中存在一个定时循环的操作，由它来执行一个定时任务。</p>
+<p>进入到<code>TimedSupervisorTask</code>中，会发现<code>Eureka</code>是通过它来管理定时任务执行，它继承了<code>TimerTask</code>，能够执行定时任务。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TimedSupervisorTask</span> <span class="kd">extends</span> <span class="n">TimerTask</span> <span class="o">{</span>
+    <span class="c1">// 定时任务服务
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">ScheduledExecutorService</span> <span class="n">scheduler</span><span class="o">;</span>
+    <span class="c1">// 执行任务的线程池
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">ThreadPoolExecutor</span> <span class="n">executor</span><span class="o">;</span>
+    <span class="c1">// 任务执行超时事件
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">timeoutMillis</span><span class="o">;</span>
+    <span class="c1">// 待执行的任务
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Runnable</span> <span class="n">task</span><span class="o">;</span>
+    <span class="c1">// 任务执行的频率
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicLong</span> <span class="n">delay</span><span class="o">;</span>
+    <span class="c1">// 最大任务执行频率，任务执行超时下使用
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">maxDelay</span><span class="o">;</span>
+
+    <span class="o">....</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Future</span> <span class="n">future</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// 执行任务
+</span><span class="c1"></span>            <span class="n">future</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="n">task</span><span class="o">);</span>
+            <span class="n">threadPoolLevelGauge</span><span class="o">.</span><span class="na">set</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span> <span class="n">executor</span><span class="o">.</span><span class="na">getActiveCount</span><span class="o">());</span>
+            <span class="c1">// 等待任务执行结果
+</span><span class="c1"></span>            <span class="n">future</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">timeoutMillis</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>   
+            <span class="c1">// 执行完成，设置下次任务执行频率(时间间隔)
+</span><span class="c1"></span>			  <span class="n">delay</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">timeoutMillis</span><span class="o">);</span>
+            <span class="n">threadPoolLevelGauge</span><span class="o">.</span><span class="na">set</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span> <span class="n">executor</span><span class="o">.</span><span class="na">getActiveCount</span><span class="o">());</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">TimeoutException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 执行任务超时
+</span><span class="c1"></span>            <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;task supervisor timed out&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="n">timeoutCounter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+            <span class="c1">// 设置下次任务执行频率(时间间隔)
+</span><span class="c1"></span>            <span class="kt">long</span> <span class="n">currentDelay</span> <span class="o">=</span> <span class="n">delay</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+            <span class="kt">long</span> <span class="n">newDelay</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">maxDelay</span><span class="o">,</span> <span class="n">currentDelay</span> <span class="o">*</span> <span class="n">2</span><span class="o">);</span>
+            <span class="n">delay</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">currentDelay</span><span class="o">,</span> <span class="n">newDelay</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">RejectedExecutionException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 执行任务被拒绝
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">executor</span><span class="o">.</span><span class="na">isShutdown</span><span class="o">()</span> <span class="o">||</span> <span class="n">scheduler</span><span class="o">.</span><span class="na">isShutdown</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;task supervisor shutting down, reject the task&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;task supervisor rejected the task&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">rejectedCounter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 其他的异常
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">executor</span><span class="o">.</span><span class="na">isShutdown</span><span class="o">()</span> <span class="o">||</span> <span class="n">scheduler</span><span class="o">.</span><span class="na">isShutdown</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;task supervisor shutting down, can&#39;t accept the task&#34;</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;task supervisor threw an exception&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="n">throwableCounter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="c1">// 取消未结束的任务
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">future</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">future</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="c1">// 如果定时任务服务未关闭，定义下一次任务
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(!</span><span class="n">scheduler</span><span class="o">.</span><span class="na">isShutdown</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">scheduler</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">delay</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>在上面的代码中存在以下的任务调度过程：</p>
+<ul>
+<li><code>scheduler</code>初始化延迟执行<code>TimedSupervisorTask</code>；</li>
+<li><code>TimedSupervisorTask</code>将<code>task</code>提交<code>executor</code>中执行，<code>task</code>和<code>executor</code>在初始化<code>TimedSupervisorTask</code>时传入：
+<ul>
+<li>若<code>task</code>正常执行，<code>TimedSupervisorTask</code>将自己提交到<code>scheduler</code>延迟<code>delay</code>进行；</li>
+<li>若<code>task</code>执行超时，计算新的<code>delay</code>时间(不超过<code>maxDelay</code>)，<code>TimedSupervisorTask</code>将自己提交到<code>scheduler</code>延迟<code>delay</code>进行；</li>
+</ul>
+</li>
+</ul>
+<p>流程图如下</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/DFA1.png" alt=""></p>
+<p>Eureka就是通过这种不断循环提交任务的方式，完成了定时任务的要求。</p>
+<p>现在再次回到<code>DiscoveryClient</code>的<code>initScheduledTasks</code>，<code>CacheRefreshThread</code>和<code>HeartbeatThread</code>这两个线程任务，是提交到<code>TimedSupervisorTask</code>中执行的定时子任务。</p>
+<p><code>CacheRefreshThread</code>继承了<code>Runnable</code>接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">CacheRefreshThread</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+		<span class="n">refreshRegistry</span><span class="o">();</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">
+<span class="kt">void</span> <span class="nf">refreshRegistry</span><span class="o">(){</span>
+
+   <span class="o">...</span><span class="c1">//判断远程Region是否改变，决定进行全量拉取还是增量式拉取
+</span><span class="c1"></span>
+	<span class="kt">boolean</span> <span class="n">success</span> <span class="o">=</span> <span class="n">fetchRegistry</span><span class="o">(</span><span class="n">remoteRegionsModified</span><span class="o">);</span>
+
+   <span class="o">...</span><span class="c1">//打印更新注册表缓存后的变化
+</span><span class="c1"></span>
+<span class="o">}</span>
+</code></pre></div><p><code>refreshRegistry()</code>方法中，我们主要到更新本地注册表信息的缓存的方法调用的是<code>fetchRegistry()</code>，在此不重复讲述</p>
+<p>接着是<code>HeartbeatThread</code>，同样也是一个<code>Runnable</code>的实现，该任务是为了在一定的间隔内更新在Eureka Server上的租约</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">class</span> <span class="nc">HeartbeatThread</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">renew</span><span class="o">())</span> <span class="o">{</span>
+			<span class="n">lastSuccessfulHeartbeatTimestamp</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>主要的逻辑代码为<code>renew()</code>方法中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">boolean</span> <span class="nf">renew</span><span class="o">()</span> <span class="o">{</span>
+	<span class="n">EurekaHttpResponse</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="n">httpResponse</span><span class="o">;</span>
+	<span class="k">try</span> <span class="o">{</span>
+	   <span class="c1">// 调用HTTP请求到发送心跳到Eureka Server中维持租约
+</span><span class="c1"></span>		<span class="n">httpResponse</span> <span class="o">=</span> <span class="n">eurekaTransport</span><span class="o">.</span><span class="na">registrationClient</span><span class="o">.</span><span class="na">sendHeartBeat</span><span class="o">(</span><span class="n">instanceInfo</span><span class="o">.</span><span class="na">getAppName</span><span class="o">(),</span> <span class="n">instanceInfo</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">instanceInfo</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+		<span class="c1">// Eureka Server中不存在该应用实例，
+</span><span class="c1"></span>		<span class="k">if</span> <span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()</span> <span class="o">==</span> <span class="n">404</span><span class="o">)</span> <span class="o">{</span>
+       	<span class="n">REREGISTER_COUNTER</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+          <span class="c1">// 重新注册
+</span><span class="c1"></span>          <span class="k">return</span> <span class="n">register</span><span class="o">();</span>
+       <span class="o">}</span>
+       <span class="c1">// 续约成功
+</span><span class="c1"></span>       <span class="k">return</span> <span class="n">httpResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()</span> <span class="o">==</span> <span class="n">200</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+       <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>通过跟踪到<code>AbstractJerseyEurekaHttpClient</code>的<code>sendHeartBeat()</code>方法中，可以发现了服务续租的调用的接口以及传递的参数。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/HeartBeat.png" alt=""></p>
+<p>续租的接口为<code>apps/${APP_NAME}/${INSTANCE_INFO_ID}</code>，HTTP方法为put，参数分别是<code>status</code>当前服务的状态，<code>lastDirtyTimestamp</code>上次数据变化时间(与Eureka Server中更新注册表中的数据相关)，以及<code>overriddenStatus</code>。</p>
+<p>Eureka Server会根据续租提交的appName与instanceInfoId来更新服务实例的租约，当注册表中不存在该服务实例时，将返回404，发送续约请求的client在接收到404状态后将会重新发起注册。</p>
+<p><code>register()</code>注册的方法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">boolean</span> <span class="nf">register</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+	<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">PREFIX</span> <span class="o">+</span> <span class="n">appPathIdentifier</span> <span class="o">+</span> <span class="s">&#34;: registering service...&#34;</span><span class="o">);</span>
+	<span class="n">EurekaHttpResponse</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">httpResponse</span><span class="o">;</span>
+	<span class="k">try</span> <span class="o">{</span>
+		<span class="n">httpResponse</span> <span class="o">=</span> <span class="n">eurekaTransport</span><span class="o">.</span><span class="na">registrationClient</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">instanceInfo</span><span class="o">);</span>
+	<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">throw</span> <span class="n">e</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="o">...</span>
+	<span class="c1">// 注册成功
+</span><span class="c1"></span>	<span class="k">return</span> <span class="n">httpResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()</span> <span class="o">==</span> <span class="n">204</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>通过跟踪到<code>AbstractJerseyEurekaHttpClient</code>的<code>register()</code>方法中，我们同样发现了服务注册的调用的接口以及传递的参数：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/register.png" alt=""></p>
+<p>注册的接口为<code>aaps/${APP_NAME}</code>，post的body为<code>instanceInfo</code>，如果服务器返回204的状态，则表明注册成功。</p>
+<h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka 注册表缓存刷新定时器与续租(心跳)定时器，注册表缓存需要经常刷新定时器，并续租保持心跳。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-04-11</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>慢学Docker(3) Docker Hub速度蜗牛爬怎么办?</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%80%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%8C%89%E9%9C%80%E6%B3%A8%E5%86%8C/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十一）服务注册与服务按需注册</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%b3%a8%e5%86%8c%e8%a1%a8%e7%bc%93%e5%ad%98%e5%88%b7%e6%96%b0%e5%ae%9a%e6%97%b6%e5%99%a8%e4%b8%8e%e7%bb%ad%e7%a7%9f%e5%bf%83%e8%b7%b3%e5%ae%9a%e6%97%b6%e5%99%a8">
+												 注册表缓存刷新定时器与续租(心跳)定时器
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server也是一个Eureka Client，但在此处我们更关心Eureka Server内相关配置，该部分配置主要位于EurekaServerConfigBean，但是Eureka Server中作为一个可开箱即用服务注册中心，一般不建议修改默认的Server配置(Eureka Server中有部分根据ServerCon">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （二十四）应用进阶之服务端配置" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server也是一个Eureka Client，但在此处我们更关心Eureka Server内相关配置，该部分配置主要位于EurekaServerConfigBean，但是Eureka Server中作为一个可开箱即用服务注册中心，一般不建议修改默认的Server配置(Eureka Server中有部分根据ServerCon" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E5%9B%9B%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE/" />
+<meta property="article:published_time" content="2018-11-06T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-11-06T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （二十四）应用进阶之服务端配置 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E5%9B%9B%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （二十四）应用进阶之服务端配置</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 6, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>6 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<p>Eureka Server也是一个Eureka Client，但在此处我们更关心Eureka Server内相关配置，该部分配置主要位于<code>EurekaServerConfigBean</code>，但是Eureka Server中作为一个可开箱即用服务注册中心，一般不建议修改默认的Server配置(Eureka Server中有部分根据ServerConfig中的属性进行硬编码的代码，源码中有过介绍，像续租(心跳)频率默认为30s)，有兴趣的读者建议直接阅读<code>com.netflix.eureka.EurekaServerConfig</code>中的Eureka Server配置文件接口，这里有对Server相关属性的详细介绍</p>
+<h3 id="eureka-instance和client的元数据">Eureka Instance和Client的元数据</h3>
+<p>在<code>EurekaInstanceConfigBean</code>中，相当大一部分的是关于Eureka Client服务实例的信息，这部分信息被称为元数据，是用来描述自身服务实例的对象，Eureka中的标准元数据有主机名、IP地址、端口号、状态页url和健康检查url等用于服务注册与发现的重要信息，也有可以自定义的元数据，这部分额外的数据可以通过key-value的形式放在<code>eureka.instance.metadataMap</code>，如下面的例子</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">eureka</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">instance</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">metadataMap</span><span class="p">:</span><span class="w">
+</span><span class="w">			    </span><span class="l">metadata-map</span><span class="w">
+</span><span class="w">      				</span><span class="nt">mymetaData</span><span class="p">:</span><span class="w"> </span><span class="l">mydata</span><span class="w">
+</span></code></pre></div><p>这里定义了一个key为mymetaData，value为mydata的自定义元数据，<code>metadata-map</code>在<code>EurekaInstanceConfigBean</code>会被配置为以下的属性：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">metadataMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+</code></pre></div><p>这些自定义的元数据可以按照自身业务需要或者根据其他的特殊需要进行定制</p>
+<h3 id="设置eureka的实例id">设置Eureka的实例ID</h3>
+<p>服务实例Id，InstanceId是用于唯一标记Eureka服务的，主要用于区分同一服务集群的不同实例。一般来讲，一个原生态的Eureka服务实例默认注册的InstanceId就是它的主机名(即一个主机只有一个服务)，这样就会引发一个问题，就是一台主机不能启动多个属于同一服务的服务实例。为了解决这种情况，spring-cloud-eureka提供了一个合理的实现</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nl">
+</span><span class="nl">eureka:</span>
+  <span class="n">instance</span><span class="o">:</span>
+    <span class="n">instanceId</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">spring</span><span class="o">.</span><span class="na">application</span><span class="o">.</span><span class="na">name</span><span class="o">}:</span><span class="n">$</span><span class="o">{</span><span class="n">vcap</span><span class="o">.</span><span class="na">application</span><span class="o">.</span><span class="na">instance_id</span><span class="o">:</span><span class="n">$</span><span class="o">{</span><span class="n">spring</span><span class="o">.</span><span class="na">application</span><span class="o">.</span><span class="na">instance_id</span><span class="o">:</span><span class="n">$</span><span class="o">{</span><span class="n">random</span><span class="o">.</span><span class="na">value</span><span class="o">}}}</span>
+
+</code></pre></div><p>通过设置<code>random.value</code>可以使得每一个服务实例的InstanceId独一无二，从而可以唯一标记它自身</p>
+<p>在本地启动时，服务集群的不同实例常常因为端口相同而无法多个启动，这时候可以设置</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">server</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></code></pre></div><p>通过设置<code>server.port</code>的属性值为<code>${random.int}</code>获取零，可以让spring-boot以随机端口的方式启动，那么通过上述的两个配置，可以使一个服务在本地可以多实例启动</p>
+<h3 id="状态页和健康检查页端口设置">状态页和健康检查页端口设置</h3>
+<p>Eureka 服务实例的状态页和健康检查页默认url是<code>/actuator/info</code>和<code>/actuator/health</code>(Finchle版本中，spring-boot版本为2.0.0.RELEASE)，通常是使用<code>spring-boot-actuator</code>的中相关的endpoint。一般情况下这些端点的配置都需要修改，但是当spring-boot没有使用默认的应用上下文路径(context path)或者主分发器(Dispatch)路径(path)，例如设置成：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">server</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">serlvet</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">context-path</span><span class="p">:</span><span class="w"> </span><span class="l">/path</span><span class="w">
+</span><span class="w">		</span><span class="c"># path: /path</span><span class="w">
+</span></code></pre></div><p>或者：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">server</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">serlvet</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/path</span><span class="w">
+</span></code></pre></div><p>那么就会影响Eureka Server无法通过<code>/actuator/health</code>对Eureka Client进行健康检查，以及无法通过<code>/actuator/info</code>访问Eureka Client的信息接口</p>
+<p>对此我们需要对这些endpoint进行更改</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">server</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">servlet-path</span><span class="p">:</span><span class="w"> </span><span class="l">/path</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nt">eureka</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">instance</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">statusPageUrlPath</span><span class="p">:</span><span class="w"> </span><span class="l">${server.servlet-path}/actuator/info</span><span class="w">
+</span><span class="w">    </span><span class="nt">healthCheckUrlPath</span><span class="p">:</span><span class="w"> </span><span class="l">${server.servlet-path}/actuator/health</span><span class="w">
+</span><span class="w">
+</span></code></pre></div><p>同样可以通过绝对路径的方式进行更改</p>
+<h3 id="region与zone">Region与Zone</h3>
+<p>在快速入门，我们介绍了在AWS中的<code>Region</code>区域以及<code>Availability Zone</code>可用性的概念</p>
+<p>一般来说一个Eureka Client只属于一个Region，一个Region下有多个<code>Availability Zone</code>，最后是每个<code>Availability Zone</code>下可能有多个Eureka Server(一个Eureka服务属于与多个<code>Zone</code>)</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">eureka</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">client</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l">us-east-1</span><span class="w">
+</span><span class="w">	</span><span class="nt">availability-zones</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">us-east-1</span><span class="p">:</span><span class="w"> </span><span class="l">us-east-zone-1, us-east-zone-2</span><span class="w">
+</span><span class="w">		</span><span class="nt">us-west-2</span><span class="p">:</span><span class="w"> </span><span class="l">us-west-zone-1, us-west-zone-2</span><span class="w">
+</span><span class="w">	</span><span class="nt">service-url</span><span class="p">:</span><span class="w">
+</span><span class="w">      	</span><span class="nt">us-east-zone-1</span><span class="p">:</span><span class="w"> </span><span class="l">http://xxx1,http://xxx2</span><span class="w">
+</span><span class="w">     	</span><span class="nt">us-east-zone-2</span><span class="p">:</span><span class="w"> </span><span class="l">http://xxx1,http://xxx2</span><span class="w">
+</span><span class="w">     	</span><span class="nt">us-west-zone-1</span><span class="p">:</span><span class="w"> </span><span class="l">http://xxx1,http://xxx2</span><span class="w">
+</span><span class="w">     	</span><span class="nt">us-west-zone-2</span><span class="p">:</span><span class="w"> </span><span class="l">http://xxx1,http://xxx2</span><span class="w">
+</span><span class="w">
+</span></code></pre></div><p>以上是一份比较完整的关于<code>Region</code>与<code>Zone</code>配置
+对此我们可以查看一下对于这部份，Eureka Client如何对<code>service-url</code>进行解析</p>
+<p>进入到<code>com.netflix.discovery.endpoint.EndpointUtils</code>方法中</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span> <span class="nf">getServiceUrlsMapFromConfig</span><span class="o">(</span><span class="n">EurekaClientConfig</span> <span class="n">clientConfig</span><span class="o">,</span> <span class="n">String</span> <span class="n">instanceZone</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">preferSameZone</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span> <span class="n">orderedUrls</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
+   <span class="c1">// 获取服务实例所属的region
+</span><span class="c1"></span>	<span class="n">String</span> <span class="n">region</span> <span class="o">=</span> <span class="n">getRegion</span><span class="o">(</span><span class="n">clientConfig</span><span class="o">);</span>
+	<span class="c1">// 根据region获取可用的zone
+</span><span class="c1"></span>	<span class="n">String</span><span class="o">[]</span> <span class="n">availZones</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getAvailabilityZones</span><span class="o">(</span><span class="n">clientConfig</span><span class="o">.</span><span class="na">getRegion</span><span class="o">());</span>
+	<span class="c1">// 如果没有配置的zone，使用默认的default-zone
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(</span><span class="n">availZones</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">availZones</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">availZones</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[</span><span class="n">1</span><span class="o">];</span>
+		<span class="n">availZones</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">DEFAULT_ZONE</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="c1">// 根据相关配置从可用的zone获取当前实例所处的zone
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">myZoneOffset</span> <span class="o">=</span> <span class="n">getZoneOffset</span><span class="o">(</span><span class="n">instanceZone</span><span class="o">,</span> <span class="n">preferSameZone</span><span class="o">,</span> <span class="n">availZones</span><span class="o">);</span>
+
+	<span class="n">String</span> <span class="n">zone</span> <span class="o">=</span> <span class="n">availZones</span><span class="o">[</span><span class="n">myZoneOffset</span><span class="o">];</span>
+	<span class="c1">// 根据当前所在zone获取其中的serverUrl列表
+</span><span class="c1"></span>	<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">serviceUrls</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getEurekaServerServiceUrls</span><span class="o">(</span><span class="n">zone</span><span class="o">);</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">serviceUrls</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">orderedUrls</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">zone</span><span class="o">,</span> <span class="n">serviceUrls</span><span class="o">);</span>
+ 	<span class="o">}</span>
+   	<span class="kt">int</span> <span class="n">currentOffset</span> <span class="o">=</span> <span class="n">myZoneOffset</span> <span class="o">==</span> <span class="o">(</span><span class="n">availZones</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">?</span> <span class="n">0</span> <span class="o">:</span> <span class="o">(</span><span class="n">myZoneOffset</span> <span class="o">+</span> <span class="n">1</span><span class="o">);</span>
+   	<span class="c1">// 添加可用的zone中其他的zone的serverUrl列表
+</span><span class="c1"></span>	<span class="k">while</span> <span class="o">(</span><span class="n">currentOffset</span> <span class="o">!=</span> <span class="n">myZoneOffset</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">zone</span> <span class="o">=</span> <span class="n">availZones</span><span class="o">[</span><span class="n">currentOffset</span><span class="o">];</span>
+		<span class="n">serviceUrls</span> <span class="o">=</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">getEurekaServerServiceUrls</span><span class="o">(</span><span class="n">zone</span><span class="o">);</span>
+ 		<span class="k">if</span> <span class="o">(</span><span class="n">serviceUrls</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">orderedUrls</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">zone</span><span class="o">,</span> <span class="n">serviceUrls</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">currentOffset</span> <span class="o">==</span> <span class="o">(</span><span class="n">availZones</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">))</span> <span class="o">{</span>
+			<span class="n">currentOffset</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+			<span class="n">currentOffset</span><span class="o">++;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="k">if</span> <span class="o">(</span><span class="n">orderedUrls</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">(</span><span class="s">&#34;DiscoveryClient: invalid serviceUrl specified!&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="k">return</span> <span class="n">orderedUrls</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>从上面的代码可以发现，获取serverUrls的过程是层层递进的，从region到zone，优先添加服务实例所处的zone的serverUrls，为了保证容错性，又把本region中的其他的zone也添加到了serverUrls。通过这种多层次的设计，提供Eureka在区域内的容错性，保证了P(Partition tolerance)可靠性</p>
+<p>当然也可以直接告诉Eureka Client服务实例所处的<code>Zone</code>，并希望使用同一个<code>Zone</code>的Eureka Server进行注册(在Eureka Client无法与Eureke Server进行通讯时，它将轮循向配置其他的Eureka Server注册直到成功为止)，可以添加如下配置</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">eureka</span><span class="p">:</span><span class="w">
+</span><span class="w">	</span><span class="nt">instance</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">metadataMap</span><span class="p">:</span><span class="w">
+</span><span class="w">			</span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="l">us-east-zone-2</span><span class="w">
+</span><span class="w">	</span><span class="nt">client</span><span class="p">:</span><span class="w">
+</span><span class="w">		</span><span class="nt">prefer-same-zone-eureka</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></code></pre></div><p>这样配置的话，使用的Eureka Server url将是<code>us-east-zone-2: http://xxx1,http://xxx2</code></p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-11-06</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%89%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （二十三）应用进阶之客户端配置</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%AE%8C%E7%BB%93-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83eureka%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%9B%86%E7%BE%A4/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （完结） 高可用性服务注册中心(Eureka服务端集群)</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#eureka-instance%e5%92%8cclient%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae">
+												 Eureka Instance和Client的元数据
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%ae%be%e7%bd%aeeureka%e7%9a%84%e5%ae%9e%e4%be%8bid">
+												 设置Eureka的实例ID
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%8a%b6%e6%80%81%e9%a1%b5%e5%92%8c%e5%81%a5%e5%ba%b7%e6%a3%80%e6%9f%a5%e9%a1%b5%e7%ab%af%e5%8f%a3%e8%ae%be%e7%bd%ae">
+												 状态页和健康检查页端口设置
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#region%e4%b8%8ezone">
+												 Region与Zone
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

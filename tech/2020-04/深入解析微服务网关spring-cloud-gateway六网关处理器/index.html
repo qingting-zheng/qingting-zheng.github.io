@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关处理器 请求到达网关之后，会有各种Web处理器对请求进行匹配与处理，下图为Spring Cloud Gateway中主要涉及到的WebHandler： DispatcherHandler -&gt; RoutePredicateHandlerMapping -&gt; FilteringWebHandler -&gt; DefaultGatewayFilterChain 按照顺序，这一小节将会讲解前两个，负责对请求路由选择和定位。 请求的分发器 Spring Cloud Gateway 引入了Spring-webflux，DispatcherHandler">
+  
+  <meta property="og:title" content="深入解析微服务网关Spring Cloud Gateway（六）网关处理器" />
+<meta property="og:description" content="系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关处理器 请求到达网关之后，会有各种Web处理器对请求进行匹配与处理，下图为Spring Cloud Gateway中主要涉及到的WebHandler： DispatcherHandler -&gt; RoutePredicateHandlerMapping -&gt; FilteringWebHandler -&gt; DefaultGatewayFilterChain 按照顺序，这一小节将会讲解前两个，负责对请求路由选择和定位。 请求的分发器 Spring Cloud Gateway 引入了Spring-webflux，DispatcherHandler" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/" />
+<meta property="article:published_time" content="2020-04-19T10:01:15+08:00" />
+<meta property="article:modified_time" content="2020-04-19T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析微服务网关Spring Cloud Gateway（六）网关处理器 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（六）网关处理器</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Apr 19, 2020</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>4 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="网关处理器">网关处理器</h3>
+<p>请求到达网关之后，会有各种Web处理器对请求进行匹配与处理，下图为Spring Cloud Gateway中主要涉及到的WebHandler：</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/gw/HandlerMapping.jpg" alt="网关处理器的类图" title="HandlerMapping"></p>
+<pre><code>DispatcherHandler -&gt; RoutePredicateHandlerMapping -&gt; FilteringWebHandler -&gt; DefaultGatewayFilterChain
+</code></pre><p>按照顺序，这一小节将会讲解前两个，负责对请求路由选择和定位。</p>
+<h4 id="请求的分发器">请求的分发器</h4>
+<p>Spring Cloud Gateway 引入了Spring-webflux，<code>DispatcherHandler</code>是Spring WebFlux 的访问入口，请求分发处理器。在之前的项目中，引入Spring MVC，而它的分发处理器是<code>DispatcherServlet</code>。下面具体看一下网关收到请求后，如何匹配<code>HandlerMapping</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DispatcherHandler</span> <span class="kd">implements</span> <span class="n">WebHandler</span><span class="o">,</span> <span class="n">ApplicationContextAware</span> <span class="o">{</span>
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">handle</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">handlerMappings</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="c1">//不存在handlerMappings则报错
+</span><span class="c1"></span>			<span class="k">return</span> <span class="n">Mono</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">HANDLER_NOT_FOUND_EXCEPTION</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">return</span> <span class="n">Flux</span><span class="o">.</span><span class="na">fromIterable</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">handlerMappings</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">concatMap</span><span class="o">(</span><span class="n">mapping</span> <span class="o">-&gt;</span> <span class="n">mapping</span><span class="o">.</span><span class="na">getHandler</span><span class="o">(</span><span class="n">exchange</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">next</span><span class="o">()</span>
+				<span class="o">.</span><span class="na">switchIfEmpty</span><span class="o">(</span><span class="n">Mono</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">HANDLER_NOT_FOUND_EXCEPTION</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="n">handler</span> <span class="o">-&gt;</span> <span class="n">invokeHandler</span><span class="o">(</span><span class="n">exchange</span><span class="o">,</span> <span class="n">handler</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="n">result</span> <span class="o">-&gt;</span> <span class="n">handleResult</span><span class="o">(</span><span class="n">exchange</span><span class="o">,</span> <span class="n">result</span><span class="o">));</span>
+	<span class="o">}</span>
+	<span class="c1">//...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p><code>DispatcherHandler</code>实现了<code>WebHandler</code>接口，<code>WebHandler</code>接口用于处理web请求。<code>DispatcherHandler</code>的构造函数会初始化好<code>HandlerMapping</code>。核心处理的方法<code>#handle(ServerWebExchange exchange)</code>，<code>HandlerMapping</code>是一个定义了请求与处理器对象映射的接口，有多个实现类，如<code>ControllerEndpointHandlerMapping</code>，<code>RouterFunctionMapping</code>。
+<img src="https://qingting-zheng.github.io:443/images/series/gw/HandlerMapping-implement.jpg" alt="网关中的HandlerMapping" title="网关中的HandlerMapping">
+网关这里主要关注的是<code>RoutePredicateHandlerMapping</code>，该类继承了抽象类<code>AbstractHandlerMapping</code>，<code>#mapping.getHandler(exchange)</code>方法就是定义在该抽象类中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractHandlerMapping</span> <span class="kd">extends</span> <span class="n">ApplicationObjectSupport</span> <span class="kd">implements</span> <span class="n">HandlerMapping</span><span class="o">,</span> <span class="n">Ordered</span> <span class="o">{</span>
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="nf">getHandler</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">getHandlerInternal</span><span class="o">(</span><span class="n">exchange</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">handler</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="o">...</span><span class="c1">//cors相关的配置
+</span><span class="c1"></span>			<span class="k">return</span> <span class="n">handler</span><span class="o">;</span>
+		<span class="o">});</span>
+	<span class="o">}</span>
+
+	<span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">Mono</span><span class="o">&lt;?&gt;</span> <span class="n">getHandlerInternal</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div><p>可以看出，抽象类在handler映射中起到的作用是将公用功能的抽取，不是我们关注的重点，代码省略。具体的实现定义在<code>HandlerMapping</code>中。</p>
+<p><code>#mapping.getHandler</code>返回了相应的Web处理器，随后到达<code>invokeHandler(exchange, handler)</code>
+<img src="https://qingting-zheng.github.io:443/images/series/gw/invokeHandler.jpg" alt="匹配到FilteringWebHandler" title="匹配到FilteringWebHandler"></p>
+<p>从上面的截图可以看出，上一步的结果返回的是<code>FilteringWebHandler</code>，<code>WebHandler</code>有其对应的适配器，这里对应的是<code>SimpleHandlerAdapter</code>，适配器类的实现较为简单，直接调用了对应的<code>WebHandler</code>的处理方法。</p>
+<h4 id="路由断言的handlermapping">路由断言的HandlerMapping</h4>
+<p><code>RoutePredicateHandlerMapping</code>用于匹配 Route，并返回处理 Route 的 <code>FilteringWebHandler</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RoutePredicateHandlerMapping</span> <span class="kd">extends</span> <span class="n">AbstractHandlerMapping</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="nf">RoutePredicateHandlerMapping</span><span class="o">(</span><span class="n">FilteringWebHandler</span> <span class="n">webHandler</span><span class="o">,</span> <span class="n">RouteLocator</span> <span class="n">routeLocator</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">webHandler</span> <span class="o">=</span> <span class="n">webHandler</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">routeLocator</span> <span class="o">=</span> <span class="n">routeLocator</span><span class="o">;</span>
+		<span class="n">setOrder</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+	<span class="o">}</span>
+	<span class="c1">//....
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p><code>RoutePredicateHandlerMapping</code>的构造函数接收两个参数：<code>FilteringWebHandler</code>网关过滤器和<code>RouteLocator</code>路由定位器。<code>#setOrder(1)</code>用于设置该对象初始化的优先级，Spring Cloud Gateway 的 <code>GatewayWebfluxEndpoint</code> 提供的HTTP API不需要经过网关，它通过 <code>RequestMappingHandlerMapping</code>进行请求匹配处理。RequestMappingHandlerMapping 的 order为0 ，需要排在<code>RoutePredicateHandlerMapping</code>前面。所以<code>RoutePredicateHandlerMapping</code>设置的order必须大于0。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">	<span class="nd">@Override</span>
+	<span class="kd">protected</span> <span class="n">Mono</span><span class="o">&lt;?&gt;</span> <span class="n">getHandlerInternal</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">//设置GATEWAY_HANDLER_MAPPER_ATTR 为 RoutePredicateHandlerMapping
+</span><span class="c1"></span>		<span class="n">exchange</span><span class="o">.</span><span class="na">getAttributes</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="n">GATEWAY_HANDLER_MAPPER_ATTR</span><span class="o">,</span> <span class="n">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">());</span>
+
+		<span class="k">return</span> <span class="n">lookupRoute</span><span class="o">(</span><span class="n">exchange</span><span class="o">)</span>		
+				<span class="o">.</span><span class="na">flatMap</span><span class="o">((</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">Route</span><span class="o">,</span> <span class="n">Mono</span><span class="o">&lt;?&gt;&gt;)</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="o">{</span>
+					<span class="c1">//设置 GATEWAY_ROUTE_ATTR 为匹配的 Route
+</span><span class="c1"></span>					<span class="n">exchange</span><span class="o">.</span><span class="na">getAttributes</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="n">GATEWAY_ROUTE_ATTR</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+					<span class="k">return</span> <span class="n">Mono</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="n">webHandler</span><span class="o">);</span>
+				<span class="o">}).</span><span class="na">switchIfEmpty</span><span class="o">(</span><span class="n">Mono</span><span class="o">.</span><span class="na">empty</span><span class="o">().</span><span class="na">then</span><span class="o">(</span><span class="n">Mono</span><span class="o">.</span><span class="na">fromRunnable</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+					<span class="c1">//logger
+</span><span class="c1"></span>				<span class="o">})));</span>
+	<span class="o">}</span>
+	<span class="c1">//顺序匹配请求对应的Route
+</span><span class="c1"></span>	<span class="kd">protected</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Route</span><span class="o">&gt;</span> <span class="nf">lookupRoute</span><span class="o">(</span><span class="n">ServerWebExchange</span> <span class="n">exchange</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">routeLocator</span><span class="o">.</span><span class="na">getRoutes</span><span class="o">()</span>
+				<span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">route</span> <span class="o">-&gt;</span> <span class="n">route</span><span class="o">.</span><span class="na">getPredicate</span><span class="o">().</span><span class="na">test</span><span class="o">(</span><span class="n">exchange</span><span class="o">))</span>
+				<span class="o">.</span><span class="na">next</span><span class="o">()</span>
+				<span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">route</span> <span class="o">-&gt;</span> <span class="o">{</span>
+					<span class="c1">//校验 Route 的有效性
+</span><span class="c1"></span>					<span class="n">validateRoute</span><span class="o">(</span><span class="n">route</span><span class="o">,</span> <span class="n">exchange</span><span class="o">);</span>
+					<span class="k">return</span> <span class="n">route</span><span class="o">;</span>
+				<span class="o">});</span>
+	<span class="o">}</span>
+</code></pre></div><p>如上为获取handler的方法，用于匹配请求的Route，并返回处理Route的<code>FilteringWebHandler</code>。首先设置 <code>GATEWAY_HANDLER_MAPPER_ATTR</code> 为 <code>RoutePredicateHandlerMapping</code>的类名；然后顺序匹配请求对应的Route，<code>RouteLocator</code>接口用于获取在网关中定义的路由，并根据请求的信息，与路由定义的断言进行匹配（路由的定义也有优先级，按照优先级顺序匹配）。设置<code>GATEWAY_ROUTE_ATTR</code> 为匹配的 Route，并返回相应的handler。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2020-04-19</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析微服务网关Spring Cloud Gateway（五）源码解析之初始化配置</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>深入解析微服务网关Spring Cloud Gateway（七）过滤器的web处理器</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%bd%91%e5%85%b3%e5%a4%84%e7%90%86%e5%99%a8">
+												 网关处理器
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%af%b7%e6%b1%82%e7%9a%84%e5%88%86%e5%8f%91%e5%99%a8">
+												 请求的分发器
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%b7%af%e7%94%b1%e6%96%ad%e8%a8%80%e7%9a%84handlermapping">
+												 路由断言的HandlerMapping
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

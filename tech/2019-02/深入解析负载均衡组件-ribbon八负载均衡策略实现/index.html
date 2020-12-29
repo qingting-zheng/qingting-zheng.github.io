@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 负载均衡策略实现 IRule是定义Ribbon负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在RibbonClientConfiguration中给出。IRule接口的choose函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻">
+  
+  <meta property="og:title" content="深入解析负载均衡组件 Ribbon（八）负载均衡策略实现" />
+<meta property="og:description" content="系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 负载均衡策略实现 IRule是定义Ribbon负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在RibbonClientConfiguration中给出。IRule接口的choose函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/" />
+<meta property="article:published_time" content="2019-02-06T10:01:15+08:00" />
+<meta property="article:modified_time" content="2019-02-06T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析负载均衡组件 Ribbon（八）负载均衡策略实现 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析负载均衡组件 Ribbon（八）负载均衡策略实现</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Feb 6, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>10 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="负载均衡策略实现">负载均衡策略实现</h3>
+<p><code>IRule</code>是定义<code>Ribbon</code>负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在<code>RibbonClientConfiguration</code>中给出。<code>IRule</code>接口的<code>choose</code>函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻辑来处理负载均衡。Ribbon实现的<code>IRule</code>有一下。在大多数情况下，这些默认的实现类是可以满足需求的，如果有特性的需求，可以自己实现。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/IRule%E7%B1%BB%E5%9B%BE.png" alt="IRule的类图"></p>
+<p>如图8.2所示，<code>Ribbon</code>内置的<code>IRule</code>的子类有：</p>
+<ul>
+<li>BestAvailableRule 选择最小请求数</li>
+<li>ClientConfigEnabledRoundRobinRule 轮询RandomRule 随机选择一个server</li>
+<li>RoundRobinRule 轮询选择server</li>
+<li>RetryRule 根据轮询的方式重试</li>
+<li>WeightedResponseTimeRule 根据响应时间去分配一个weight ，weight越低，被选择的可能性就越低</li>
+<li>ZoneAvoidanceRule 根据server的zone区域和可用性来轮询选择</li>
+</ul>
+<p><code>RoundRobinRule</code>、<code>RandomRule</code>这样的不依赖于Server运行状况的策略，也有<code>AvailabilityFilteringRule</code>、<code>WeightedResponseTimeRule</code>等多种基于收集到的Server运行状况决策的策略。判断运行状况时有，判断单个server的，也有判断整个zone的，适用于各种不同场景需求。</p>
+<pre><code>@Bean
+@ConditionalOnMissingBean
+public IRule ribbonRule(IClientConfig config) {
+    //如果在配置中设置了Rule就返回，否则使用默认的zoneAvoidanceRle
+    if (this.propertiesFactory.isSet(IRule.class, name)) {
+        return this.propertiesFactory.get(IRule.class, config, name);
+    }
+    ZoneAvoidanceRule rule = new ZoneAvoidanceRule();
+    rule.initWithNiwsConfig(config);
+    return rule;
+}
+</code></pre><p><code>ZoneAvoidanceRule</code>是使用<code>CompositePredicate</code>来基于zone和可用性来过滤服务器。<code>ZoneAvoidanceRule</code>相关的类图如图8.3所示。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/ZoneAvoidanceRule.png" alt="ZoneAvoidanceRule的类图"></p>
+<p><code>ZoneAvoidanceRule</code>是<code>Ribbon</code>默认的<code>IRule</code>实例，较为复杂，在本小节的后续部分再进行讲解。而<code>ClientConfigEnabledRoundRobinRule</code>是比较常用的<code>IRule</code>的子类之一，它使用的负载均衡策略是最为常见的Round Robin策略，也就是简单轮询策略。</p>
+<pre><code>public class ClientConfigEnabledRoundRobinRule extends AbstractLoadBalancerRule {
+
+    RoundRobinRule roundRobinRule = new RoundRobinRule();
+    @Override
+    public Server choose(Object key) {
+        if (roundRobinRule != null) {
+            return roundRobinRule.choose(key);
+        } else {
+            throw new IllegalArgumentException(
+                    &quot;This class has not been initialized with the RoundRobinRule class&quot;);
+        }
+    }
+}
+</code></pre><p><code>RoundRobinRule</code>会以轮询的方式依次将请求调度不同的服务器，即每次调度执行i = (i + 1) mod n，并选出第i台服务器。</p>
+<pre><code>public class RoundRobinRule extends AbstractLoadBalancerRule {
+
+    private AtomicInteger nextServerCyclicCounter;
+    private static final boolean AVAILABLE_ONLY_SERVERS = true;
+    private static final boolean ALL_SERVERS = false;
+
+    public RoundRobinRule() {
+        nextServerCyclicCounter = new AtomicInteger(0);
+    }
+
+    public RoundRobinRule(ILoadBalancer lb) {
+        this();
+        setLoadBalancer(lb);
+    }
+
+    public Server choose(ILoadBalancer lb, Object key) {
+        Server server = null;
+        int count = 0;
+        //当server没有被选出，或者循环了10次以下时进入执行语句块
+        while (server == null &amp;&amp; count++ &lt; 10) {
+            //获得当前可以到达的所有Server列表，会使用到IPing
+            List&lt;Server&gt; reachableServers = lb.getReachableServers();
+            //获得所有Server列表
+            List&lt;Server&gt; allServers = lb.getAllServers();
+            int upCount = reachableServers.size();
+            int serverCount = allServers.size();
+            //如果当前可用的server数量为0或者所有server数量为0，则直接返回null
+            if ((upCount == 0) || (serverCount == 0)) {
+                log.warn(&quot;No up servers available from load balancer: &quot; + lb);
+                return null;
+            }
+            //根据server总数来计算下一个执行请求的server的index
+            int nextServerIndex = incrementAndGetModulo(serverCount);
+            //从server列表中找出该server
+            server = allServers.get(nextServerIndex);
+            //如果为null，继续执行
+            if (server == null) {
+                Thread.yield();
+                continue;
+            }
+            //判断server状态。
+            if (server.isAlive() &amp;&amp; (server.isReadyToServe())) {
+                return (server);
+            }
+
+            server = null;
+        }
+        return server;
+    }
+
+    private int incrementAndGetModulo(int modulo) {
+        for (;;) {
+            //这就是i = (i + 1) mod n .因为会涉及多线程，所以这里使用CAS方法，进行for循环无限重试加上AtomicInteger的原子自增
+            int current = nextServerCyclicCounter.get();
+            int next = (current + 1) % modulo;
+            if (nextServerCyclicCounter.compareAndSet(current, next))
+                return next;
+        }
+    }
+
+    @Override
+    public Server choose(Object key) {
+        return choose(getLoadBalancer(), key);
+    }
+}
+</code></pre><p><code>ZoneAvoidanceRule</code>则是比较复杂的负载均衡策略。<code>ZoneAvoidanceRule</code>是根据server的zone区域和可用性来进行负载均衡。<code>PredicateBasedRule</code>是<code>ZoneAvoidanceRule</code>的基类，它选择服务器的策略是先使用<code>ILoadBalancer</code>获取服务器列表，再使用<code>AbstractServerPredicate</code>来进行服务器的过滤,并且对剩下的服务器使用round robin策略选出最终的服务器。</p>
+<pre><code>public abstract class PredicateBasedRule extends ClientConfigEnabledRoundRobinRule {
+
+    public abstract AbstractServerPredicate getPredicate();
+
+    @Override
+    public Server choose(Object key) {
+        ILoadBalancer lb = getLoadBalancer();
+        Optional&lt;Server&gt; server = getPredicate().chooseRoundRobinAfterFiltering(lb.getServerList(false), key);
+        if (server.isPresent()) {
+            return server.get();
+        } else {
+            return null;
+        }       
+    }
+}
+</code></pre><p><code>PredicateBasedRule</code>提供了<code>getPredicate</code>函数供子类实现，来让不同的子类提供不同的<code>AbstractServerPredicate</code>实例来进行不同的服务器过滤策略。而<code>ZoneAvoidanceRule</code>使用的是由<code>ZoneAvoidancePredicate</code>和<code>AvailabilityPredicate</code>组成的复合策略<code>CompositePredicate</code>，前一个判断判定一个zone的运行性能是否可用，剔除不可用的zone（的所有server），<code>AvailabilityPredicate</code>用于过滤掉连接数过多的Server。</p>
+<pre><code>private CompositePredicate compositePredicate;
+
+public ZoneAvoidanceRule() {
+    super();
+    ZoneAvoidancePredicate zonePredicate = new ZoneAvoidancePredicate(this);
+    AvailabilityPredicate availabilityPredicate = new AvailabilityPredicate(this);
+    compositePredicate = createCompositePredicate(zonePredicate, availabilityPredicate);
+}
+
+//将两个Predicate组合成一个CompositePredicate
+private CompositePredicate createCompositePredicate(ZoneAvoidancePredicate p1, AvailabilityPredicate p2) {
+    return CompositePredicate.withPredicates(p1, p2)
+                        .addFallbackPredicate(p2)
+                        .addFallbackPredicate(AbstractServerPredicate.alwaysTrue())
+                        .build();
+
+}
+//实现`getPredicate`接口，返回构造函数中生成的compositePredicate
+@Override
+public AbstractServerPredicate getPredicate() {
+    return compositePredicate;
+}    
+</code></pre><p><code>CompositePredicate</code>的<code>chooseRoundRobinAfterFiltering</code>函数是继承基类<code>AbstractServerPredicate</code>的实现。它会调用首先调用<code>getEligibleServers</code>函数来通过<code>Predicate</code>过滤服务器列表，然后使用round robin策略选择出一个服务器进行返回。</p>
+<pre><code>//AbstractServerPredicate.java
+//先用redicate来获取一个可用server的集合，然后用round robin算法来选择一个。
+public Optional&lt;Server&gt; chooseRoundRobinAfterFiltering(List&lt;Server&gt; servers) {
+    List&lt;Server&gt; eligible = getEligibleServers(servers);
+    if (eligible.size() == 0) {
+        return Optional.absent();
+    }
+    // (i + 1) % n
+    return Optional.of(eligible.get(nextIndex.getAndIncrement() % eligible.size()));
+}
+</code></pre><p>当<code>loadBalancerKey</code>为null时，<code>getEligibleServers</code>函数会使用<code>serverOnlyPredicate</code>来依次过滤服务器列表。</p>
+<pre><code>public List&lt;Server&gt; getEligibleServers(List&lt;Server&gt; servers, Object loadBalancerKey) {
+    if (loadBalancerKey == null) {
+        return ImmutableList.copyOf(Iterables.filter(servers, this.getServerOnlyPredicate()));            
+    } else {
+        //遍历servers，都调用对应predicate的apply函数来判断该serve是否可用。
+        List&lt;Server&gt; results = Lists.newArrayList();
+        for (Server server: servers) {
+            if (this.apply(new PredicateKey(loadBalancerKey, server))) {
+                results.add(server);
+            }
+        }
+        return results;            
+    }
+}
+</code></pre><p><code>serverOnlyPredicate</code>则会调用其<code>apply</code>函数，并将<code>Server</code>对象封装成<code>PredicateKey</code>当作参数传入。<code>AbstractServerPredicate</code>并没有实现<code>apply</code>函数，由它的子类来实现从而达到不同子类实现不同过滤策略的目的。</p>
+<pre><code>private final Predicate&lt;Server&gt; serverOnlyPredicate =  new Predicate&lt;Server&gt;() {
+        @Override
+        public boolean apply(@Nullable Server input) {                    
+            return AbstractServerPredicate.this.apply(new PredicateKey(input));
+        }
+    };
+
+</code></pre><p><code>ZoneAvoidanceRule</code>类中<code>CompositePredicate</code>对象的<code>apply</code>函数就会依次调用<code>ZoneAvoidancePredicate</code>和<code>AvailabilityPredicate</code>的<code>apply</code>函数。</p>
+<p><code>ZoneAvoidancePredicate</code>以一个区域(也就是一个Zone)为单位考察可用性，对于不可用的区域整个丢弃，从剩下区域中选可用的server。判断出最差的区域，排除掉最差区域。在剩下的区域中，将按照服务器实例数的概率抽样法选择，从而判断判定一个zone的运行性能是否可用，剔除不可用的zone中的所有server。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/ZoneAvoidancePredicate.png" alt="ZoneAvoidancePredicate类图"></p>
+<pre><code>//ZoneAvoidancePredicate.java
+@Override
+public boolean apply(@Nullable PredicateKey input) {
+    if (!ENABLED.get()) {
+        return true;
+    }
+    String serverZone = input.getServer().getZone();
+    if (serverZone == null) {
+        //如果sever没有zone相关的信息，则直接返回
+        return true;
+    }
+    //LoadBalancerStats存储着每个server或者node的执行特征和运行记录。这些信息可用供动态负载均衡策略使用。
+    LoadBalancerStats lbStats = getLBStats();
+    if (lbStats == null) {
+        //如果没有则直接返回
+        return true;
+    }
+    if (lbStats.getAvailableZones().size() &lt;= 1) {
+        // 如果只有一个zone，那么也是直接返回。
+        return true;
+    }
+    //为了效率，先看一下lbStats中记录的zone列表是否包含当前这个zone
+    Map&lt;String, ZoneSnapshot&gt; zoneSnapshot = ZoneAvoidanceRule.createSnapshot(lbStats);
+    if (!zoneSnapshot.keySet().contains(serverZone)) {
+        // 如果该serverZone不存在，那么也直接返回
+        return true;
+    }
+    //调用ZoneAvoidanceRule的getAvailableZone方法来获取可用的zone列表
+    Set&lt;String&gt; availableZones = ZoneAvoidanceRule.getAvailableZones(zoneSnapshot, triggeringLoad.get(), triggeringBlackoutPercentage.get());
+    //判断当前zone是否在可用zone列表中
+    if (availableZones != null) {
+        return availableZones.contains(input.getServer().getZone());
+    } else {
+        return false;
+    }
+}    
+</code></pre><p>在继续学习之前，希望读者要先了解一下Zone相关的基本概念。Zone是多个服务实例的集合，Zone之间的服务实例访问会有更大的延迟，Zone之内的服务实例访问延迟较小。<code>ZoneSnapshot</code>存储了关于Zone的一些性能参数，比如说实例数量、断路器断开数、活动请求数、实例平均负载。</p>
+<pre><code>public class ZoneSnapshot {
+    final int instanceCount; //实例数
+    final double loadPerServer; //平均负载
+    final int circuitTrippedCount; //断路器断开数量
+    final int activeRequestsCount; //活动请求数量
+}
+</code></pre><p><code>ZoneAvoidanceRule</code>的<code>createSnapshot</code>其实就是将所有的Zone列表转化为以其名称为键值的Map表，供<code>ZoneAvoidancePredicate</code>的<code>apply</code>函数使用。</p>
+<pre><code>//ZoneAvoidanceRule中的静态方法
+//将LoadbalancerStats中的availableZones列表转换为Map再返回。
+static Map&lt;String, ZoneSnapshot&gt; createSnapshot(LoadBalancerStats lbStats) {
+        Map&lt;String, ZoneSnapshot&gt; map = new HashMap&lt;String, ZoneSnapshot&gt;();
+    for (String zone : lbStats.getAvailableZones()) {
+        ZoneSnapshot snapshot = lbStats.getZoneSnapshot(zone);
+        map.put(zone, snapshot);
+    }
+    return map;
+}
+</code></pre><p><code>getAvailableZones</code>函数是用来筛选Zone列表的，首先，它会遍历一遍Zone列表，在遍历的过程中，它会做两件事情，它会依据Zone内的实例数，实例的平均负载时间，实例故障率等指标将Zone从列表中删除；它会维护一个最坏Zone列表，当某个Zone的平均负载时间小于但是接近全局最坏负载时间时，就会将该Zone加入到最坏Zone列表，如果某个Zone的平均负载时间大于最坏负载时间时，它将会清楚掉之前的最坏Zone列表，以该Zone的平均负载时间为全局最坏负载时间，继续最坏Zone列表的构建。在函数最后，如果全局最坏负载数据大于系统设定的负载时间，则在最坏Zone列表中随机选择出一个Zone，将其从Zone列表中删除。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/getAvaiableList.png" alt=" getAvailableZones的zone筛选流程"></p>
+<pre><code>public static Set&lt;String&gt; getAvailableZones(
+        Map&lt;String, ZoneSnapshot&gt; snapshot, double triggeringLoad,
+        double triggeringBlackoutPercentage) {
+    if (snapshot.isEmpty()) {
+        return null;
+    }
+    Set&lt;String&gt; availableZones = new HashSet&lt;String&gt;(snapshot.keySet());
+    if (availableZones.size() == 1) {
+        return availableZones;
+    }
+
+    Set&lt;String&gt; worstZones = new HashSet&lt;String&gt;();
+    double maxLoadPerServer = 0;
+    boolean limitedZoneAvailability = false;
+    //遍历所有的zone来判定
+    for (Map.Entry&lt;String, ZoneSnapshot&gt; zoneEntry : snapshot.entrySet()) {
+        String zone = zoneEntry.getKey();
+        ZoneSnapshot zoneSnapshot = zoneEntry.getValue();
+        //判定该zone中的服务实例数
+        int instanceCount = zoneSnapshot.getInstanceCount();
+        if (instanceCount == 0) {
+            //如果zone中没有服务实例，那么去除掉该zone
+            availableZones.remove(zone);
+            limitedZoneAvailability = true;
+        } else {
+            double loadPerServer = zoneSnapshot.getLoadPerServer();
+            //Zone区域内实例平均负载小于零，或者实例故障率（断路器断开次数/实例数）大于等于阈值（默认为0.99999，则去除掉该zone
+            if (((double) zoneSnapshot.getCircuitTrippedCount())
+                    / instanceCount &gt;= triggeringBlackoutPercentage
+                    || loadPerServer &lt; 0) {
+                availableZones.remove(zone);
+                limitedZoneAvailability = true;
+            } else {
+                //如果该zone的平均负载和最大负载的差距小于一定量，则将该zone加入到最坏zone集合中
+                if (Math.abs(loadPerServer - maxLoadPerServer) &lt; 0.000001d) {
+                    worstZones.add(zone);
+                } else if (loadPerServer &gt; maxLoadPerServer) {
+                    //否则，如果该zone平均负载还大于最大负载。
+                    maxLoadPerServer = loadPerServer;
+                    //清楚掉最坏zone集合，将该zone加入
+                    worstZones.clear();
+                    worstZones.add(zone);
+                }
+            }
+
+        }
+    }
+    //如果最大平均负载小于设定的阈值直接返回
+    if (maxLoadPerServer &lt; triggeringLoad &amp;&amp; !limitedZoneAvailability) {
+        // zone override is not needed here
+        return availableZones;
+    }
+    //如果大于，则从最坏zone集合中随机剔除一个。
+    String zoneToAvoid = randomChooseZone(snapshot, worstZones);
+    if (zoneToAvoid != null) {
+        availableZones.remove(zoneToAvoid);
+    }
+    return availableZones;
+}
+</code></pre><p><code>ZoneAvoidancePredicate</code>的<code>apply</code>调用结束之后，<code>AvailabilityPredicate</code>的<code>apply</code>也会被调用。它是依据掉断路器是否断开或者服务器链接数是否超出阈值来进行服务过滤的预测规则。</p>
+<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/AvailabilityPredicate.png" alt="图8.6 AvailabilityPredicate类图"></p>
+<pre><code>//AvailabilityPredicate.java
+@Override
+public boolean apply(@Nullable PredicateKey input) {
+    LoadBalancerStats stats = getLBStats();
+    if (stats == null) {
+        return true;
+    }
+    //获得关于该server的信息记录
+    return !shouldSkipServer(stats.getSingleServerStat(input.getServer()));
+}
+
+
+private boolean shouldSkipServer(ServerStats stats) {   
+    //如果该server的断路器已经打开，或者它的链接数大于预设的阈值，那么就需要将该server过滤掉
+    if ((CIRCUIT_BREAKER_FILTERING.get() &amp;&amp; stats.isCircuitBreakerTripped())
+            || stats.getActiveRequestsCount() &gt;= activeConnectionsLimit.get()) {
+        return true;
+    }
+    return false;
+}
+</code></pre><p>本小结主要讲解了<code>ClientConfigEnabledRoundRobinRule</code>和<code>ZoneAvoidanceRule</code>这两个负载均衡策略，其他策略的具体实现，有兴趣的读者可以自己去了解，就不在这里进行一一讲解了。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2019-02-16</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Ribbon（七）ILoadBalancer</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>深入解析负载均衡组件 Ribbon（九）IPing与server列表</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%b4%9f%e8%bd%bd%e5%9d%87%e8%a1%a1%e7%ad%96%e7%95%a5%e5%ae%9e%e7%8e%b0">
+												 负载均衡策略实现
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

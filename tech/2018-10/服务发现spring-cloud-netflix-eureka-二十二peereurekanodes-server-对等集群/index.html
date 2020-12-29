@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 同步冲突 对于Eureka Server之间的HTTP以及批任务流交互过程，在此不多关注，有兴趣的读者可以细细去研读代码了解一下。以下需要在意的是Eureka Server在接受到对应的同步复制请求后如何修改自身的注册表信息，以及反馈给发起同步复制请求的Eureka Server。 这里首先明确一个概念，InstanceInfo">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （二十二）PeerEurekaNodes Server 对等集群" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 同步冲突 对于Eureka Server之间的HTTP以及批任务流交互过程，在此不多关注，有兴趣的读者可以细细去研读代码了解一下。以下需要在意的是Eureka Server在接受到对应的同步复制请求后如何修改自身的注册表信息，以及反馈给发起同步复制请求的Eureka Server。 这里首先明确一个概念，InstanceInfo" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%BA%8Cpeereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/" />
+<meta property="article:published_time" content="2018-10-02T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-10-02T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （二十二）PeerEurekaNodes Server 对等集群 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%BA%8Cpeereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （二十二）PeerEurekaNodes Server 对等集群</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Oct 2, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>7 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="同步冲突">同步冲突</h3>
+<p>对于Eureka Server之间的HTTP以及批任务流交互过程，在此不多关注，有兴趣的读者可以细细去研读代码了解一下。以下需要在意的是Eureka Server在接受到对应的同步复制请求后如何修改自身的注册表信息，以及反馈给发起同步复制请求的Eureka Server。</p>
+<p>这里首先明确一个概念，<code>InstanceInfo</code>中的<code>lastDirtyTimestamp</code>表示的是服务实例信息的上次变动的时间戳，可以通过比较它来了解服务实例信息的哪边更新。</p>
+<p>考虑以下的情况，在Euerka Server同步的过程如果出现同一服务实例在两个Server的信息不一致的信息冲突，将如何进行处理？主要有以下两种情况：</p>
+<ul>
+<li>同步注册信息的时候，被同步的一方也同样存在相同服务实例的租约，如果被同步一方的<code>lastDirtyTimestamp</code>比较小，那么被同步一方的注册表中关于该服务实例的租约将会被覆，如果被同步的一方的<code>lastDirtyTimestamp</code>的比较大，那么租约将不会被覆盖，(这部分在<code>AbstractInstanceRegistry.register()</code>中有讲解)但是这时发起同步的Eureka Server中的租约就是<code>dirty</code>的，该如何处理？(问题1)</li>
+<li>同步续约(心跳)信息的时候，被同步一方的租约不存在或者是<code>lastDirtyTimestamp</code>比较小(问题2)，如何处理；或者被同步一方的<code>lastDirtyTimestamp</code>比较大，又如何处理？(问题3)</li>
+</ul>
+<p>这是总共是3个问题，我们通过eureka中的代码一一进行解答。</p>
+<p>不考虑<code>cancel()</code>的同步情况，是因为这不会对Eureka Server集群中的注册表信息造成污染。</p>
+<p>首先了解一下<code>InstanceResource</code>，这不仅是Eureka Client与Eureka Server进行通信的endpoint，同时也是Eureka Server与Eureka Server之间进行同步复制的进行处理的委托类。</p>
+<p>在<code>InstanceResource</code>中我们主要关注<code>renewLease()</code>，Eureka Client通过请求该接口向Eureka Server续约。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">Response</span> <span class="nf">renewLease</span><span class="o">(</span>
+	<span class="nd">@HeaderParam</span><span class="o">(</span><span class="n">PeerEurekaNode</span><span class="o">.</span><span class="na">HEADER_REPLICATION</span><span class="o">)</span> <span class="n">String</span> <span class="n">isReplication</span><span class="o">,</span>
+	<span class="nd">@QueryParam</span><span class="o">(</span><span class="s">&#34;overriddenstatus&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">overriddenStatus</span><span class="o">,</span>
+	<span class="nd">@QueryParam</span><span class="o">(</span><span class="s">&#34;status&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">status</span><span class="o">,</span>
+	<span class="nd">@QueryParam</span><span class="o">(</span><span class="s">&#34;lastDirtyTimestamp&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">lastDirtyTimestamp</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kt">boolean</span> <span class="n">isFromReplicaNode</span> <span class="o">=</span> <span class="s">&#34;true&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">isReplication</span><span class="o">);</span>
+	<span class="kt">boolean</span> <span class="n">isSuccess</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="na">renew</span><span class="o">(</span><span class="n">app</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">id</span><span class="o">,</span> <span class="n">isFromReplicaNode</span><span class="o">);</span>
+
+	<span class="c1">// 没有发现对应的租约，要求一次注册，Status.NOT_FOUND=404
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(!</span><span class="n">isSuccess</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;Not Found (Renew): {} - {}&#34;</span><span class="o">,</span> <span class="n">app</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">id</span><span class="o">);</span>
+		<span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span>
+	<span class="c1">// 是否需要同步数据到发起同步方，因为本地的服务实例信息更新
+</span><span class="c1"></span>	<span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">lastDirtyTimestamp</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">serverConfig</span><span class="o">.</span><span class="na">shouldSyncWhenTimestampDiffers</span><span class="o">())</span> <span class="o">{</span>
+		<span class="c1">// 验证本地的注册表中的服务实例的lastDirtyTimestamp是不是更小，如果是返回404
+</span><span class="c1"></span>		<span class="n">response</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">validateDirtyTimestamp</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">lastDirtyTimestamp</span><span class="o">),</span> <span class="n">isFromReplicaNode</span><span class="o">);</span>
+		<span class="o">...</span>
+		<span class="o">}</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+		<span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="o">.</span><span class="na">ok</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span>
+	<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;Found (Renew): {} - {}; reply status={}&#34;</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">id</span><span class="o">,</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
+	<span class="k">return</span> <span class="n">response</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>在<code>AbstractInstanceRegistry.renew()</code>方法中，返回false的情况只有两种，一种是租约确实不存在，另一种是<code>overriddenInstanceStatus</code>，表示无法续约，这是时候将返回status为404给请求端，同时<code>renewLease()</code>方法调用了<code>validateDirtyTimestamp()</code>方法判断本地注册表中服务实例的<code>lastDirtyTimestamp</code>与续租时传递的<code>lastDirtyTimestamp</code>进行比较，如果本地的比较小，一样会返回404的status，相反如果本地的比较大，就返回409的status，同时将本地的<code>InstanceInfo</code>放到repsonse中，将这就符合了以上描述的问题2和问题3的情况。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// validateDirtyTimestamp()方法中
+</span><span class="c1"></span> <span class="o">...</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">lastDirtyTimestamp</span> <span class="o">&gt;</span> <span class="n">appInfo</span><span class="o">.</span><span class="na">getLastDirtyTimestamp</span><span class="o">())</span> <span class="o">{</span>
+	<span class="c1">// 本地注册表中的服务实例的lastDirtyTimestamp比较小
+</span><span class="c1"></span>	<span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">appInfo</span><span class="o">.</span><span class="na">getLastDirtyTimestamp</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">lastDirtyTimestamp</span><span class="o">)</span> <span class="o">{</span>
+   <span class="c1">// 本地注册表中的服务实例的lastDirtyTimestamp比较大
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(</span><span class="n">isReplication</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">// 如果在同步复制情况下，返回409，同时将本地的InstanceInfo放到response中
+</span><span class="c1"></span>	<span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">CONFLICT</span><span class="o">).</span><span class="na">entity</span><span class="o">(</span><span class="n">appInfo</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">ok</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">...</span>
+
+</code></pre></div><p>接着跟踪到<code>PeerReplicationResource</code>，这里是Eureka Server之间进行同步复制的endpoint，找到其中的<code>handleHeartbeat()</code>方法。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java">
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">Builder</span> <span class="nf">handleHeartbeat</span><span class="o">(</span><span class="n">EurekaServerConfig</span> <span class="n">config</span><span class="o">,</span> <span class="n">InstanceResource</span> <span class="n">resource</span><span class="o">,</span> <span class="n">String</span> <span class="n">lastDirtyTimestamp</span><span class="o">,</span> <span class="n">String</span> <span class="n">overriddenStatus</span><span class="o">,</span> <span class="n">String</span> <span class="n">instanceStatus</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="na">renewLease</span><span class="o">(</span><span class="n">REPLICATION</span><span class="o">,</span> <span class="n">overriddenStatus</span><span class="o">,</span> <span class="n">instanceStatus</span><span class="o">,</span> <span class="n">lastDirtyTimestamp</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">responseStatus</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatus</span><span class="o">();</span>
+	<span class="n">Builder</span> <span class="n">responseBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Builder</span><span class="o">().</span><span class="na">setStatusCode</span><span class="o">(</span><span class="n">responseStatus</span><span class="o">);</span>
+
+	<span class="k">if</span> <span class="o">(</span><span class="s">&#34;false&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getExperimental</span><span class="o">(</span><span class="s">&#34;bugfix.934&#34;</span><span class="o">)))</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">responseStatus</span> <span class="o">==</span> <span class="n">Status</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">responseBuilder</span><span class="o">.</span><span class="na">setResponseEntity</span><span class="o">((</span><span class="n">InstanceInfo</span><span class="o">)</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">());</span>
+		<span class="o">}</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+ 		<span class="k">if</span> <span class="o">((</span><span class="n">responseStatus</span> <span class="o">==</span> <span class="n">Status</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()</span> <span class="o">||</span> <span class="n">responseStatus</span> <span class="o">==</span> <span class="n">Status</span><span class="o">.</span><span class="na">CONFLICT</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">())</span>
+                    <span class="o">&amp;&amp;</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">responseBuilder</span><span class="o">.</span><span class="na">setResponseEntity</span><span class="o">((</span><span class="n">InstanceInfo</span><span class="o">)</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">());</span>		<span class="o">}</span>
+	<span class="o">}</span>
+        <span class="k">return</span> <span class="n">responseBuilder</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>处理方式没有多大的变化，虽然对重新构建了Response，但是和<code>renewLease</code>的返回结果是类似的。</p>
+<p>现在就可以假设一下问题2和问题3的是如何解决的：</p>
+<ul>
+<li>如果是被同步一方Eureka Server的该服务实例的租约不存在或者是<code>lastDirtyTimestamp</code>比较小，那么它将在设置返回的response status为404；发起同步的一方会将这个服务实例的信息通过同步注册的方式再次发送。在Eureka Client与Eureka Server之间的续租(心跳)就是这样一个流程。</li>
+<li>如果被同步一方Eureka Server的该服务实例的租约的<code>lastDirtyTimestamp</code>比较大，那么它将在设置返回的response status为409，同时将本地的该服务实例的<code>InstanceInfo</code>发到response中；发起同步的一方会将根据409的状态，抽取出response中的<code>InstanceInfo</code>，将其注册到本地注册表中。</li>
+</ul>
+<p>以上都还只是猜想，需要通过代码进行验证。</p>
+<p>在<code>ReplicationTaskProcessor</code>类，这是对同步复制批任务流处理的类，Eureka Server在该类中发起与peer节点的之间的HTTP同步请求，并对返回的response进行处理。</p>
+<p>在这里，会发现无论是单任务流同步操作，还是批任务流同步操作，在处理结果上都是调用了<code>ReplicationTask</code>中的方法，<code>ReplicationTask</code>类代表的是单个同步复制任务。以下是其中对同步结束后的回调函数：</p>
+<pre><code>public void handleSuccess() {
+}
+
+public void handleFailure(int statusCode, Object responseEntity) throws Throwable {
+	logger.warn(&quot;The replication of task {} failed with response code {}&quot;, getTaskName(), statusCode);
+}
+</code></pre><p>但是这里并没有猜想中的处理，但是我们发现<code>ReplicationTask</code>是一个<code>abstract</code>，说明底下存在其他具体的实现。</p>
+<p>最后，我们回到<code>PeerEurekaNode</code>中，在创建每个<code>ReplicationTask</code>任务的地方，会发现对<code>handleFailure()</code>方法的重写：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// PeerEurekaNode
+</span><span class="c1"></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">heartbeat</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">appName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">id</span><span class="o">,</span> <span class="kd">final</span> <span class="n">InstanceInfo</span> <span class="n">info</span><span class="o">,</span> <span class="kd">final</span> <span class="n">InstanceStatus</span> <span class="n">overriddenStatus</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">primeConnection</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+	<span class="o">...</span>
+	<span class="n">ReplicationTask</span> <span class="n">replicationTask</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InstanceReplicationTask</span><span class="o">(</span><span class="n">targetHost</span><span class="o">,</span> <span class="n">Action</span><span class="o">.</span><span class="na">Heartbeat</span><span class="o">,</span> <span class="n">info</span><span class="o">,</span> <span class="n">overriddenStatus</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nd">@Override</span>
+		<span class="kd">public</span> <span class="n">EurekaHttpResponse</span><span class="o">&lt;</span><span class="n">InstanceInfo</span><span class="o">&gt;</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="n">replicationClient</span><span class="o">.</span><span class="na">sendHeartBeat</span><span class="o">(</span><span class="n">appName</span><span class="o">,</span> <span class="n">id</span><span class="o">,</span> <span class="n">info</span><span class="o">,</span> <span class="n">overriddenStatus</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="nd">@Override</span>
+		<span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleFailure</span><span class="o">(</span><span class="kt">int</span> <span class="n">statusCode</span><span class="o">,</span> <span class="n">Object</span> <span class="n">responseEntity</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+		<span class="kd">super</span><span class="o">.</span><span class="na">handleFailure</span><span class="o">(</span><span class="n">statusCode</span><span class="o">,</span> <span class="n">responseEntity</span><span class="o">);</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">statusCode</span> <span class="o">==</span> <span class="n">404</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;{}: missing entry.&#34;</span><span class="o">,</span> <span class="n">getTaskName</span><span class="o">());</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">info</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="c1">// 如果状态是404，发起一次同步注册
+</span><span class="c1"></span>					<span class="n">register</span><span class="o">(</span><span class="n">info</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">shouldSyncWhenTimestampDiffers</span><span class="o">())</span> <span class="o">{</span>
+				<span class="n">InstanceInfo</span> <span class="n">peerInstanceInfo</span> <span class="o">=</span> <span class="o">(</span><span class="n">InstanceInfo</span><span class="o">)</span> <span class="n">responseEntity</span><span class="o">;</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">peerInstanceInfo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="c1">// 如果两者的lastDirtyTimestamp，同步response中的InstanceInfo到本地
+</span><span class="c1"></span>					<span class="n">syncInstancesIfTimestampDiffers</span><span class="o">(</span><span class="n">appName</span><span class="o">,</span> <span class="n">id</span><span class="o">,</span> <span class="n">info</span><span class="o">,</span> <span class="n">peerInstanceInfo</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">};</span>
+	<span class="kt">long</span> <span class="n">expiryTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="n">getLeaseRenewalOf</span><span class="o">(</span><span class="n">info</span><span class="o">);</span>
+	<span class="c1">// 提交任务到批分发器中
+</span><span class="c1"></span>	<span class="n">batchingDispatcher</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">taskId</span><span class="o">(</span><span class="s">&#34;heartbeat&#34;</span><span class="o">,</span> <span class="n">info</span><span class="o">),</span> <span class="n">replicationTask</span><span class="o">,</span> <span class="n">expiryTime</span><span class="o">);</span>
+<span class="o">}</span>
+
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">syncInstancesIfTimestampDiffers</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">,</span> <span class="n">String</span> <span class="n">id</span><span class="o">,</span> <span class="n">InstanceInfo</span> <span class="n">info</span><span class="o">,</span> <span class="n">InstanceInfo</span> <span class="n">infoFromPeer</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">try</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">infoFromPeer</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">infoFromPeer</span><span class="o">.</span><span class="na">getOverriddenStatus</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">InstanceStatus</span><span class="o">.</span><span class="na">UNKNOWN</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">infoFromPeer</span><span class="o">.</span><span class="na">getOverriddenStatus</span><span class="o">()))</span> <span class="o">{</span>          
+          	<span class="n">registry</span><span class="o">.</span><span class="na">storeOverriddenStatusIfRequired</span><span class="o">(</span><span class="n">appName</span><span class="o">,</span> <span class="n">id</span><span class="o">,</span> <span class="n">infoFromPeer</span><span class="o">.</span><span class="na">getOverriddenStatus</span><span class="o">());</span>
+         	<span class="o">}</span>
+         	<span class="c1">// 将InstanceInfo注册到本地，覆盖本地注册表中服务实例信息
+</span><span class="c1"></span>			<span class="n">registry</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">infoFromPeer</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+       <span class="o">}</span>
+	<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;Exception when trying to set information from peer :&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+  	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><h3 id="小结">小结</h3>
+<p>通过上面的代码，最终发现了完整的闭环操作，与所做的猜想是一样的。</p>
+<p>但是问题1又如何解决呢？厉害的读者一定也猜到了，没错，还是通过续租(心跳)同步，当Eureka Client向Eureka Server发起<code>renew()</code>请求的时候，接受<code>renew()</code>的Eureka Server将持有最新的<code>lastDirtyTimestamp</code>，通过同步心跳(续租)的方式，将该服务实例的最新<code>InstanceInfo</code>同步覆盖到peer节点的注册表中，维持Server集群注册表信息的一致性。</p>
+<p>所以，我们发现整一个Eureka Server的集群是通过续租(心跳)的操作来维持集群的注册表信息的最终一致性，但是由于网络延迟或者波动原因，无法做到强一致性，存在一定的延迟。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-10-02</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-09/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%80eureka-server%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （二十一）Eureka Server之间的注册表信息的同步复制</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%89%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （二十三）应用进阶之客户端配置</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%90%8c%e6%ad%a5%e5%86%b2%e7%aa%81">
+												 同步冲突
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

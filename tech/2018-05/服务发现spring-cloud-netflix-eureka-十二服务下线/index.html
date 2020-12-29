@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务下线 到此为止，已经通过DiscoveryClient的构造方法，遍历了DiscoveryClient上基本所有方法，也了解Eureka Client如何服务发现(fetchRegistry()拉取Eureka Server上的注册表信息，之后通过定时任务CacheRefreshThread定时拉取)，服务注册(第一次注">
+  
+  <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （十二）服务下线" />
+<meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务下线 到此为止，已经通过DiscoveryClient的构造方法，遍历了DiscoveryClient上基本所有方法，也了解Eureka Client如何服务发现(fetchRegistry()拉取Eureka Server上的注册表信息，之后通过定时任务CacheRefreshThread定时拉取)，服务注册(第一次注" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/" />
+<meta property="article:published_time" content="2018-05-12T10:01:15+08:00" />
+<meta property="article:modified_time" content="2018-05-12T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       服务发现：Spring Cloud Netflix Eureka （十二）服务下线 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">服务发现：Spring Cloud Netflix Eureka （十二）服务下线</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>May 12, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>3 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="服务下线">服务下线</h3>
+<p>到此为止，已经通过<code>DiscoveryClient</code>的构造方法，遍历了<code>DiscoveryClient</code>上基本所有方法，也了解Eureka Client如何服务发现(<code>fetchRegistry()</code>拉取Eureka Server上的注册表信息，之后通过定时任务<code>CacheRefreshThread</code>定时拉取)，服务注册(第一次注册通过<code>InstanceInfoReplicator.start()</code>调用<code>register()</code>方法执行)，服务续租(通过定时任务<code>HeartbeatThread</code>执行<code>renew()</code>执行)，监控本地服务实例的变化，并按需更新(通过定时任务<code>InstanceInfoReplicator.run()</code>在服务实例信息发生改变时调用<code>register()</code>重新注册)等一系列操作。</p>
+<p>最后就是服务下线，在一般情况下，只有在服务关闭的时候，client会主动向server注销自身在注册表中的信息，在<code>DiscoveryClient</code>中有一个在对象销毁前执行的函数。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 在对象销毁前执行
+</span><span class="c1"></span><span class="nd">@PreDestroy</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">shutdown</span><span class="o">()</span> <span class="o">{</span>
+   <span class="c1">// 同步方法
+</span><span class="c1"></span>	<span class="k">if</span> <span class="o">(</span><span class="n">isShutdown</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>
+	   <span class="c1">// 原子操作，确保只会执行一次
+</span><span class="c1"></span>		<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Shutting down DiscoveryClient ...&#34;</span><span class="o">);</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">statusChangeListener</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">applicationInfoManager</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 注销状态监听器
+</span><span class="c1"></span>       <span class="n">applicationInfoManager</span><span class="o">.</span><span class="na">unregisterStatusChangeListener</span><span class="o">(</span><span class="n">statusChangeListener</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+      	<span class="o">}</span>
+      	<span class="c1">// 取消定时任务
+</span><span class="c1"></span>		<span class="n">cancelScheduledTasks</span><span class="o">();</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">applicationInfoManager</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">clientConfig</span><span class="o">.</span><span class="na">shouldRegisterWithEureka</span><span class="o">())</span> <span class="o">{</span>
+		   <span class="c1">// 服务下线
+</span><span class="c1"></span>			<span class="n">applicationInfoManager</span><span class="o">.</span><span class="na">setInstanceStatus</span><span class="o">(</span><span class="n">InstanceStatus</span><span class="o">.</span><span class="na">DOWN</span><span class="o">);</span>
+			<span class="n">unregister</span><span class="o">();</span>
+		<span class="o">}</span>
+       <span class="c1">// 关闭Jersy客户端
+</span><span class="c1"></span>		<span class="k">if</span> <span class="o">(</span><span class="n">eurekaTransport</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">eurekaTransport</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+		<span class="o">}</span>
+       <span class="c1">// 关闭相关Monitor
+</span><span class="c1"></span>		<span class="n">heartbeatStalenessMonitor</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+		<span class="n">registryStalenessMonitor</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+
+		<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Completed shut down of DiscoveryClient&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>在<code>DiscoveryClient</code>对象销毁之前，会进行一系列清理工作，包括注销<code>ApplicationInfoManager</code>中的<code>StatusChangeListener</code>，取消定时任务，服务下线，关闭Jersy客户端等。在这里主要关注<code>unregister()</code>方法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">unregister</span><span class="o">()</span> <span class="o">{</span>
+	<span class="c1">// It can be null if shouldRegisterWithEureka == false
+</span><span class="c1"></span>	<span class="k">if</span><span class="o">(</span><span class="n">eurekaTransport</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">eurekaTransport</span><span class="o">.</span><span class="na">registrationClient</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Unregistering ...&#34;</span><span class="o">);</span>
+			<span class="n">EurekaHttpResponse</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="n">eurekaTransport</span><span class="o">.</span><span class="na">registrationClient</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="n">instanceInfo</span><span class="o">.</span><span class="na">getAppName</span><span class="o">(),</span> <span class="n">instanceInfo</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+			<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">PREFIX</span> <span class="o">+</span> <span class="n">appPathIdentifier</span> <span class="o">+</span> <span class="s">&#34; - deregister  status: &#34;</span> <span class="o">+</span> <span class="n">httpResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">());</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">PREFIX</span> <span class="o">+</span> <span class="n">appPathIdentifier</span> <span class="o">+</span> <span class="s">&#34; - de-registration failed&#34;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>通过跟踪到<code>AbstractJerseyEurekaHttpClient</code>的<code>cancel()</code>方法中，同样能够发现了服务下线的调用的接口以及传递的参数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">EurekaHttpResponse</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">cancel</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">,</span> <span class="n">String</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">String</span> <span class="n">urlPath</span> <span class="o">=</span> <span class="s">&#34;apps/&#34;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="sc">&#39;/&#39;</span> <span class="o">+</span> <span class="n">id</span><span class="o">;</span>
+	<span class="n">ClientResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="k">try</span> <span class="o">{</span>
+		<span class="n">Builder</span> <span class="n">resourceBuilder</span> <span class="o">=</span> <span class="n">jerseyClient</span><span class="o">.</span><span class="na">resource</span><span class="o">(</span><span class="n">serviceUrl</span><span class="o">).</span><span class="na">path</span><span class="o">(</span><span class="n">urlPath</span><span class="o">).</span><span class="na">getRequestBuilder</span><span class="o">();</span>
+		<span class="n">addExtraHeaders</span><span class="o">(</span><span class="n">resourceBuilder</span><span class="o">);</span>
+		<span class="n">response</span> <span class="o">=</span> <span class="n">resourceBuilder</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">ClientResponse</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+		<span class="k">return</span> <span class="n">anEurekaHttpResponse</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()).</span><span class="na">headers</span><span class="o">(</span><span class="n">headersOf</span><span class="o">(</span><span class="n">response</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+			<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&#34;Jersey HTTP DELETE {}/{}; statusCode={}&#34;</span><span class="o">,</span> <span class="n">serviceUrl</span><span class="o">,</span> <span class="n">urlPath</span><span class="o">,</span> <span class="n">response</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="s">&#34;N/A&#34;</span> <span class="o">:</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatus</span><span class="o">());</span>
+		<span class="o">}</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">response</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">response</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div><p>下线的接口为<code>apps/${APP_NAME}/${INSTANCE_INFO_ID}</code>，HTTP方法为delete。</p>
+<h3 id="小结">小结</h3>
+<p>本文主要介绍了 Spring Cloud Netflix Eureka 服务的下线。至此， Eureka Client的核心代码介绍完毕，其主要重心在<code>DiscoveryClient</code>，几乎通过它完成了client端所有任务。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2018-05-12</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%80%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%8C%89%E9%9C%80%E6%B3%A8%E5%86%8C/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十一）服务注册与服务按需注册</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>服务发现：Spring Cloud Netflix Eureka （十三） Eureka Server 配置类介绍</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%9c%8d%e5%8a%a1%e4%b8%8b%e7%ba%bf">
+												 服务下线
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8f%e7%bb%93">
+												 小结
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

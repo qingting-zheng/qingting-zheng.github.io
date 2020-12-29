@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Feign 解析》 on QingTing</title>
+    <link>https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90/</link>
+    <description>Recent content in Feign 解析》 on QingTing</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-Hans</language>
+    <lastBuildDate>Sat, 16 Nov 2019 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>深入解析负载均衡组件 Feign（完结）应用进阶之Decoder与Encoder的自定制化、日志记录与请求/响应压缩</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/</link>
+      <pubDate>Sat, 16 Nov 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Decoder与Encoder的自定制化 Encoder用于将Object对象转化为HTTP的请求Body，而Decoder用于将网络Response转化为对应的Object对象。Feign对于二者都提供了默认的实现，但是使用者可以根据自己的业务来选择其他的编解码方式。 我们只需要在自定义配置中给出Decoder和Enco</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（十二）应用进阶之Client自定义</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/</link>
+      <pubDate>Mon, 04 Nov 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Client自定义 Spring Cloud Feign的核心概念之一就是各类命名的Client。每个feign client都是由一组可以协作向远程服务发送请求的组件构成。每个client都能通过@FeignClient注解提供一个名称。Spring Cloud通过FeignClientsConfiguration来为每个命名的client新建</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（十一）函数调用和网络请求</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</link>
+      <pubDate>Sun, 06 Oct 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 函数调用和网络请求 在Feing配置和实例生成结束之后，我们就可以直接使用FeignClient的实例，并调用它的函数发送网络请求。在调用其函数的过程中，由于我们设置了MethodHandler，所以最终函数调用会执行到SynchronousMethodHandler的invoke方法。在该方法中Feign会将函数参数与</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（十）实例初始化-续3</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD3/</link>
+      <pubDate>Wed, 02 Oct 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD3/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 那我们就来看一下MethodHandler到底是如何处理这些函数调用的。前面文章中的FeignServiceClient.getInstanceByServiceId函数被调用时，Fegin是如何发送网络请求，并将结果返回的。SynchronousMethodHandler是如何将函数调用转换为网络调用的关键，这个部分</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（九）实例初始化-续2</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B9%9D%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD2/</link>
+      <pubDate>Thu, 26 Sep 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B9%9D%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD2/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 接着上一篇八，我们继续讲解动态注册BeanDefinition`。 @RequestMapping`在修饰FeignClient接口类时，其value所代表的值会被记录下来，它是该FeignClient下所有请求URL的前置路径。 //SpringMvcContract.java protected void processAnnotationOnClass(MethodMetadata data, Class&amp;lt;?&amp;gt; clz) { if (clz.getInterfaces().length == 0) { //获取RequestMapping的注解信息，并设置Method</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（八）实例初始化-续1</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AB%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD1/</link>
+      <pubDate>Tue, 17 Sep 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AB%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD1/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 由于实例化代码逻辑复杂，我们继续前面的内容。 当FeignClient的函数被调用时，InvocationHandler的回调函数会被调用，Feign会在其回调函数中发送网络请求。 public &amp;lt;T&amp;gt; T target(Target&amp;lt;T&amp;gt; target) { return build().newInstance(target); } public Feign build() { SynchronousMethodHandler.Factory synchronousMethodHandlerFactory = new SynchronousMethodHandler.Factory(client, retryer, requestInterceptors, logger, logLevel, decode404); ParseHandlersByName handlersByName = new ParseHandlersByName(contract, options, encoder, decoder, errorDecoder, synchronousMethodHandlerFactory); return new ReflectiveFeign(handlersByName, invocationHandlerFactory); } //ReflectiveFeign.java public &amp;lt;T&amp;gt; T newInstance(Target&amp;lt;T&amp;gt; target) { Map&amp;lt;String, MethodHandler&amp;gt; nameToHandler = targetToHandlersByName.apply(target); Map&amp;lt;Method, MethodHandler&amp;gt; methodToHandler = new LinkedHashMap&amp;lt;Method, MethodHandler&amp;gt;(); List&amp;lt;DefaultMethodHandler&amp;gt; defaultMethodHandlers = new LinkedList&amp;lt;DefaultMethodHandler&amp;gt;(); for (Method method : target.type().getMethods()) { if (method.getDeclaringClass() ==</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（七）实例初始化</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
+      <pubDate>Mon, 19 Aug 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 实例初始化 FeignClientFactoryBean是工厂类，Spring容器通过调用它的getObject函数来获取对应的Bean实例。由此，被@FeignClient修饰的接口类就可以被Spring容器实例化了。 public Object getObject() throws Exception { FeignContext context = applicationContext.getBean(FeignContext.class); Feign.Builder builder = feign(context); //如果url为空，则需要负载均衡 if (!StringUtils.hasText(this.url)) { String url; if (!this.name.startsWith(&amp;#34;http&amp;#34;)) { url = &amp;#34;http://&amp;#34; + this.name; } else { url = this.name; }</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（六）动态注册BeanDefinition续</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/</link>
+      <pubDate>Tue, 06 Aug 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 接着上一篇，我们继续讲解动态注册BeanDefinition`。 registerFeignClients函数中有一些实现上的细节值得大家认真了解并学习的，有利于大家对Spring框架的深度了解。首先是如何自定义Spring类扫描器。也就是如何使用ClassPathScanningCandidateComponentPr</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（五）动态注册BeanDefinition</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/</link>
+      <pubDate>Tue, 09 Jul 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 动态注册BeanDefinition Feign可以通过多种方式进行自定义配置，配置的变化会导致接口类初始化时使用不同的实现类，从而控制Feign的相关行为，比如说网络请求的编解码，压缩和日志处理。可以说，了解Feign配置和实例初始化的流程和原理对于我们学习和使用Feign有着至关重要的作用，而且Spring Cloud</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（四）核心组件</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Sat, 06 Jul 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 核心组件与概念 读者在阅读Feign源码时，可以沿着两条路线进行，一是FeignServiceClient这样的被@FeignClient修饰的接口类如何被创建出来，也就是其Bean对象是如何被构建的，二是调用FeignServiceClient对象的响应方法时，Feign是如何发送网络请求的。而Feign相关的类也可以</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（三）快速入门-服务消费者</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%89%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85/</link>
+      <pubDate>Sun, 09 Jun 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%89%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务消费者 Feign是声明式RESTful客户端，所以构建Feign项目的关键在于构建服务消费者。通过下面六步可以创建一个Spring Cloud Feign的服务消费者。 第一步: 创建普通的Spring Boot工程 首先创建一个普通的Spring Boot工程，取名为chapter-feign-client。 第二步：添加依赖 需要在po</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（二）快速入门</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Sat, 01 Jun 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册中心 Feign可以配合eureka等服务注册中心同时使用。eureka来作为服务注册中心，为Feign提供关于服务端信息的获取，比如说IP地址。关于eureka的具体使用可以参考第四章中关于eureka的快速入门介绍。 服务提供者 Spring Cloud Feign是声明式RESTful请求客户端，所以它不会侵入服务提供者程序的实现。</description>
+    </item>
+    
+    <item>
+      <title>深入解析负载均衡组件 Feign（一）总体介绍</title>
+      <link>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
+      <pubDate>Sat, 11 May 2019 10:01:15 +0800</pubDate>
+      
+      <guid>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
+      <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 微服务之间的交互 微服务是软件系统架构上的一种设计风格，它倡导将一个原本独立的服务系统分成多个小型服务，这些小型服务都在独立的进程中运行，通过各个小型服务之间的协作来实现原本独立系统的所有业务功能。小型服务基于多种跨进程的方式进行通信协作，而在Spring Cloud架构中比较常见的跨进程的方式是RESTful HTTP请求</description>
+    </item>
+    
+  </channel>
+</rss>

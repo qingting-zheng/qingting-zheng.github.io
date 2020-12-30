@@ -1033,7 +1033,7 @@
     
 
     
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 API端点 Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。 @RestControllerEndpoint(id = &#34;gateway&#34;) public class GatewayControllerEndpoint implements ApplicationEventPublisherAware { //应用事件发布器 private ApplicationEventPublisher publisher; public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List&lt;GlobalFilter&gt; globalFilters, List&lt;GatewayFilterFactory&gt; GatewayFilters, RouteDefinitionWriter routeDefinitionWriter, RouteLocator routeLocator) { this.routeDefinitionLocator = routeDefinitionLocator; this.globalFilters = globalFilters; this.GatewayFilters = GatewayFilters; this.routeDefinitionWriter = routeDefinitionWriter; this.routeLocator = routeLocator; } //... } Spring Cloud Gateway的内置端点纳管到Spring Boot-Ac......
+      新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 API端点 Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。 @RestControllerEndpoint(id = &#34;gateway&#34;) public class GatewayControllerEndpoint implements ApplicationEventPublisherAware { //应用事件发布器 private ApplicationEventPublisher publisher; public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List&lt;GlobalFilter&gt; globalFilters, List&lt;GatewayFilterFactory&gt; GatewayFilters, RouteDefinitionWriter routeDefinitionWriter, RouteLocator routeLocator) { this.routeDefinitionLocator = routeDefinitionLocator; this.globalFilters = globalFilters; this.GatewayFilters = GatewayFilters; this.routeDefinitionWriter = routeDefinitionWriter; this.routeLocator = routeLocator; } //... } Spring Cloud Gateway的内置端点纳管到Spring Boot-Act......
     
   </a>
 
@@ -1094,7 +1094,7 @@
     
 
     
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 WebClientHttpRoutingFilter WebClientHttpRoutingFilter，Http路由网关过滤器。其根据http或https前缀过滤处理，使用基于 WebClient 实现的 HttpClient 请求后端 Http 服务。对于http或https前缀的过滤处理，NettyRoutingFilter是Spring Cloud Gateway的默认实现。基于WebClient的实现还......
+      新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 WebClientHttpRoutingFilter WebClientHttpRoutingFilter，Http路由网关过滤器。其根据http或https前缀过滤处理，使用基于 WebClient 实现的 HttpClient 请求后端 Http 服务。对于http或https前缀的过滤处理，NettyRoutingFilter是Spring Cloud Gateway的默认实现。基于WebClient的实现还处......
     
   </a>
 
@@ -1155,7 +1155,7 @@
     
 
     
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 NettyWriteResponseFilter 与NettyRoutingFilter成对使用。“预”过滤阶段没有任何内容，因为CLIENT_RESPONSE_ATTR在WebHandler运行之前不会被添加。 @Override public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) { return chain.filter(exchange).then(Mono.defer(() -&gt; { HttpClientResponse clientResponse = exchange.getAttribute(CLIENT_RESPONSE_ATTR); if (clientResponse == null) { return Mono.empty(); } ServerHttpResponse response = exchange.getResponse(); //将响应写到客户端 NettyDataBufferFactory factory = (NettyDataBufferFactory) response.bufferFactory(); final Flux&lt;NettyDataBuffer&gt; body = clientResponse.receive() .retain() .map(factory::wrap); MediaType contentType = response.getHeaders().getContentType(); return (isStreamingMediaType(contentType) ? response.writeAndFlushWith(body.map(Flux::just)) : response.writeWith(body)); })); } 如果Serve......
+      新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 NettyWriteResponseFilter 与NettyRoutingFilter成对使用。“预”过滤阶段没有任何内容，因为CLIENT_RESPONSE_ATTR在WebHandler运行之前不会被添加。 @Override public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) { return chain.filter(exchange).then(Mono.defer(() -&gt; { HttpClientResponse clientResponse = exchange.getAttribute(CLIENT_RESPONSE_ATTR); if (clientResponse == null) { return Mono.empty(); } ServerHttpResponse response = exchange.getResponse(); //将响应写到客户端 NettyDataBufferFactory factory = (NettyDataBufferFactory) response.bufferFactory(); final Flux&lt;NettyDataBuffer&gt; body = clientResponse.receive() .retain() .map(factory::wrap); MediaType contentType = response.getHeaders().getContentType(); return (isStreamingMediaType(contentType) ? response.writeAndFlushWith(body.map(Flux::just)) : response.writeWith(body)); })); } 如果Server......
     
   </a>
 

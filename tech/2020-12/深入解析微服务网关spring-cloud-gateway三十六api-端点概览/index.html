@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="QingTing">
+  <meta name="description" content="系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 API端点 Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。 @RestControllerEndpoint(id = &#34;gateway&#34;) public class GatewayControllerEndpoint implements ApplicationEventPublisherAware { //应用事件发布器 private ApplicationEventPublisher publisher; public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List&lt;GlobalFilter&gt; globalFilters, List&lt;GatewayFilterFactory&gt; GatewayFilters, RouteDefinitionWriter routeDefinitionWriter, RouteLocator routeLocator) { this.routeDefinitionLocator = routeDefinitionLocator; this.globalFilters = globalFilters; this.GatewayFilters = GatewayFilters; this.routeDefinitionWriter = routeDefinitionWriter; this.routeLocator = routeLocator; } //... } Spring Cloud Gateway的内置端点纳管到Spring Boot-Ac">
+  
+  <meta property="og:title" content="深入解析微服务网关Spring Cloud Gateway（三十六）API 端点概览" />
+<meta property="og:description" content="系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 API端点 Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。 @RestControllerEndpoint(id = &#34;gateway&#34;) public class GatewayControllerEndpoint implements ApplicationEventPublisherAware { //应用事件发布器 private ApplicationEventPublisher publisher; public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List&lt;GlobalFilter&gt; globalFilters, List&lt;GatewayFilterFactory&gt; GatewayFilters, RouteDefinitionWriter routeDefinitionWriter, RouteLocator routeLocator) { this.routeDefinitionLocator = routeDefinitionLocator; this.globalFilters = globalFilters; this.GatewayFilters = GatewayFilters; this.routeDefinitionWriter = routeDefinitionWriter; this.routeLocator = routeLocator; } //... } Spring Cloud Gateway的内置端点纳管到Spring Boot-Ac" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/" />
+<meta property="article:published_time" content="2020-12-29T10:01:15+08:00" />
+<meta property="article:modified_time" content="2020-12-29T10:01:15+08:00" />
+
+
+
+  <title>
+  
+       深入解析微服务网关Spring Cloud Gateway（三十六）API 端点概览 | QingTing 
+  
+  </title>
+
+  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/">
+
+  
+  
+
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://qingting-zheng.github.io:443/img/zheng.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+          
+        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> QingTing</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://qingting-zheng.github.io:443/">
+          
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://qingting-zheng.github.io:443/">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>QingTing</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+    
+            
+    
+        
+            
+                <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+      
+    
+    
+      
+        <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（三十六）API 端点概览</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Dec 29, 2020</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>3 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            <blockquote>
+<p>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。</p>
+</blockquote>
+<h3 id="api端点">API端点</h3>
+<p>Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RestControllerEndpoint</span><span class="o">(</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#34;gateway&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GatewayControllerEndpoint</span> <span class="kd">implements</span> <span class="n">ApplicationEventPublisherAware</span> <span class="o">{</span>
+	<span class="c1">//应用事件发布器
+</span><span class="c1"></span>	<span class="kd">private</span> <span class="n">ApplicationEventPublisher</span> <span class="n">publisher</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="nf">GatewayControllerEndpoint</span><span class="o">(</span><span class="n">RouteDefinitionLocator</span> <span class="n">routeDefinitionLocator</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">GlobalFilter</span><span class="o">&gt;</span> <span class="n">globalFilters</span><span class="o">,</span>
+									 <span class="n">List</span><span class="o">&lt;</span><span class="n">GatewayFilterFactory</span><span class="o">&gt;</span> <span class="n">GatewayFilters</span><span class="o">,</span> <span class="n">RouteDefinitionWriter</span> <span class="n">routeDefinitionWriter</span><span class="o">,</span>
+									 <span class="n">RouteLocator</span> <span class="n">routeLocator</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">routeDefinitionLocator</span> <span class="o">=</span> <span class="n">routeDefinitionLocator</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">globalFilters</span> <span class="o">=</span> <span class="n">globalFilters</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">GatewayFilters</span> <span class="o">=</span> <span class="n">GatewayFilters</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">routeDefinitionWriter</span> <span class="o">=</span> <span class="n">routeDefinitionWriter</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">routeLocator</span> <span class="o">=</span> <span class="n">routeLocator</span><span class="o">;</span>
+	<span class="o">}</span>
+    <span class="c1">//...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></div><p>Spring Cloud Gateway的内置端点纳管到<code>Spring Boot-Actuator</code>中，<code>@RestControllerEndpoint</code>是定义在Actuator中的注解，将类型标识为仅通过Spring MVC或者Spring WebFlux公开的REST端点。<code>id</code>的值为<code>gateway</code>也会加入到暴露的接口中作为前缀。
+<code>GatewayControllerEndpoint</code>的构造函数如上，该类的实例化是在<code>GatewayAutoConfiguration</code>中进行的，构造参数有5个：</p>
+<ul>
+<li>routeDefinitionLocator，路由定义定位器</li>
+<li>globalFilters，全局过滤器</li>
+<li>GatewayFilters，网关过滤器工厂</li>
+<li>routeDefinitionWriter，存储器 RouteDefinitionLocator 对象</li>
+<li>routeLocator，路由定位器</li>
+</ul>
+<p>如上属性在前面小节都有介绍。从网关服务的启动日志，可以看到网关的内置端点。</p>
+<pre><code>ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/routes/{id}],methods=[DELETE]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/routes/{id}],methods=[POST]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/refresh],methods=[POST]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/routes/{id}],methods=[GET]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/routes],methods=[GET]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/globalfilters],methods=[GET]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/routefilters],methods=[GET]}&quot;
+ControllerEndpointHandlerMapping : Mapped &quot;{[/actuator/gateway/routes/{id}/combinedfilters],methods=[GET]}&quot;
+</code></pre><p>网关一共提供了7个内置端点。分别为：</p>
+<ul>
+<li>/actuator/gateway/routes/{id},methods=[DELETE]，删除单个路由</li>
+<li>/actuator/gateway/routes/{id},methods=[POST]，增加单个路由</li>
+<li>/actuator/gateway/routes/{id},methods=[GET]，查看单个路由</li>
+<li>/actuator/gateway/routes],methods=[GET]，获取路由列表</li>
+<li>/actuator/gateway/refresh,methods=[POST]，路由刷新</li>
+<li>/actuator/gateway/globalfilters,methods=[GET]，获取全局过滤器列表</li>
+<li>/actuator/gateway/routefilters,methods=[GET]，路由过滤器工厂列表</li>
+<li>/actuator/gateway/routes/{id}/combinedfilters,methods=[GET]，获取单个路由的联合过滤器</li>
+</ul>
+<p>下面文章将会分别介绍这些内置的端点。</p>
+<h3 id="版本控制">版本控制</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Action</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Init</td>
+<td>2020-12-29</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>深入解析微服务网关Spring Cloud Gateway（三十五）全局过滤器-其他过滤器</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#api%e7%ab%af%e7%82%b9">
+												 API端点
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">
+												 版本控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+        <a href="mailto:qingting.best@foxmail.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+
+
+
+  
+  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

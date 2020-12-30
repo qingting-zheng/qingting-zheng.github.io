@@ -424,6 +424,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -447,7 +451,7 @@
             
             <li class="py-1">
               <a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90">
-                <span>微服务网关解析 (35)</span>
+                <span>微服务网关解析 (37)</span>
               </a>
             </li>           
           
@@ -666,6 +670,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -686,10 +694,10 @@
         
         
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (86)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (88)</span></a></li>
           
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (35)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (37)</span></a></li>
           
         
             <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button"><span>深入eureka (25)</span></a></li>
@@ -726,6 +734,10 @@
   
 
           
+  
+
+  
+
   
 
   
@@ -957,7 +969,7 @@
               
                 <div class="px-2 middot"></div>
                 <div>
-                  89 posts
+                  91 posts
                 </div>
               
             </div>
@@ -1000,18 +1012,140 @@
     <span aria-hidden="true">&nbsp;&hellip;&nbsp;</span>
   </li>
   <li class="page-item">
-    <a class="page-link" href="https://qingting-zheng.github.io:443/tech/page/18/">18</a>
+    <a class="page-link" href="https://qingting-zheng.github.io:443/tech/page/19/">19</a>
   </li>
   <li class="page-item">
     <a href="https://qingting-zheng.github.io:443/tech/page/8/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
   </li>
   <li class="page-item">
-    <a href="https://qingting-zheng.github.io:443/tech/page/18/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    <a href="https://qingting-zheng.github.io:443/tech/page/19/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
   </li>
 </ul>
 
 
           </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（七）过滤器的web处理器</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>May 2, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 过滤器的web处理器 FilteringWebHandler通过创建请求Route对应的 GatewayFilterChain 在网关处进行过滤处理。 public class FilteringWebHandler implements WebHandler { private final List&lt;GatewayFilter&gt; globalFilters; public FilteringWebHandler(List&lt;GlobalFilter&gt; globalFilters) { this.globalFilters = loadFilters(globalFilters); } private static List&lt;GatewayFilter&gt; loadFilters(List&lt;GlobalFilter&gt; filters) { return filters.stream() .map(filter -&gt; { //适配器模式，用以适配GlobalFilter GatewayFilterAdapter gatewayFilter = new GatewayFilterAdapter(filter); //判断是否实现Ordered接口 if (filter instanceof Ordered) { //实现了Ordered接口，则......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（六）网关处理器</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Apr 19, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>4 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关处理器 请求到达网关之后，会有各种Web处理器对请求进行匹配与处理，下图为Spring Cloud Gateway中主要涉及到的WebHandler： DispatcherHandler -&gt; RoutePredicateHandlerMapping -&gt; FilteringWebHandler -&gt; DefaultGatewayFilterChain 按照顺序，这一小节将会讲解前两个，负责对请求路由选择和定位。 请求的分发器 Spring Cloud Gateway 引入了Spring-webflux，DispatcherHandler......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
 
           
               <div class="post-wrapper white-bg post-card">
@@ -1156,128 +1290,6 @@
 
     
       系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关服务 网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。 依赖 需要引入的依赖： &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-actuator&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--依赖于webflux，必须引入--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-gateway-core&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--服务发现组件，排除web依赖--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-consul-discovery&lt;/artifactId&gt; &lt;version&gt;2.0.0.M6&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; //kotlin依赖 &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-stdlib&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-reflect&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; 如上引入了kotli......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（二）快速入门</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Feb 9, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>2 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基础应用 示例启动两个服务：Gateway-Server和User-Server。模拟的场景为，客户端请求后端服务，网关提供后端服务的统一入口。后端的服务都注册到服务发现Consul（搭建zk，Eureka都可以，笔者比较习惯使用Consul）。网关通过负载均衡转发到具体的后端服务。 用户服务 用户服务功能......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（一）总体概述</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Feb 4, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>2 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 当使用单体应用程序架构时，客户端（Web或移动端）通过向后端应用程序发起一次REST调用来获取数据。负载均衡器将请求路由给N个相同的应用程序实例中的一个。然后应用程序会查询各种数据库表，并将响应返回给客户端。微服务架构下，单体应用被切割成多个微服务，如果将所有的微服务直接对外暴露，势必会出现安全方面的......
     
   </a>
 

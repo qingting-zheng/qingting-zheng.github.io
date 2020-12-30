@@ -424,6 +424,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -447,7 +451,7 @@
             
             <li class="py-1">
               <a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90">
-                <span>微服务网关解析 (35)</span>
+                <span>微服务网关解析 (37)</span>
               </a>
             </li>           
           
@@ -666,6 +670,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -686,10 +694,10 @@
         
         
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (86)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (88)</span></a></li>
           
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (35)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (37)</span></a></li>
           
         
             <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button"><span>深入eureka (25)</span></a></li>
@@ -726,6 +734,10 @@
   
 
           
+  
+
+  
+
   
 
   
@@ -957,7 +969,7 @@
               
                 <div class="px-2 middot"></div>
                 <div>
-                  89 posts
+                  91 posts
                 </div>
               
             </div>
@@ -997,18 +1009,140 @@
     <span aria-hidden="true">&nbsp;&hellip;&nbsp;</span>
   </li>
   <li class="page-item">
-    <a class="page-link" href="https://qingting-zheng.github.io:443/tech/page/18/">18</a>
+    <a class="page-link" href="https://qingting-zheng.github.io:443/tech/page/19/">19</a>
   </li>
   <li class="page-item">
     <a href="https://qingting-zheng.github.io:443/tech/page/6/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
   </li>
   <li class="page-item">
-    <a href="https://qingting-zheng.github.io:443/tech/page/18/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    <a href="https://qingting-zheng.github.io:443/tech/page/19/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
   </li>
 </ul>
 
 
           </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（十七）组合的RouteDefinitionLocator</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Aug 28, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>One minute read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 组合的RouteDefinitionLocator CompositeRouteDefinitionLocator组合多种 RouteDefinitionLocator的实现，为 RouteDefinitionRouteLocator提供统一入口。代码如下： public class CompositeRouteDefinitionLocator implements RouteDefinitionLocator { private final Flux&lt;RouteDefinitionLocator&gt; delegates; public CompositeRouteDefinitionLocator(Flux&lt;RouteDefinitionLocator&gt; delegates) { this.delegates = delegates; } @Override public Flux&lt;RouteDefinition&gt; getRouteDefinitions() { return this.delegates.flatMap(RouteDefinitionLocator::getRouteDefinitions);......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（十六）基于服务发现的RouteDefinitionLocator</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Aug 22, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于服务发现的RouteDefinitionLocator DiscoveryClientRouteDefinitionLocator是通过服务发现组件获取注册中心的服务，即路由定义的源变成了配置中心了，服务注册于发现组件配合负载均衡，这个在微服务架构中应该是很常用的组合，好处很多，如多实例部署负载均衡......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
 
           
               <div class="post-wrapper white-bg post-card">
@@ -1153,128 +1287,6 @@
 
     
       系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定义的数据访问操作 RouteDefinitionRepository接口中的方法用于对RouteDefinition进行增、删、查操作。 public interface RouteDefinitionRepository extends RouteDefinitionLocator, RouteDefinitionWriter { } //RouteDefinitionWriter对路由定义进行操作 public interface RouteDefinitionWriter { Mono&lt;Void&gt; save(Mono&lt;RouteDefinition&gt; route); Mono&lt;Void&gt; delete(Mono&lt;String&gt; routeId); } 该接口继承了RouteDefinitionWriter，对路......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（十二）RouteDefinitionLocator与RouteDefinitionLocator </div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Jul 14, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>One minute read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定位器 直接获取路由的方法是通过RouteLocator接口获取。同样，该顶级接口有多个实现类，如下为RouteLocator的类图。 public interface RouteLocator { Flux&lt;Route&gt; getRoutes(); } 与上一节介绍的RouteDefinitionLocator接口类似，只有一个getRoutes方法用以获取路由信息。 public class Route implements Ordered { //路由Id private final String id; //......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（十一）缓存方式的 RouteDefinitionLocator</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Jul 3, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>One minute read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 组合的RouteDefinitionLocator CompositeRouteDefinitionLocator组合多种 RouteDefinitionLocator的实现，为 RouteDefinitionRouteLocator提供统一入口。代码如下： public class CompositeRouteDefinitionLocator implements RouteDefinitionLocator { private final Flux&lt;RouteDefinitionLocator&gt; delegates; public CompositeRouteDefinitionLocator(Flux&lt;RouteDefinitionLocator&gt; delegates) { this.delegates = delegates; } @Override public Flux&lt;RouteDefinition&gt; getRouteDefinitions() { return this.delegates.flatMap(RouteDefinitionLocator::getRouteDefinitions);......
     
   </a>
 

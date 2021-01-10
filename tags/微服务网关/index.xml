@@ -2,341 +2,341 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>微服务网关 on QingTing</title>
-    <link>https://qingting-zheng.github.io:1443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/</link>
+    <link>https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/</link>
     <description>Recent content in 微服务网关 on QingTing</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <lastBuildDate>Tue, 29 Dec 2020 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:1443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Dec 2020 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十六）API 端点概览</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</link>
       <pubDate>Tue, 29 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</guid>
       <description>新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 API端点 Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。 @RestControllerEndpoint(id = &amp;#34;gateway&amp;#34;) public class GatewayControllerEndpoint implements ApplicationEventPublisherAware { //应用事件发布器 private ApplicationEventPublisher publisher; public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List&amp;lt;GlobalFilter&amp;gt; globalFilters, List&amp;lt;GatewayFilterFactory&amp;gt; GatewayFilters, RouteDefinitionWriter routeDefinitionWriter, RouteLocator routeLocator) { this.routeDefinitionLocator = routeDefinitionLocator; this.globalFilters = globalFilters; this.GatewayFilters = GatewayFilters; this.routeDefinitionWriter = routeDefinitionWriter; this.routeLocator = routeLocator; } //... } Spring Cloud Gateway的内置端点纳管到Spring Boot-Act</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十五）全局过滤器-其他过滤器</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Sun, 27 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 WebClientHttpRoutingFilter WebClientHttpRoutingFilter，Http路由网关过滤器。其根据http或https前缀过滤处理，使用基于 WebClient 实现的 HttpClient 请求后端 Http 服务。对于http或https前缀的过滤处理，NettyRoutingFilter是Spring Cloud Gateway的默认实现。基于WebClient的实现还处</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十四）全局过滤器-NettyWriteResponseFilter与RouteToRequestUrlFilter</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</link>
       <pubDate>Mon, 21 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</guid>
       <description>新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 NettyWriteResponseFilter 与NettyRoutingFilter成对使用。“预”过滤阶段没有任何内容，因为CLIENT_RESPONSE_ATTR在WebHandler运行之前不会被添加。 @Override public Mono&amp;lt;Void&amp;gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) { return chain.filter(exchange).then(Mono.defer(() -&amp;gt; { HttpClientResponse clientResponse = exchange.getAttribute(CLIENT_RESPONSE_ATTR); if (clientResponse == null) { return Mono.empty(); } ServerHttpResponse response = exchange.getResponse(); //将响应写到客户端 NettyDataBufferFactory factory = (NettyDataBufferFactory) response.bufferFactory(); final Flux&amp;lt;NettyDataBuffer&amp;gt; body = clientResponse.receive() .retain() .map(factory::wrap); MediaType contentType = response.getHeaders().getContentType(); return (isStreamingMediaType(contentType) ? response.writeAndFlushWith(body.map(Flux::just)) : response.writeWith(body)); })); } 如果Server</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十三）全局过滤器-NettyRoutingFilter</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</link>
       <pubDate>Tue, 15 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 NettyRoutingFilter 如果位于ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR请求属性中的URL具有http或https前缀，Netty路由过滤器将运行。 它使用Netty HttpClient进行下游代理请求。 响应放在ServerWebExchangeUtils.CLIENT_</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十二）全局过滤器-LoadBalancerClientFilter</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</link>
       <pubDate>Sat, 05 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 LoadBalancerClientFilter LoadBalancerClientFilter在交换属性ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR中查找URI。 如果url有一个lb前缀，即lb：// myservice，它将使用LoadBalancerClient将名称解析为实际的主机和端口，如</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十一）全局过滤器</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Mon, 30 Nov 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 全局过滤器 GlobalFilter接口与GatewayFilter具有相同的方法定义。 全局过滤器是一系列特殊的过滤器，将会根据条件应用到所有的路由中，该接口的设计和用法在将老的版本中可能会发生变化。全局过滤器用于拦截链式的web请求，可以实现横切的、与应用无关的需求，比如安全、访问超时的设定等等。前面</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十）网关过滤器-续6</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</link>
       <pubDate>Mon, 23 Nov 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 SetRequestHeaderGatewayFilterFactory 属于Header类型的过滤器，该过滤器接收两个参数：头部名和值。 spring:cloud:gateway:routes:- id:setrequestheader_routeuri:http://example.orgfilters:- SetRequestHeader=X-request-Foo, Bar当请求经过网关转发时，该过滤器将会用给定的名字替换所有的头部，而不是增加。因此传递到下游的请求头部为X-request-Foo: Bar。 SetResponseHeaderGatewayFilterFactory 属于Header类型的过滤器，该过滤器接收两个参数：头部名和值。 spring:cloud:gateway:routes:- id:setresponseheader_routeuri:http://example.orgfilters:- SetResponseHeader=X-Response-Foo, Bar该过滤器将</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十九）网关过滤器-续5</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</link>
       <pubDate>Tue, 03 Nov 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 SaveSessionGatewayFilterFactory 属于session类型的过滤器，在转发到调用的下游时，该过滤器强制执行WebSession::save操作。这是一种特殊的用途，当使用类似于Spring Session MongoDB这种惰性数据存储并且需要确保在转发之前session的数据已经被存储。 spring:cloud:gateway:routes:- id:save_sessionuri:http://example.orgpredicates:- Path=/foo/**filters:- SaveSession当我们集成了Spring Secur</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十八）网关过滤器-续4</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</link>
       <pubDate>Fri, 30 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 RequestRateLimiterGatewayFilterFactory 属于限流类型的过滤器，该过滤器接收三个参数：令牌桶上限、平均填充速度和关键字Bean名称。 @Bean KeyResolver userKeyResolver() { return exchange -&amp;gt; Mono.just(exchange.getRequest().getQueryParams().getFirst(&amp;#34;user&amp;#34;)); } 定义限流键解析器 Bean 对象名字，在配置文件中将会使用到。 spring:cloud:gateway:routes:- id:requestratelimiter_routeuri:http://example.orgfilters:- RequestRateLimiter=10, 20,#{@userKeyResolver}如上配置了每个用户请求，每秒的速率限定为10，以及令牌桶的上限为20，而KeyResolv</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十七）网关过滤器-续3 </title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</link>
       <pubDate>Sat, 24 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 PrefixPathGatewayFilterFactory 属于路径类型的过滤器，只接收一个prefix前缀参数。 spring:cloud:gateway:routes:- id:prefixpath_routeuri:http://example.orgfilters:- PrefixPath=/mypathprefixpath_route的路由配置，会将所有匹配的请求的路径加上/mypath前缀。比如一个请求的路径是/hello，转发的时候变成/mypath/hello。 PreserveHostHeaderGatewayFilterFactory PreserveHostHeader 过滤器没有参数。 spring:cloud:gateway:routes:- id:preserve_host_routeuri:http://example.orgfilters:- Preserv</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十六）网关过滤器-Hystrix过滤器 </title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Fri, 23 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 Hystrix过滤器 属于熔断类型的过滤器，接收一个参数：HystrixCommand的命令。 spring:cloud:gateway:routes:- id:hytstrix_routeuri:http://example.orgfilters:- name:Hystrixargs:name:fallbackcmdfallbackUri:forward:/fallbackcontroller如上的配置将会用一个HystrixCommand名为fallb</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十五）网关过滤器-续2</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</link>
       <pubDate>Tue, 20 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 增加请求头部的过滤器 属于Header类的过滤器，该过滤器接收两个参数：头部名和值。 spring:cloud:gateway:routes:- id:add_request_header_routeuri:http://example.orgfilters:- AddRequestHeader=X-Request-Foo, Baradd_request_header_route路由将会为匹配的请求，增加X-Request-Foo:Bar头部，并将头部传递到下游。 public class AddRequestHeaderGatewayFilterFactory extends AbstractNameValueGatewayFilterFactory { @Override public GatewayFilter apply(NameValueConfig config) { return (exchange, chain) -&amp;gt; { ServerHttpRequest request = exchange.getRequest().mutate() .header(config.getName(), config.getValue()) .build(); return chain.filter(exchange.mutate().request(request).build()); }; } } 获取到配置中的过</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十四）网关过滤器-续1</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</link>
       <pubDate>Sun, 18 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关过滤器工厂接口 路由过滤器允许以某种方式修改传入的HTTP请求或传出的HTTP响应。 路由过滤器的作用域是一个特定的路由。Spring Cloud Gateway包含许多内置的GatewayFilter工厂。首先看一下GatewayFilterFactory接口中定义的方法。 public interface GatewayFilterFactory&amp;lt;C&amp;gt; extends ShortcutConfigurable, Configurable&amp;lt;C&amp;gt; { default GatewayFilter apply(Consumer&amp;lt;C&amp;gt; consumer) { C config = newConfig(); consumer.accept(config); return apply(config);</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十三）网关过滤器</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Fri, 16 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关过滤器 GatewayFilter网关过滤器用于拦截和链式处理web请求，可以实现横切的、与应用无关的需求，比如安全、访问超时的设定等等。 public interface GatewayFilter { Mono&amp;lt;Void&amp;gt; filter(ServerWebExchange exchange, GatewayFilterChain chain); } 接口中定义了唯一的方法#filter，处理web请求，并且可以通过给定的过滤器链传递到下一个过滤器。该接口有多个实现类，下面看一下该接口的类图</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十二）进阶应用路由断言续3</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</link>
       <pubDate>Sun, 11 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 HeaderRoutePredicateFactory HeaderRoutePredicateFactory属于header类型的路由断言工厂，接收两个参数：header名和一个正则表达式。 spring: cloud: gateway: routes: - id: header_route uri: http://example.org predicates: - Header=X-Request-Id, \d+ header_route中路由断言的配置，如果请求的头部中有X-Request-Id，并且该头部值匹配\d+正则表达式，则与该路由匹配。具</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十一）路由断言-续1 </title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
       <pubDate>Mon, 14 Sep 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 AfterRoutePredicateFactory AfterRoutePredicateFactory属于Datetime类型的路由断言工厂，接收一个日期参数。该路由断言用于匹配请求时间满足在配置时间之后。如： spring:cloud:gateway:routes:- id:after_routeuri:http://example.orgpredicates:- After=2018-03-20T10:42:47.789+08:00[Asia/Shanghai]上面的配置文件指定了路由的断言。关键</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十一）路由断言-续1 </title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
       <pubDate>Mon, 14 Sep 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 AfterRoutePredicateFactory AfterRoutePredicateFactory属于Datetime类型的路由断言工厂，接收一个日期参数。该路由断言用于匹配请求时间满足在配置时间之后。如： spring:cloud:gateway:routes:- id:after_routeuri:http://example.orgpredicates:- After=2018-03-20T10:42:47.789+08:00[Asia/Shanghai]上面的配置文件指定了路由的断言。关键</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十）路由断言</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</link>
       <pubDate>Thu, 03 Sep 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由断言 Spring Cloud Gateway 创建 Route 对象时，使用 RoutePredicateFactory 创建 Predicate对象。Predicate对象可以赋值给 Route。简单来说，路由断言用于匹配请求对应的 Route。路由决策工厂RoutePredicateFactory的定义如下： public interface RoutePredicateFactory&amp;lt;C&amp;gt; extends ShortcutConfigurable, Configurable&amp;lt;C&amp;gt; { String PATTERN_KEY = &amp;#34;pattern&amp;#34;; // useful for javadsl default Predicate&amp;lt;ServerWebExchange&amp;gt; apply(Consumer&amp;lt;C&amp;gt; consumer) { C config = newConfig(); consumer.accept(config); beforeApply(config); return apply(config); } default void beforeApply(C config) {} default String name() { return NameUtils.normalizeRoutePredicateName(getClass()); }</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十九）缓存方式的RouteLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</link>
       <pubDate>Mon, 31 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的RouteLocator CachingRouteLocator是缓存路由的RouteLocator实现类。想要获取路由，只需要调用RouteLocator接口的getRoutes() 方法即可。 public class CachingRouteLocator implements RouteLocator { private final RouteLocator delegate; private final AtomicReference&amp;lt;List&amp;lt;Route&amp;gt;&amp;gt; cachedRoutes = new AtomicReference&amp;lt;&amp;gt;(); public CachingRouteLocator(RouteLocator delegate) { this.delegate = delegate; this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&amp;lt;Route&amp;gt; collectRoutes() { List&amp;lt;Route&amp;gt; routes = this.delegate.getRoutes().collectList().block(); AnnotationAwareOrderComparator.sort(routes); return routes; } @Override public Flux&amp;lt;Route&amp;gt; getRoutes() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 这</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十八）组合的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Sat, 29 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定位器 直接获取路由的方法是通过RouteLocator接口获取。同样，该顶级接口有多个实现类，如下为RouteLocator的类图。 public interface RouteLocator { Flux&amp;lt;Route&amp;gt; getRoutes(); } 与上一节介绍的RouteDefinitionLocator接口类似，只有一个getRoutes方法用以获取路由信息。 public class Route implements Ordered { //路由Id private final String id; //</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十七）组合的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Fri, 28 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 组合的RouteDefinitionLocator CompositeRouteDefinitionLocator组合多种 RouteDefinitionLocator的实现，为 RouteDefinitionRouteLocator提供统一入口。代码如下： public class CompositeRouteDefinitionLocator implements RouteDefinitionLocator { private final Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates; public CompositeRouteDefinitionLocator(Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates) { this.delegates = delegates; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return this.delegates.flatMap(RouteDefinitionLocator::getRouteDefinitions);</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十六）基于服务发现的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Sat, 22 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于服务发现的RouteDefinitionLocator DiscoveryClientRouteDefinitionLocator是通过服务发现组件获取注册中心的服务，即路由定义的源变成了配置中心了，服务注册于发现组件配合负载均衡，这个在微服务架构中应该是很常用的组合，好处很多，如多实例部署负载均衡</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十五）基于属性配置的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Wed, 19 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于属性配置的RouteDefinitionLocator PropertiesRouteDefinitionLocator从类名就可以知道是从配置文件读取路由配置，如YAML、Properties等配置文件。 public class PropertiesRouteDefinitionLocator implements RouteDefinitionLocator { private final GatewayProperties properties; public PropertiesRouteDefinitionLocator(GatewayProperties properties) { this.properties = properties; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.properties.getRoutes()); } } 实现很简单，通过构造函数传入的Gatew</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十四）缓存方式的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Tue, 18 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的RouteDefinitionLocator 该路由定义定位器结合了缓存，使用时需要传入具体的代理定位器，通过CAS操作获取完整的路由定义信息。 public class CachingRouteDefinitionLocator implements RouteDefinitionLocator { private final RouteDefinitionLocator delegate; private final AtomicReference&amp;lt;List&amp;lt;RouteDefinition&amp;gt;&amp;gt; cachedRoutes = new AtomicReference&amp;lt;&amp;gt;(); public CachingRouteDefinitionLocator(RouteDefinitionLocator delegate) { this.delegate = delegate; //原子类中提供的CAS操作，设置给定的更新值到当前值。 this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&amp;lt;RouteDefinition&amp;gt; collectRoutes() { return this.delegate.getRouteDefinitions().collectList().block(); } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 由于赋</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十三）路由定义的数据访问操作</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</link>
       <pubDate>Wed, 05 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定义的数据访问操作 RouteDefinitionRepository接口中的方法用于对RouteDefinition进行增、删、查操作。 public interface RouteDefinitionRepository extends RouteDefinitionLocator, RouteDefinitionWriter { } //RouteDefinitionWriter对路由定义进行操作 public interface RouteDefinitionWriter { Mono&amp;lt;Void&amp;gt; save(Mono&amp;lt;RouteDefinition&amp;gt; route); Mono&amp;lt;Void&amp;gt; delete(Mono&amp;lt;String&amp;gt; routeId); } 该接口继承了RouteDefinitionWriter，对路</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十二）RouteDefinitionLocator与RouteDefinitionLocator </title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
       <pubDate>Tue, 14 Jul 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定位器 直接获取路由的方法是通过RouteLocator接口获取。同样，该顶级接口有多个实现类，如下为RouteLocator的类图。 public interface RouteLocator { Flux&amp;lt;Route&amp;gt; getRoutes(); } 与上一节介绍的RouteDefinitionLocator接口类似，只有一个getRoutes方法用以获取路由信息。 public class Route implements Ordered { //路由Id private final String id; //</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十一）缓存方式的 RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
       <pubDate>Fri, 03 Jul 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 组合的RouteDefinitionLocator CompositeRouteDefinitionLocator组合多种 RouteDefinitionLocator的实现，为 RouteDefinitionRouteLocator提供统一入口。代码如下： public class CompositeRouteDefinitionLocator implements RouteDefinitionLocator { private final Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates; public CompositeRouteDefinitionLocator(Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates) { this.delegates = delegates; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return this.delegates.flatMap(RouteDefinitionLocator::getRouteDefinitions);</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十）RouteDefinitionLocator与RouteDefinitionLocator </title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
       <pubDate>Mon, 29 Jun 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于属性配置的RouteDefinitionLocator PropertiesRouteDefinitionLocator从类名就可以知道是从配置文件读取路由配置，如YAML、Properties等配置文件。 public class PropertiesRouteDefinitionLocator implements RouteDefinitionLocator { private final GatewayProperties properties; public PropertiesRouteDefinitionLocator(GatewayProperties properties) { this.properties = properties; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.properties.getRoutes()); } } 实现很简单，通过构造函数传入的Gatew</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（九）缓存方式的 RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
       <pubDate>Sun, 07 Jun 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的 RouteDefinitionLocator 该路由定义定位器结合了缓存，使用时需要传入具体的代理定位器，通过CAS操作获取完整的路由定义信息。 public class CachingRouteDefinitionLocator implements RouteDefinitionLocator { private final RouteDefinitionLocator delegate; private final AtomicReference&amp;lt;List&amp;lt;RouteDefinition&amp;gt;&amp;gt; cachedRoutes = new AtomicReference&amp;lt;&amp;gt;(); public CachingRouteDefinitionLocator(RouteDefinitionLocator delegate) { this.delegate = delegate; //原子类中提供的CAS操作，设置给定的更新值到当前值。 this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&amp;lt;RouteDefinition&amp;gt; collectRoutes() { return this.delegate.getRouteDefinitions().collectList().block(); } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 由于赋值操作不是线程安全的。若想不用锁来实现，可</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（八）路由定义定位器</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</link>
       <pubDate>Tue, 19 May 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定义定位器 RouteDefinitionLocator是路由定义定位器的顶级接口，具体的路由定义定位器都继承自该接口，其类图如下。 public interface RouteDefinitionLocator { Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions(); } 可以看到定义了唯一一个方法，用以获取RouteDefinition。RouteDefinition对象作为属性定义在GatewayProperties中，</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（七）过滤器的web处理器</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sat, 02 May 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 过滤器的web处理器 FilteringWebHandler通过创建请求Route对应的 GatewayFilterChain 在网关处进行过滤处理。 public class FilteringWebHandler implements WebHandler { private final List&amp;lt;GatewayFilter&amp;gt; globalFilters; public FilteringWebHandler(List&amp;lt;GlobalFilter&amp;gt; globalFilters) { this.globalFilters = loadFilters(globalFilters); } private static List&amp;lt;GatewayFilter&amp;gt; loadFilters(List&amp;lt;GlobalFilter&amp;gt; filters) { return filters.stream() .map(filter -&amp;gt; { //适配器模式，用以适配GlobalFilter GatewayFilterAdapter gatewayFilter = new GatewayFilterAdapter(filter); //判断是否实现Ordered接口 if (filter instanceof Ordered) { //实现了Ordered接口，则</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（六）网关处理器</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sun, 19 Apr 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关处理器 请求到达网关之后，会有各种Web处理器对请求进行匹配与处理，下图为Spring Cloud Gateway中主要涉及到的WebHandler： DispatcherHandler -&amp;gt; RoutePredicateHandlerMapping -&amp;gt; FilteringWebHandler -&amp;gt; DefaultGatewayFilterChain 按照顺序，这一小节将会讲解前两个，负责对请求路由选择和定位。 请求的分发器 Spring Cloud Gateway 引入了Spring-webflux，DispatcherHandler</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（五）源码解析之初始化配置</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Sun, 12 Apr 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 源码解析 作为系统的统一入口，API网关可提供请求路由与组合、协议转换、安全认证、服务鉴权、流量控制与日志监控等服务。当企业将所有的应用使用微服务的架构管理起来，那么API网关就起到了微服务网关的作用。 而当企业只是将系统与系统之间的调用使用REST方式进行访问时使用API网关对调用进行管理，那么API网</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（四）网关的其他应用</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</link>
       <pubDate>Thu, 19 Mar 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 kotlin自定义路由 Spring Cloud Gateway可以使用kotlin自定义路由： @Configuration class AdditionalRoutes { @Bean fun additionalRouteLocator(builder: RouteLocatorBuilder): RouteLocator = builder.routes { route(id = &amp;#34;test-kotlin&amp;#34;) { path(&amp;#34;/image/png&amp;#34;) filters { addResponseHeader(&amp;#34;X-TestHeader&amp;#34;, &amp;#34;foobar&amp;#34;) } uri(&amp;#34;http://httpbin.org:80&amp;#34;) } } } 当请求的路径是/image/png，将会转发到http://httpbin.org:80，并设置了过滤器，在其响应头中加上了X-TestHeader: foobar头部。 websocket 还可以配</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三）搭建网关</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</link>
       <pubDate>Mon, 02 Mar 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关服务 网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。 依赖 需要引入的依赖： &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-actuator&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!--依赖于webflux，必须引入--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-webflux&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-gateway-core&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!--服务发现组件，排除web依赖--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-starter-consul-discovery&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.0.0.M6&amp;lt;/version&amp;gt; &amp;lt;exclusions&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-web&amp;lt;/artifactId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;/exclusions&amp;gt; &amp;lt;/dependency&amp;gt; //kotlin依赖 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jetbrains.kotlin&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;kotlin-stdlib&amp;lt;/artifactId&amp;gt; &amp;lt;optional&amp;gt;true&amp;lt;/optional&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jetbrains.kotlin&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;kotlin-reflect&amp;lt;/artifactId&amp;gt; &amp;lt;optional&amp;gt;true&amp;lt;/optional&amp;gt; &amp;lt;/dependency&amp;gt; 如上引入了kotli</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二）快速入门</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
       <pubDate>Sun, 09 Feb 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基础应用 示例启动两个服务：Gateway-Server和User-Server。模拟的场景为，客户端请求后端服务，网关提供后端服务的统一入口。后端的服务都注册到服务发现Consul（搭建zk，Eureka都可以，笔者比较习惯使用Consul）。网关通过负载均衡转发到具体的后端服务。 用户服务 用户服务功能</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（一）总体概述</title>
-      <link>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</link>
+      <link>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</link>
       <pubDate>Tue, 04 Feb 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</guid>
+      <guid>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 当使用单体应用程序架构时，客户端（Web或移动端）通过向后端应用程序发起一次REST调用来获取数据。负载均衡器将请求路由给N个相同的应用程序实例中的一个。然后应用程序会查询各种数据库表，并将响应返回给客户端。微服务架构下，单体应用被切割成多个微服务，如果将所有的微服务直接对外暴露，势必会出现安全方面的</description>
     </item>
     

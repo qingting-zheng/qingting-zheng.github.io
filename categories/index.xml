@@ -2,89 +2,89 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on QingTing</title>
-    <link>https://qingting-zheng.github.io:1443/categories/</link>
+    <link>https://qingting-zheng.github.io:443/categories/</link>
     <description>Recent content in Categories on QingTing</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <lastBuildDate>Tue, 29 Dec 2020 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:1443/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Dec 2020 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:443/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>微服务网关解析</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Tue, 29 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Feign 解析</title>
-      <link>https://qingting-zheng.github.io:1443/categories/feign-%E8%A7%A3%E6%9E%90/</link>
+      <link>https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 16 Nov 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/feign-%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ribbon 解析</title>
-      <link>https://qingting-zheng.github.io:1443/categories/ribbon-%E8%A7%A3%E6%9E%90/</link>
+      <link>https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Wed, 01 May 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/ribbon-%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90/</guid>
       <description></description>
     </item>
     
     <item>
       <title>品鉴评论</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E5%93%81%E9%89%B4%E8%AF%84%E8%AE%BA/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E5%93%81%E9%89%B4%E8%AF%84%E8%AE%BA/</link>
       <pubDate>Mon, 11 Mar 2019 20:35:12 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E5%93%81%E9%89%B4%E8%AF%84%E8%AE%BA/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E5%93%81%E9%89%B4%E8%AF%84%E8%AE%BA/</guid>
       <description></description>
     </item>
     
     <item>
       <title>深入解析Eureka</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka/</link>
       <pubDate>Mon, 26 Nov 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka/</guid>
       <description></description>
     </item>
     
     <item>
       <title>杂技浅尝</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E6%9D%82%E6%8A%80%E6%B5%85%E5%B0%9D/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E6%9D%82%E6%8A%80%E6%B5%85%E5%B0%9D/</link>
       <pubDate>Sat, 25 Aug 2018 22:59:59 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E6%9D%82%E6%8A%80%E6%B5%85%E5%B0%9D/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E6%9D%82%E6%8A%80%E6%B5%85%E5%B0%9D/</guid>
       <description></description>
     </item>
     
     <item>
       <title>论文精读</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/</link>
       <pubDate>Mon, 30 Jul 2018 17:41:23 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/</guid>
       <description></description>
     </item>
     
     <item>
       <title>对酒当歌</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E5%AF%B9%E9%85%92%E5%BD%93%E6%AD%8C/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E5%AF%B9%E9%85%92%E5%BD%93%E6%AD%8C/</link>
       <pubDate>Mon, 26 Mar 2018 23:58:45 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E5%AF%B9%E9%85%92%E5%BD%93%E6%AD%8C/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E5%AF%B9%E9%85%92%E5%BD%93%E6%AD%8C/</guid>
       <description></description>
     </item>
     
     <item>
       <title>学海无涯</title>
-      <link>https://qingting-zheng.github.io:1443/categories/%E5%AD%A6%E6%B5%B7%E6%97%A0%E6%B6%AF/</link>
+      <link>https://qingting-zheng.github.io:443/categories/%E5%AD%A6%E6%B5%B7%E6%97%A0%E6%B6%AF/</link>
       <pubDate>Sun, 25 Mar 2018 23:48:35 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:1443/categories/%E5%AD%A6%E6%B5%B7%E6%97%A0%E6%B6%AF/</guid>
+      <guid>https://qingting-zheng.github.io:443/categories/%E5%AD%A6%E6%B5%B7%E6%97%A0%E6%B6%AF/</guid>
       <description></description>
     </item>
     

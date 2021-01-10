@@ -2,1232 +2,1232 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>QingTing</title>
-    <link>https://qingting-zheng.github.io:443/</link>
+    <link>https://qingting-zheng.github.io:1443/</link>
     <description>Recent content on QingTing</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <lastBuildDate>Tue, 29 Dec 2020 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:443/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Dec 2020 10:01:15 +0800</lastBuildDate><atom:link href="https://qingting-zheng.github.io:1443/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十六）API 端点概览</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</link>
       <pubDate>Tue, 29 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%85%ADapi-%E7%AB%AF%E7%82%B9%E6%A6%82%E8%A7%88/</guid>
       <description>新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 API端点 Spring Cloud Gateway提供了内置的端点，用于提供路由相关的操作，如过滤器列表、路由列表、单个路由信息等等。首先看一下内置端点的构造器。 @RestControllerEndpoint(id = &amp;#34;gateway&amp;#34;) public class GatewayControllerEndpoint implements ApplicationEventPublisherAware { //应用事件发布器 private ApplicationEventPublisher publisher; public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List&amp;lt;GlobalFilter&amp;gt; globalFilters, List&amp;lt;GatewayFilterFactory&amp;gt; GatewayFilters, RouteDefinitionWriter routeDefinitionWriter, RouteLocator routeLocator) { this.routeDefinitionLocator = routeDefinitionLocator; this.globalFilters = globalFilters; this.GatewayFilters = GatewayFilters; this.routeDefinitionWriter = routeDefinitionWriter; this.routeLocator = routeLocator; } //... } Spring Cloud Gateway的内置端点纳管到Spring Boot-Act</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十五）全局过滤器-其他过滤器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Sun, 27 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%94%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 WebClientHttpRoutingFilter WebClientHttpRoutingFilter，Http路由网关过滤器。其根据http或https前缀过滤处理，使用基于 WebClient 实现的 HttpClient 请求后端 Http 服务。对于http或https前缀的过滤处理，NettyRoutingFilter是Spring Cloud Gateway的默认实现。基于WebClient的实现还处</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十四）全局过滤器-NettyWriteResponseFilter与RouteToRequestUrlFilter</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</link>
       <pubDate>Mon, 21 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E5%9B%9B%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettywriteresponsefilter%E4%B8%8Eroutetorequesturlfilter/</guid>
       <description>新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 NettyWriteResponseFilter 与NettyRoutingFilter成对使用。“预”过滤阶段没有任何内容，因为CLIENT_RESPONSE_ATTR在WebHandler运行之前不会被添加。 @Override public Mono&amp;lt;Void&amp;gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) { return chain.filter(exchange).then(Mono.defer(() -&amp;gt; { HttpClientResponse clientResponse = exchange.getAttribute(CLIENT_RESPONSE_ATTR); if (clientResponse == null) { return Mono.empty(); } ServerHttpResponse response = exchange.getResponse(); //将响应写到客户端 NettyDataBufferFactory factory = (NettyDataBufferFactory) response.bufferFactory(); final Flux&amp;lt;NettyDataBuffer&amp;gt; body = clientResponse.receive() .retain() .map(factory::wrap); MediaType contentType = response.getHeaders().getContentType(); return (isStreamingMediaType(contentType) ? response.writeAndFlushWith(body.map(Flux::just)) : response.writeWith(body)); })); } 如果Server</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十三）全局过滤器-NettyRoutingFilter</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</link>
       <pubDate>Tue, 15 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-nettyroutingfilter/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 NettyRoutingFilter 如果位于ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR请求属性中的URL具有http或https前缀，Netty路由过滤器将运行。 它使用Netty HttpClient进行下游代理请求。 响应放在ServerWebExchangeUtils.CLIENT_</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十二）全局过滤器-LoadBalancerClientFilter</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</link>
       <pubDate>Sat, 05 Dec 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%BA%8C%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8-loadbalancerclientfilter/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 LoadBalancerClientFilter LoadBalancerClientFilter在交换属性ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR中查找URI。 如果url有一个lb前缀，即lb：// myservice，它将使用LoadBalancerClient将名称解析为实际的主机和端口，如</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十一）全局过滤器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Mon, 30 Nov 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E4%B8%80%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 全局过滤器 GlobalFilter接口与GatewayFilter具有相同的方法定义。 全局过滤器是一系列特殊的过滤器，将会根据条件应用到所有的路由中，该接口的设计和用法在将老的版本中可能会发生变化。全局过滤器用于拦截链式的web请求，可以实现横切的、与应用无关的需求，比如安全、访问超时的设定等等。前面</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三十）网关过滤器-续6</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</link>
       <pubDate>Mon, 23 Nov 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E5%8D%81%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD6/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 SetRequestHeaderGatewayFilterFactory 属于Header类型的过滤器，该过滤器接收两个参数：头部名和值。 spring:cloud:gateway:routes:- id:setrequestheader_routeuri:http://example.orgfilters:- SetRequestHeader=X-request-Foo, Bar当请求经过网关转发时，该过滤器将会用给定的名字替换所有的头部，而不是增加。因此传递到下游的请求头部为X-request-Foo: Bar。 SetResponseHeaderGatewayFilterFactory 属于Header类型的过滤器，该过滤器接收两个参数：头部名和值。 spring:cloud:gateway:routes:- id:setresponseheader_routeuri:http://example.orgfilters:- SetResponseHeader=X-Response-Foo, Bar该过滤器将</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十九）网关过滤器-续5</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</link>
       <pubDate>Tue, 03 Nov 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B9%9D%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD5/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 SaveSessionGatewayFilterFactory 属于session类型的过滤器，在转发到调用的下游时，该过滤器强制执行WebSession::save操作。这是一种特殊的用途，当使用类似于Spring Session MongoDB这种惰性数据存储并且需要确保在转发之前session的数据已经被存储。 spring:cloud:gateway:routes:- id:save_sessionuri:http://example.orgpredicates:- Path=/foo/**filters:- SaveSession当我们集成了Spring Secur</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十八）网关过滤器-续4</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</link>
       <pubDate>Fri, 30 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AB%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD4/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 RequestRateLimiterGatewayFilterFactory 属于限流类型的过滤器，该过滤器接收三个参数：令牌桶上限、平均填充速度和关键字Bean名称。 @Bean KeyResolver userKeyResolver() { return exchange -&amp;gt; Mono.just(exchange.getRequest().getQueryParams().getFirst(&amp;#34;user&amp;#34;)); } 定义限流键解析器 Bean 对象名字，在配置文件中将会使用到。 spring:cloud:gateway:routes:- id:requestratelimiter_routeuri:http://example.orgfilters:- RequestRateLimiter=10, 20,#{@userKeyResolver}如上配置了每个用户请求，每秒的速率限定为10，以及令牌桶的上限为20，而KeyResolv</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十七）网关过滤器-续3 </title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</link>
       <pubDate>Sat, 24 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%83%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD3/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 PrefixPathGatewayFilterFactory 属于路径类型的过滤器，只接收一个prefix前缀参数。 spring:cloud:gateway:routes:- id:prefixpath_routeuri:http://example.orgfilters:- PrefixPath=/mypathprefixpath_route的路由配置，会将所有匹配的请求的路径加上/mypath前缀。比如一个请求的路径是/hello，转发的时候变成/mypath/hello。 PreserveHostHeaderGatewayFilterFactory PreserveHostHeader 过滤器没有参数。 spring:cloud:gateway:routes:- id:preserve_host_routeuri:http://example.orgfilters:- Preserv</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十六）网关过滤器-Hystrix过滤器 </title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Fri, 23 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%85%AD%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-hystrix%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 Hystrix过滤器 属于熔断类型的过滤器，接收一个参数：HystrixCommand的命令。 spring:cloud:gateway:routes:- id:hytstrix_routeuri:http://example.orgfilters:- name:Hystrixargs:name:fallbackcmdfallbackUri:forward:/fallbackcontroller如上的配置将会用一个HystrixCommand名为fallb</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十五）网关过滤器-续2</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</link>
       <pubDate>Tue, 20 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%94%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD2/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 增加请求头部的过滤器 属于Header类的过滤器，该过滤器接收两个参数：头部名和值。 spring:cloud:gateway:routes:- id:add_request_header_routeuri:http://example.orgfilters:- AddRequestHeader=X-Request-Foo, Baradd_request_header_route路由将会为匹配的请求，增加X-Request-Foo:Bar头部，并将头部传递到下游。 public class AddRequestHeaderGatewayFilterFactory extends AbstractNameValueGatewayFilterFactory { @Override public GatewayFilter apply(NameValueConfig config) { return (exchange, chain) -&amp;gt; { ServerHttpRequest request = exchange.getRequest().mutate() .header(config.getName(), config.getValue()) .build(); return chain.filter(exchange.mutate().request(request).build()); }; } } 获取到配置中的过</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十四）网关过滤器-续1</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</link>
       <pubDate>Sun, 18 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关过滤器工厂接口 路由过滤器允许以某种方式修改传入的HTTP请求或传出的HTTP响应。 路由过滤器的作用域是一个特定的路由。Spring Cloud Gateway包含许多内置的GatewayFilter工厂。首先看一下GatewayFilterFactory接口中定义的方法。 public interface GatewayFilterFactory&amp;lt;C&amp;gt; extends ShortcutConfigurable, Configurable&amp;lt;C&amp;gt; { default GatewayFilter apply(Consumer&amp;lt;C&amp;gt; consumer) { C config = newConfig(); consumer.accept(config); return apply(config);</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十三）网关过滤器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
       <pubDate>Fri, 16 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关过滤器 GatewayFilter网关过滤器用于拦截和链式处理web请求，可以实现横切的、与应用无关的需求，比如安全、访问超时的设定等等。 public interface GatewayFilter { Mono&amp;lt;Void&amp;gt; filter(ServerWebExchange exchange, GatewayFilterChain chain); } 接口中定义了唯一的方法#filter，处理web请求，并且可以通过给定的过滤器链传递到下一个过滤器。该接口有多个实现类，下面看一下该接口的类图</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十二）进阶应用路由断言续3</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</link>
       <pubDate>Sun, 11 Oct 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 HeaderRoutePredicateFactory HeaderRoutePredicateFactory属于header类型的路由断言工厂，接收两个参数：header名和一个正则表达式。 spring: cloud: gateway: routes: - id: header_route uri: http://example.org predicates: - Header=X-Request-Id, \d+ header_route中路由断言的配置，如果请求的头部中有X-Request-Id，并且该头部值匹配\d+正则表达式，则与该路由匹配。具</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十一）路由断言-续1 </title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
       <pubDate>Mon, 14 Sep 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 AfterRoutePredicateFactory AfterRoutePredicateFactory属于Datetime类型的路由断言工厂，接收一个日期参数。该路由断言用于匹配请求时间满足在配置时间之后。如： spring:cloud:gateway:routes:- id:after_routeuri:http://example.orgpredicates:- After=2018-03-20T10:42:47.789+08:00[Asia/Shanghai]上面的配置文件指定了路由的断言。关键</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十一）路由断言-续1 </title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</link>
       <pubDate>Mon, 14 Sep 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%80%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 AfterRoutePredicateFactory AfterRoutePredicateFactory属于Datetime类型的路由断言工厂，接收一个日期参数。该路由断言用于匹配请求时间满足在配置时间之后。如： spring:cloud:gateway:routes:- id:after_routeuri:http://example.orgpredicates:- After=2018-03-20T10:42:47.789+08:00[Asia/Shanghai]上面的配置文件指定了路由的断言。关键</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二十）路由断言</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</link>
       <pubDate>Thu, 03 Sep 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由断言 Spring Cloud Gateway 创建 Route 对象时，使用 RoutePredicateFactory 创建 Predicate对象。Predicate对象可以赋值给 Route。简单来说，路由断言用于匹配请求对应的 Route。路由决策工厂RoutePredicateFactory的定义如下： public interface RoutePredicateFactory&amp;lt;C&amp;gt; extends ShortcutConfigurable, Configurable&amp;lt;C&amp;gt; { String PATTERN_KEY = &amp;#34;pattern&amp;#34;; // useful for javadsl default Predicate&amp;lt;ServerWebExchange&amp;gt; apply(Consumer&amp;lt;C&amp;gt; consumer) { C config = newConfig(); consumer.accept(config); beforeApply(config); return apply(config); } default void beforeApply(C config) {} default String name() { return NameUtils.normalizeRoutePredicateName(getClass()); }</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十九）缓存方式的RouteLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</link>
       <pubDate>Mon, 31 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的RouteLocator CachingRouteLocator是缓存路由的RouteLocator实现类。想要获取路由，只需要调用RouteLocator接口的getRoutes() 方法即可。 public class CachingRouteLocator implements RouteLocator { private final RouteLocator delegate; private final AtomicReference&amp;lt;List&amp;lt;Route&amp;gt;&amp;gt; cachedRoutes = new AtomicReference&amp;lt;&amp;gt;(); public CachingRouteLocator(RouteLocator delegate) { this.delegate = delegate; this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&amp;lt;Route&amp;gt; collectRoutes() { List&amp;lt;Route&amp;gt; routes = this.delegate.getRoutes().collectList().block(); AnnotationAwareOrderComparator.sort(routes); return routes; } @Override public Flux&amp;lt;Route&amp;gt; getRoutes() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 这</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十八）组合的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Sat, 29 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定位器 直接获取路由的方法是通过RouteLocator接口获取。同样，该顶级接口有多个实现类，如下为RouteLocator的类图。 public interface RouteLocator { Flux&amp;lt;Route&amp;gt; getRoutes(); } 与上一节介绍的RouteDefinitionLocator接口类似，只有一个getRoutes方法用以获取路由信息。 public class Route implements Ordered { //路由Id private final String id; //</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十七）组合的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Fri, 28 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%83%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 组合的RouteDefinitionLocator CompositeRouteDefinitionLocator组合多种 RouteDefinitionLocator的实现，为 RouteDefinitionRouteLocator提供统一入口。代码如下： public class CompositeRouteDefinitionLocator implements RouteDefinitionLocator { private final Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates; public CompositeRouteDefinitionLocator(Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates) { this.delegates = delegates; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return this.delegates.flatMap(RouteDefinitionLocator::getRouteDefinitions);</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十六）基于服务发现的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Sat, 22 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AD%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于服务发现的RouteDefinitionLocator DiscoveryClientRouteDefinitionLocator是通过服务发现组件获取注册中心的服务，即路由定义的源变成了配置中心了，服务注册于发现组件配合负载均衡，这个在微服务架构中应该是很常用的组合，好处很多，如多实例部署负载均衡</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十五）基于属性配置的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Wed, 19 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%94%E5%9F%BA%E4%BA%8E%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于属性配置的RouteDefinitionLocator PropertiesRouteDefinitionLocator从类名就可以知道是从配置文件读取路由配置，如YAML、Properties等配置文件。 public class PropertiesRouteDefinitionLocator implements RouteDefinitionLocator { private final GatewayProperties properties; public PropertiesRouteDefinitionLocator(GatewayProperties properties) { this.properties = properties; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.properties.getRoutes()); } } 实现很简单，通过构造函数传入的Gatew</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十四）缓存方式的RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</link>
       <pubDate>Tue, 18 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%9B%9B%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的RouteDefinitionLocator 该路由定义定位器结合了缓存，使用时需要传入具体的代理定位器，通过CAS操作获取完整的路由定义信息。 public class CachingRouteDefinitionLocator implements RouteDefinitionLocator { private final RouteDefinitionLocator delegate; private final AtomicReference&amp;lt;List&amp;lt;RouteDefinition&amp;gt;&amp;gt; cachedRoutes = new AtomicReference&amp;lt;&amp;gt;(); public CachingRouteDefinitionLocator(RouteDefinitionLocator delegate) { this.delegate = delegate; //原子类中提供的CAS操作，设置给定的更新值到当前值。 this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&amp;lt;RouteDefinition&amp;gt; collectRoutes() { return this.delegate.getRouteDefinitions().collectList().block(); } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 由于赋</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十三）路由定义的数据访问操作</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</link>
       <pubDate>Wed, 05 Aug 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%89%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定义的数据访问操作 RouteDefinitionRepository接口中的方法用于对RouteDefinition进行增、删、查操作。 public interface RouteDefinitionRepository extends RouteDefinitionLocator, RouteDefinitionWriter { } //RouteDefinitionWriter对路由定义进行操作 public interface RouteDefinitionWriter { Mono&amp;lt;Void&amp;gt; save(Mono&amp;lt;RouteDefinition&amp;gt; route); Mono&amp;lt;Void&amp;gt; delete(Mono&amp;lt;String&amp;gt; routeId); } 该接口继承了RouteDefinitionWriter，对路</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十二）RouteDefinitionLocator与RouteDefinitionLocator </title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
       <pubDate>Tue, 14 Jul 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%BA%8Croutedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定位器 直接获取路由的方法是通过RouteLocator接口获取。同样，该顶级接口有多个实现类，如下为RouteLocator的类图。 public interface RouteLocator { Flux&amp;lt;Route&amp;gt; getRoutes(); } 与上一节介绍的RouteDefinitionLocator接口类似，只有一个getRoutes方法用以获取路由信息。 public class Route implements Ordered { //路由Id private final String id; //</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十一）缓存方式的 RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
       <pubDate>Fri, 03 Jul 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B8%80%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 组合的RouteDefinitionLocator CompositeRouteDefinitionLocator组合多种 RouteDefinitionLocator的实现，为 RouteDefinitionRouteLocator提供统一入口。代码如下： public class CompositeRouteDefinitionLocator implements RouteDefinitionLocator { private final Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates; public CompositeRouteDefinitionLocator(Flux&amp;lt;RouteDefinitionLocator&amp;gt; delegates) { this.delegates = delegates; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return this.delegates.flatMap(RouteDefinitionLocator::getRouteDefinitions);</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（十）RouteDefinitionLocator与RouteDefinitionLocator </title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</link>
       <pubDate>Mon, 29 Jun 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81routedefinitionlocator%E4%B8%8Eroutedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基于属性配置的RouteDefinitionLocator PropertiesRouteDefinitionLocator从类名就可以知道是从配置文件读取路由配置，如YAML、Properties等配置文件。 public class PropertiesRouteDefinitionLocator implements RouteDefinitionLocator { private final GatewayProperties properties; public PropertiesRouteDefinitionLocator(GatewayProperties properties) { this.properties = properties; } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.properties.getRoutes()); } } 实现很简单，通过构造函数传入的Gatew</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（九）缓存方式的 RouteDefinitionLocator</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</link>
       <pubDate>Sun, 07 Jun 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的 RouteDefinitionLocator 该路由定义定位器结合了缓存，使用时需要传入具体的代理定位器，通过CAS操作获取完整的路由定义信息。 public class CachingRouteDefinitionLocator implements RouteDefinitionLocator { private final RouteDefinitionLocator delegate; private final AtomicReference&amp;lt;List&amp;lt;RouteDefinition&amp;gt;&amp;gt; cachedRoutes = new AtomicReference&amp;lt;&amp;gt;(); public CachingRouteDefinitionLocator(RouteDefinitionLocator delegate) { this.delegate = delegate; //原子类中提供的CAS操作，设置给定的更新值到当前值。 this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&amp;lt;RouteDefinition&amp;gt; collectRoutes() { return this.delegate.getRouteDefinitions().collectList().block(); } @Override public Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 由于赋值操作不是线程安全的。若想不用锁来实现，可</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（八）路由定义定位器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</link>
       <pubDate>Tue, 19 May 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定义定位器 RouteDefinitionLocator是路由定义定位器的顶级接口，具体的路由定义定位器都继承自该接口，其类图如下。 public interface RouteDefinitionLocator { Flux&amp;lt;RouteDefinition&amp;gt; getRouteDefinitions(); } 可以看到定义了唯一一个方法，用以获取RouteDefinition。RouteDefinition对象作为属性定义在GatewayProperties中，</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（七）过滤器的web处理器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sat, 02 May 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%83%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84web%E5%A4%84%E7%90%86%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 过滤器的web处理器 FilteringWebHandler通过创建请求Route对应的 GatewayFilterChain 在网关处进行过滤处理。 public class FilteringWebHandler implements WebHandler { private final List&amp;lt;GatewayFilter&amp;gt; globalFilters; public FilteringWebHandler(List&amp;lt;GlobalFilter&amp;gt; globalFilters) { this.globalFilters = loadFilters(globalFilters); } private static List&amp;lt;GatewayFilter&amp;gt; loadFilters(List&amp;lt;GlobalFilter&amp;gt; filters) { return filters.stream() .map(filter -&amp;gt; { //适配器模式，用以适配GlobalFilter GatewayFilterAdapter gatewayFilter = new GatewayFilterAdapter(filter); //判断是否实现Ordered接口 if (filter instanceof Ordered) { //实现了Ordered接口，则</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（六）网关处理器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sun, 19 Apr 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AD%E7%BD%91%E5%85%B3%E5%A4%84%E7%90%86%E5%99%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关处理器 请求到达网关之后，会有各种Web处理器对请求进行匹配与处理，下图为Spring Cloud Gateway中主要涉及到的WebHandler： DispatcherHandler -&amp;gt; RoutePredicateHandlerMapping -&amp;gt; FilteringWebHandler -&amp;gt; DefaultGatewayFilterChain 按照顺序，这一小节将会讲解前两个，负责对请求路由选择和定位。 请求的分发器 Spring Cloud Gateway 引入了Spring-webflux，DispatcherHandler</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（五）源码解析之初始化配置</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Sun, 12 Apr 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%94%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 源码解析 作为系统的统一入口，API网关可提供请求路由与组合、协议转换、安全认证、服务鉴权、流量控制与日志监控等服务。当企业将所有的应用使用微服务的架构管理起来，那么API网关就起到了微服务网关的作用。 而当企业只是将系统与系统之间的调用使用REST方式进行访问时使用API网关对调用进行管理，那么API网</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（四）网关的其他应用</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</link>
       <pubDate>Thu, 19 Mar 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 kotlin自定义路由 Spring Cloud Gateway可以使用kotlin自定义路由： @Configuration class AdditionalRoutes { @Bean fun additionalRouteLocator(builder: RouteLocatorBuilder): RouteLocator = builder.routes { route(id = &amp;#34;test-kotlin&amp;#34;) { path(&amp;#34;/image/png&amp;#34;) filters { addResponseHeader(&amp;#34;X-TestHeader&amp;#34;, &amp;#34;foobar&amp;#34;) } uri(&amp;#34;http://httpbin.org:80&amp;#34;) } } } 当请求的路径是/image/png，将会转发到http://httpbin.org:80，并设置了过滤器，在其响应头中加上了X-TestHeader: foobar头部。 websocket 还可以配</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（三）搭建网关</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</link>
       <pubDate>Mon, 02 Mar 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关服务 网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。 依赖 需要引入的依赖： &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-actuator&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!--依赖于webflux，必须引入--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-webflux&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-gateway-core&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!--服务发现组件，排除web依赖--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-starter-consul-discovery&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.0.0.M6&amp;lt;/version&amp;gt; &amp;lt;exclusions&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-web&amp;lt;/artifactId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;/exclusions&amp;gt; &amp;lt;/dependency&amp;gt; //kotlin依赖 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jetbrains.kotlin&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;kotlin-stdlib&amp;lt;/artifactId&amp;gt; &amp;lt;optional&amp;gt;true&amp;lt;/optional&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jetbrains.kotlin&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;kotlin-reflect&amp;lt;/artifactId&amp;gt; &amp;lt;optional&amp;gt;true&amp;lt;/optional&amp;gt; &amp;lt;/dependency&amp;gt; 如上引入了kotli</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（二）快速入门</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
       <pubDate>Sun, 09 Feb 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 基础应用 示例启动两个服务：Gateway-Server和User-Server。模拟的场景为，客户端请求后端服务，网关提供后端服务的统一入口。后端的服务都注册到服务发现Consul（搭建zk，Eureka都可以，笔者比较习惯使用Consul）。网关通过负载均衡转发到具体的后端服务。 用户服务 用户服务功能</description>
     </item>
     
     <item>
       <title>深入解析微服务网关Spring Cloud Gateway（一）总体概述</title>
-      <link>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</link>
       <pubDate>Tue, 04 Feb 2020 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2020-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%80%E6%80%BB%E4%BD%93%E6%A6%82%E8%BF%B0/</guid>
       <description>系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 当使用单体应用程序架构时，客户端（Web或移动端）通过向后端应用程序发起一次REST调用来获取数据。负载均衡器将请求路由给N个相同的应用程序实例中的一个。然后应用程序会查询各种数据库表，并将响应返回给客户端。微服务架构下，单体应用被切割成多个微服务，如果将所有的微服务直接对外暴露，势必会出现安全方面的</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（完结）应用进阶之Decoder与Encoder的自定制化、日志记录与请求/响应压缩</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/</link>
       <pubDate>Sat, 16 Nov 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%AE%8C%E7%BB%93%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bdecoder%E4%B8%8Eencoder%E7%9A%84%E8%87%AA%E5%AE%9A%E5%88%B6%E5%8C%96%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%AF%B7%E6%B1%82/%E5%93%8D%E5%BA%94%E5%8E%8B%E7%BC%A9/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Decoder与Encoder的自定制化 Encoder用于将Object对象转化为HTTP的请求Body，而Decoder用于将网络Response转化为对应的Object对象。Feign对于二者都提供了默认的实现，但是使用者可以根据自己的业务来选择其他的编解码方式。 我们只需要在自定义配置中给出Decoder和Enco</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（十二）应用进阶之Client自定义</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/</link>
       <pubDate>Mon, 04 Nov 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-11/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%BA%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bclient%E8%87%AA%E5%AE%9A%E4%B9%89/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Client自定义 Spring Cloud Feign的核心概念之一就是各类命名的Client。每个feign client都是由一组可以协作向远程服务发送请求的组件构成。每个client都能通过@FeignClient注解提供一个名称。Spring Cloud通过FeignClientsConfiguration来为每个命名的client新建</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（十一）函数调用和网络请求</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</link>
       <pubDate>Sun, 06 Oct 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E4%B8%80%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 函数调用和网络请求 在Feing配置和实例生成结束之后，我们就可以直接使用FeignClient的实例，并调用它的函数发送网络请求。在调用其函数的过程中，由于我们设置了MethodHandler，所以最终函数调用会执行到SynchronousMethodHandler的invoke方法。在该方法中Feign会将函数参数与</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（十）实例初始化-续3</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD3/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD3/</link>
       <pubDate>Wed, 02 Oct 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD3/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%8D%81%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD3/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 那我们就来看一下MethodHandler到底是如何处理这些函数调用的。前面文章中的FeignServiceClient.getInstanceByServiceId函数被调用时，Fegin是如何发送网络请求，并将结果返回的。SynchronousMethodHandler是如何将函数调用转换为网络调用的关键，这个部分</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（九）实例初始化-续2</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B9%9D%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD2/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B9%9D%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD2/</link>
       <pubDate>Thu, 26 Sep 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B9%9D%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD2/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B9%9D%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD2/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 接着上一篇八，我们继续讲解动态注册BeanDefinition`。 @RequestMapping`在修饰FeignClient接口类时，其value所代表的值会被记录下来，它是该FeignClient下所有请求URL的前置路径。 //SpringMvcContract.java protected void processAnnotationOnClass(MethodMetadata data, Class&amp;lt;?&amp;gt; clz) { if (clz.getInterfaces().length == 0) { //获取RequestMapping的注解信息，并设置Method</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（八）实例初始化-续1</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AB%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD1/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AB%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD1/</link>
       <pubDate>Tue, 17 Sep 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AB%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD1/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-09/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AB%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96-%E7%BB%AD1/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 由于实例化代码逻辑复杂，我们继续前面的内容。 当FeignClient的函数被调用时，InvocationHandler的回调函数会被调用，Feign会在其回调函数中发送网络请求。 public &amp;lt;T&amp;gt; T target(Target&amp;lt;T&amp;gt; target) { return build().newInstance(target); } public Feign build() { SynchronousMethodHandler.Factory synchronousMethodHandlerFactory = new SynchronousMethodHandler.Factory(client, retryer, requestInterceptors, logger, logLevel, decode404); ParseHandlersByName handlersByName = new ParseHandlersByName(contract, options, encoder, decoder, errorDecoder, synchronousMethodHandlerFactory); return new ReflectiveFeign(handlersByName, invocationHandlerFactory); } //ReflectiveFeign.java public &amp;lt;T&amp;gt; T newInstance(Target&amp;lt;T&amp;gt; target) { Map&amp;lt;String, MethodHandler&amp;gt; nameToHandler = targetToHandlersByName.apply(target); Map&amp;lt;Method, MethodHandler&amp;gt; methodToHandler = new LinkedHashMap&amp;lt;Method, MethodHandler&amp;gt;(); List&amp;lt;DefaultMethodHandler&amp;gt; defaultMethodHandlers = new LinkedList&amp;lt;DefaultMethodHandler&amp;gt;(); for (Method method : target.type().getMethods()) { if (method.getDeclaringClass() ==</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（七）实例初始化</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
       <pubDate>Mon, 19 Aug 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 实例初始化 FeignClientFactoryBean是工厂类，Spring容器通过调用它的getObject函数来获取对应的Bean实例。由此，被@FeignClient修饰的接口类就可以被Spring容器实例化了。 public Object getObject() throws Exception { FeignContext context = applicationContext.getBean(FeignContext.class); Feign.Builder builder = feign(context); //如果url为空，则需要负载均衡 if (!StringUtils.hasText(this.url)) { String url; if (!this.name.startsWith(&amp;#34;http&amp;#34;)) { url = &amp;#34;http://&amp;#34; + this.name; } else { url = this.name; }</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（六）动态注册BeanDefinition续</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/</link>
       <pubDate>Tue, 06 Aug 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 接着上一篇，我们继续讲解动态注册BeanDefinition`。 registerFeignClients函数中有一些实现上的细节值得大家认真了解并学习的，有利于大家对Spring框架的深度了解。首先是如何自定义Spring类扫描器。也就是如何使用ClassPathScanningCandidateComponentPr</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（五）动态注册BeanDefinition</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/</link>
       <pubDate>Tue, 09 Jul 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%94%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 动态注册BeanDefinition Feign可以通过多种方式进行自定义配置，配置的变化会导致接口类初始化时使用不同的实现类，从而控制Feign的相关行为，比如说网络请求的编解码，压缩和日志处理。可以说，了解Feign配置和实例初始化的流程和原理对于我们学习和使用Feign有着至关重要的作用，而且Spring Cloud</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（四）核心组件</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</link>
       <pubDate>Sat, 06 Jul 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-07/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%9B%9B%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 核心组件与概念 读者在阅读Feign源码时，可以沿着两条路线进行，一是FeignServiceClient这样的被@FeignClient修饰的接口类如何被创建出来，也就是其Bean对象是如何被构建的，二是调用FeignServiceClient对象的响应方法时，Feign是如何发送网络请求的。而Feign相关的类也可以</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（三）快速入门-服务消费者</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%89%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%89%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85/</link>
       <pubDate>Sun, 09 Jun 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%89%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%89%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务消费者 Feign是声明式RESTful客户端，所以构建Feign项目的关键在于构建服务消费者。通过下面六步可以创建一个Spring Cloud Feign的服务消费者。 第一步: 创建普通的Spring Boot工程 首先创建一个普通的Spring Boot工程，取名为chapter-feign-client。 第二步：添加依赖 需要在po</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（二）快速入门</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
       <pubDate>Sat, 01 Jun 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册中心 Feign可以配合eureka等服务注册中心同时使用。eureka来作为服务注册中心，为Feign提供关于服务端信息的获取，比如说IP地址。关于eureka的具体使用可以参考第四章中关于eureka的快速入门介绍。 服务提供者 Spring Cloud Feign是声明式RESTful请求客户端，所以它不会侵入服务提供者程序的实现。</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Feign（一）总体介绍</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
       <pubDate>Sat, 11 May 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
       <description>系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 微服务之间的交互 微服务是软件系统架构上的一种设计风格，它倡导将一个原本独立的服务系统分成多个小型服务，这些小型服务都在独立的进程中运行，通过各个小型服务之间的协作来实现原本独立系统的所有业务功能。小型服务基于多种跨进程的方式进行通信协作，而在Spring Cloud架构中比较常见的跨进程的方式是RESTful HTTP请求</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（十三）完结</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%89%E5%AE%8C%E7%BB%93/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%89%E5%AE%8C%E7%BB%93/</link>
       <pubDate>Wed, 01 May 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%89%E5%AE%8C%E7%BB%93/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%89%E5%AE%8C%E7%BB%93/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 只读数据库的负载均衡实现 读者在学习了FeignLoadBalancer的原理和Ribbon的API之后，可以为任何需要负载均衡策略的项目添加Ribbon的集成。 比如一个的数据库中间件项目，它支持多个读库的数据读取，它希望对多个的读库进行数据读取时可以支持一定的负载均衡策略。那么，读者就可以通过集成Ribbon来实现读库之间的负载均</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（十二）使用Netty发送网络请求</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%BA%8C%E4%BD%BF%E7%94%A8netty%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%BA%8C%E4%BD%BF%E7%94%A8netty%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</link>
       <pubDate>Sat, 27 Apr 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%BA%8C%E4%BD%BF%E7%94%A8netty%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%BA%8C%E4%BD%BF%E7%94%A8netty%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 使用Netty发送网络请求 Ribbon除了可以和RestTemplate，Feign一起使用之外，还可以与Netty进行集成，也就是说，Ribbon使用负载均衡策略选择完服务器之后，然后再交给Netty进行网络请求。 其实，上一小节的介绍的Ribbon的LoadBalancerCommand的submit函数可以直接使用Netty框</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（十一）应用进阶之Ribbon API</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%80%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bribbon-api/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%80%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bribbon-api/</link>
       <pubDate>Wed, 10 Apr 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%80%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bribbon-api/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-04/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81%E4%B8%80%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8Bribbon-api/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 本节主要有关Ribbon的高级应用，主要有Ribbon的API使用，底层网络请求层的实现，和为已有spring系统集成Ribbon功能。 Ribbon API Ribbon除了与RestTemplate和Fegin一同使用之外，还可以依靠自己独立的API接口来实现一定的代码逻辑。 比如下面的代码中，使用LoadBalancerBuilder的build</description>
     </item>
     
     <item>
       <title>西班牙音乐剧《卡门古巴》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2019-03/%E8%A5%BF%E7%8F%AD%E7%89%99%E9%9F%B3%E4%B9%90%E5%89%A7%E5%8D%A1%E9%97%A8%E5%8F%A4%E5%B7%B4repo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2019-03/%E8%A5%BF%E7%8F%AD%E7%89%99%E9%9F%B3%E4%B9%90%E5%89%A7%E5%8D%A1%E9%97%A8%E5%8F%A4%E5%B7%B4repo/</link>
       <pubDate>Mon, 11 Mar 2019 20:35:12 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2019-03/%E8%A5%BF%E7%8F%AD%E7%89%99%E9%9F%B3%E4%B9%90%E5%89%A7%E5%8D%A1%E9%97%A8%E5%8F%A4%E5%B7%B4repo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2019-03/%E8%A5%BF%E7%8F%AD%E7%89%99%E9%9F%B3%E4%B9%90%E5%89%A7%E5%8D%A1%E9%97%A8%E5%8F%A4%E5%B7%B4repo/</guid>
       <description>卡门整体还是很值得一看。就是故事剧情和音乐算不上特别引人入胜，但算得上是良心巨作了。第一次卡门出场的女生群舞有些些小惊艳，但整体没有特别抓耳的音乐和歌曲。整部剧都融合了西班牙的特色舞蹈，不过其实我期待更多的弗朗明戈元素来着。</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（十）ServerListFilter 服务列表过滤</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/</link>
       <pubDate>Mon, 04 Mar 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务列表 DomainExtractingServerList的getInitialListOfServers的实现十分简单，就是直接返回从Eureka中获取的服务器列表。 @Override public List&amp;lt;DiscoveryEnabledServer&amp;gt; getInitialListOfServers() { List&amp;lt;DiscoveryEnabledServer&amp;gt; servers = setZones(this.list .getInitialListOfServers()); return servers; } @Override public List&amp;lt;DiscoveryEnabledServer&amp;gt; getUpdatedListOfServers() { List&amp;lt;DiscoveryEnabledServer&amp;gt; servers = setZones(this.list .getUpdatedListOfServers()); return servers; } //添加zone相关的信息 private List&amp;lt;DiscoveryEnabledServer&amp;gt; setZones(List&amp;lt;DiscoveryEnabledServer&amp;gt; servers) { List&amp;lt;DiscoveryEnabledServer&amp;gt; result = new ArrayList&amp;lt;&amp;gt;(); //判断是否secure和是否使用ip地址 boolean isSecure = this.clientConfig.getPropertyAsBoolean( CommonClientConfigKey.IsSecure, Boolean.TRUE); boolean shouldUseIpAddr = this.clientConfig.getPropertyAsBoolean( CommonClientConfigKey.UseIPAddrForServer,</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（九）IPing与server列表</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/</link>
       <pubDate>Fri, 22 Feb 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 IPing IPing是Ribbon用来定义检查server是否可用的接口。 public interface IPing { //检查server是否可用。 public boolean isAlive(Server server); } Ribbon默认提供IPing接口的实现类是DummyPing。其实它并没有去真正的判断server是否是可用的，而是直接返回了true。 public class DummyPing extends AbstractLoadBalancerPing { public DummyPing() { } public boolean isAlive(Server server) { return true; } @Override public void initWithNiwsConfig(IClientConfig clientConfig) { } } 除了DummyPing之外，</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（八）负载均衡策略实现</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/</link>
       <pubDate>Wed, 06 Feb 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 负载均衡策略实现 IRule是定义Ribbon负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在RibbonClientConfiguration中给出。IRule接口的choose函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（七）ILoadBalancer</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/</link>
       <pubDate>Mon, 04 Feb 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 ILoadBalancer ILoadBalancer是RIbbon的关键类之一，它是定义软负载均衡操作过程的接口。 在上一小节中，读者应该已经了解到可以通过SpringClientFactory工厂类的getLoadBalancer函数获取ILoadBalancer实例。根据Ribbon的实例化机制，ILoadBalnacer实例是在RibbonAutoC</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（六）LoadBalancerClient</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%ADloadbalancerclient/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%ADloadbalancerclient/</link>
       <pubDate>Sun, 27 Jan 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%ADloadbalancerclient/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%ADloadbalancerclient/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 LoadBalancerClient 通过之前两个小节的讲述，相信读者已经对Ribbon与RestTemplate和Feign之间的工作原理有了一定的了解。接下来，本小节会对LoadBalancerClient进行负载均衡的具体原理和实现。 LoadBalancerClient是Ribbon项目的核心类之一，可以在RestTemplate发送网络请求时替代RestTe</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（五） 和Feign一起使用</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Wed, 16 Jan 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 和Feign一起使用 Ribbon除了显示的和RestTemplate一起使用之外，还会是Feign有关负载均衡的默认实现。 在前面的文章有关Feign的中讲解了Feign相关实例的初始化过程。FeignClientFactoryBean是创造FeignClient的工厂类。在其getObject方法中有一个分支判断，如果请求URL不</description>
     </item>
     
     <item>
       <title>中文版音乐剧《近乎正常》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2019-01/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E8%BF%91%E4%B9%8E%E6%AD%A3%E5%B8%B8repo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2019-01/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E8%BF%91%E4%B9%8E%E6%AD%A3%E5%B8%B8repo/</link>
       <pubDate>Tue, 08 Jan 2019 16:41:30 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2019-01/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E8%BF%91%E4%B9%8E%E6%AD%A3%E5%B8%B8repo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2019-01/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E8%BF%91%E4%B9%8E%E6%AD%A3%E5%B8%B8repo/</guid>
       <description>一言以蔽之，不好看。打卡就行。</description>
     </item>
     
     <item>
       <title>中文音乐剧《拉赫玛尼诺夫》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2019-01/%E4%B8%AD%E6%96%87%E9%9F%B3%E4%B9%90%E5%89%A7%E6%8B%89%E8%B5%AB%E7%8E%9B%E5%B0%BC%E8%AF%BA%E5%A4%ABrepo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2019-01/%E4%B8%AD%E6%96%87%E9%9F%B3%E4%B9%90%E5%89%A7%E6%8B%89%E8%B5%AB%E7%8E%9B%E5%B0%BC%E8%AF%BA%E5%A4%ABrepo/</link>
       <pubDate>Tue, 08 Jan 2019 16:05:08 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2019-01/%E4%B8%AD%E6%96%87%E9%9F%B3%E4%B9%90%E5%89%A7%E6%8B%89%E8%B5%AB%E7%8E%9B%E5%B0%BC%E8%AF%BA%E5%A4%ABrepo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2019-01/%E4%B8%AD%E6%96%87%E9%9F%B3%E4%B9%90%E5%89%A7%E6%8B%89%E8%B5%AB%E7%8E%9B%E5%B0%BC%E8%AF%BA%E5%A4%ABrepo/</guid>
       <description>Repo拖得有些久。好些都记不太得了。</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（四）和RestTemplate一起使用</title>
-      <link>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Fri, 04 Jan 2019 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 和RestTemplate一起使用 在前面快速入门一节中已经说明了Ribbon和RestTemplate之间的关系，而使二者产生联系的就是@LoadBalanced注解。@LoadBalanced是一个标记注解，可以表明被修饰的RestTemplate应该使用RibbonLoadBalancerClient来发送HTTP请求。Rib</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（三）源码解析之配置和实例初始化</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
       <pubDate>Thu, 27 Dec 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%89%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%85%8D%E7%BD%AE%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 配置和实例初始化 @RibbonClient用来声明Ribbon Client，用来声明Ribbon client的名称和配置，标记一个@Configuration的配置类，进行Ribbon相关的配置。@RibbonClient还会importRibbonClientConfigurationRegistrar类来进行动态的BeanDe</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（二）快速入门</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
       <pubDate>Wed, 26 Dec 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 快速入门 Ribbon可以和RestTemplate一起使用，也可以集成到Feign中使用。下面两小结将会分别讲述Ribbon在这两种使用方法下的示例。 RestTemplate是Spring的同步客户端HTTP请求接口，它可以简化客户端与HTTP服务器之间的交互，并且它强制使用RESTful风格，它会处理HTTP连接，只需要使用者提</description>
     </item>
     
     <item>
       <title>深入解析负载均衡组件 Ribbon（一）总体介绍</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
       <pubDate>Thu, 06 Dec 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-12/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
       <description>系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 Ribbon是一个可以管理Http和TCP客户端的客户端负载均衡器。Feign已经在使用Ribbon了，如果你使用过@FeignClient,那么Ribbon也会被使用。 Ribbon的核心思想就是named client，也就是带有名称的Ribbon Client。每个Client由可配置的组件构成，负责一类服务的调用请求。Sprin</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （完结） 高可用性服务注册中心(Eureka服务端集群)</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%AE%8C%E7%BB%93-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83eureka%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%9B%86%E7%BE%A4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%AE%8C%E7%BB%93-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83eureka%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%9B%86%E7%BE%A4/</link>
       <pubDate>Mon, 26 Nov 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%AE%8C%E7%BB%93-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83eureka%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%9B%86%E7%BE%A4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%AE%8C%E7%BB%93-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83eureka%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%9B%86%E7%BE%A4/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 高可用性服务注册中心(Eureka服务端集群) Eureka Server可以变得更有弹性和高可用性，通过部署多个注册中心的实例，并让它们之间互相注册。在Standalone模式中，只能依赖Server和Client之间的缓存以及需要弹性的机制保证Server实例一直存活，单例的注册中心崩了，Client之间就很难互相发现和调用。 在</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （二十四）应用进阶之服务端配置</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E5%9B%9B%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E5%9B%9B%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 06 Nov 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E5%9B%9B%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-11/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E5%9B%9B%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server也是一个Eureka Client，但在此处我们更关心Eureka Server内相关配置，该部分配置主要位于EurekaServerConfigBean，但是Eureka Server中作为一个可开箱即用服务注册中心，一般不建议修改默认的Server配置(Eureka Server中有部分根据ServerCon</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （二十三）应用进阶之客户端配置</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%89%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%89%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 16 Oct 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%89%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%89%E5%BA%94%E7%94%A8%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 配置详解 通过上一大节的源码的分析，相信对Eureka的运行机制已经有了进一步的了解。现在需要对Eureka的相关配置进行了解。首先会对Eureka中的大部分属性进行介绍，然后根据需要着重介绍一些关键的配置使用 Eureka在spring-cloud中主要靠3个配置类进行实现默认配置，EurekaClientConfigB</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （二十二）PeerEurekaNodes Server 对等集群</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%BA%8Cpeereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%BA%8Cpeereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</link>
       <pubDate>Tue, 02 Oct 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%BA%8Cpeereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-10/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%BA%8Cpeereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 同步冲突 对于Eureka Server之间的HTTP以及批任务流交互过程，在此不多关注，有兴趣的读者可以细细去研读代码了解一下。以下需要在意的是Eureka Server在接受到对应的同步复制请求后如何修改自身的注册表信息，以及反馈给发起同步复制请求的Eureka Server。 这里首先明确一个概念，InstanceInfo</description>
     </item>
     
     <item>
       <title>《Les Miserable》法语音乐会repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-09/les-miserable%E6%B3%95%E8%AF%AD%E9%9F%B3%E4%B9%90%E4%BC%9Arepo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-09/les-miserable%E6%B3%95%E8%AF%AD%E9%9F%B3%E4%B9%90%E4%BC%9Arepo/</link>
       <pubDate>Sun, 30 Sep 2018 21:31:28 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-09/les-miserable%E6%B3%95%E8%AF%AD%E9%9F%B3%E4%B9%90%E4%BC%9Arepo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-09/les-miserable%E6%B3%95%E8%AF%AD%E9%9F%B3%E4%B9%90%E4%BC%9Arepo/</guid>
       <description>2018年9月28日 19:30 上海文化广场 《Les Miserable》法语音乐会。舞台的灯光还是非常炫的，很有25周年的灯光感觉。各种类型的光交织显得朴素的舞台十分华丽。街口枪战也还原了25周年版感受到的那种无声的硝烟。最惊艳的是沙威身亡那一刻的逆光设计，真是美到爆。法语虽然没英语熟悉，但是也很好听。演员们的演唱功力都特别赞，十分值得。</description>
     </item>
     
     <item>
       <title>弗朗明戈舞剧《塞维利亚组曲》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-09/%E5%BC%97%E6%9C%97%E6%98%8E%E6%88%88%E8%88%9E%E5%89%A7%E5%A1%9E%E7%BB%B4%E5%88%A9%E4%BA%9A%E7%BB%84%E6%9B%B2repo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-09/%E5%BC%97%E6%9C%97%E6%98%8E%E6%88%88%E8%88%9E%E5%89%A7%E5%A1%9E%E7%BB%B4%E5%88%A9%E4%BA%9A%E7%BB%84%E6%9B%B2repo/</link>
       <pubDate>Sun, 30 Sep 2018 19:52:12 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-09/%E5%BC%97%E6%9C%97%E6%98%8E%E6%88%88%E8%88%9E%E5%89%A7%E5%A1%9E%E7%BB%B4%E5%88%A9%E4%BA%9A%E7%BB%84%E6%9B%B2repo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-09/%E5%BC%97%E6%9C%97%E6%98%8E%E6%88%88%E8%88%9E%E5%89%A7%E5%A1%9E%E7%BB%B4%E5%88%A9%E4%BA%9A%E7%BB%84%E6%9B%B2repo/</guid>
       <description>2018年9月27日 19:30 上海国际舞蹈中心 从被《大河之舞》中的弗朗明戈深深震撼开始就一直想看一场弗朗明戈。这是一种集热情与克制、灵动与力量、留白与鼓点于一身的舞种，在动静间充满张力。吉他弦乐与鼓点更是撩动人心，最赞的是人声的加入更增添一份神圣与空灵感。</description>
     </item>
     
     <item>
       <title>中文版音乐剧《我，堂吉诃德》封箱轮repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-09/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E6%88%91%E5%A0%82%E5%90%89%E8%AF%83%E5%BE%B7%E5%B0%81%E7%AE%B1%E8%BD%AErepo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-09/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E6%88%91%E5%A0%82%E5%90%89%E8%AF%83%E5%BE%B7%E5%B0%81%E7%AE%B1%E8%BD%AErepo/</link>
       <pubDate>Sat, 22 Sep 2018 20:33:26 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-09/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E6%88%91%E5%A0%82%E5%90%89%E8%AF%83%E5%BE%B7%E5%B0%81%E7%AE%B1%E8%BD%AErepo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-09/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E6%88%91%E5%A0%82%E5%90%89%E8%AF%83%E5%BE%B7%E5%B0%81%E7%AE%B1%E8%BD%AErepo/</guid>
       <description>2018年9月16日 19:30 上海大舞台 中文版音乐剧《我，堂吉诃德》封箱轮。《我堂》是我最喜欢七幕的一部剧，也是我少有的会强烈推荐的一部中文版音乐剧。这部戏版子很好，戏好、歌好、传达的立意好，不会落俗套，也不会过时。</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （二十一）Eureka Server之间的注册表信息的同步复制</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-09/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%80eureka-server%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-09/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%80eureka-server%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6/</link>
       <pubDate>Wed, 19 Sep 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-09/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%80eureka-server%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-09/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81%E4%B8%80eureka-server%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Server之间的注册表信息的同步复制 在PeerAwareInstanceRegistryImpl中，对Abstractinstanceregistry中的register()、cancel()、renew()等方法都添加了同步到PeerEurekaNode的操作，使Server集群中的注册表保持最终一致性。 @Override public boolean cancel(final String</description>
     </item>
     
     <item>
       <title>舞剧《Cinderella》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-09/%E8%88%9E%E5%89%A7cinderellarepo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-09/%E8%88%9E%E5%89%A7cinderellarepo/</link>
       <pubDate>Wed, 12 Sep 2018 01:51:21 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-09/%E8%88%9E%E5%89%A7cinderellarepo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-09/%E8%88%9E%E5%89%A7cinderellarepo/</guid>
       <description>2018年8月19日 19:30 上海文化广场 舞剧《Cinderella》repo。马修伯恩第三部舞剧。</description>
     </item>
     
     <item>
       <title>No Day But Today——音乐剧《Rent》repo&amp;感想</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-09/no-day-but-today%E9%9F%B3%E4%B9%90%E5%89%A7rentrepo%E6%84%9F%E6%83%B3/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-09/no-day-but-today%E9%9F%B3%E4%B9%90%E5%89%A7rentrepo%E6%84%9F%E6%83%B3/</link>
       <pubDate>Fri, 07 Sep 2018 00:17:50 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-09/no-day-but-today%E9%9F%B3%E4%B9%90%E5%89%A7rentrepo%E6%84%9F%E6%83%B3/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-09/no-day-but-today%E9%9F%B3%E4%B9%90%E5%89%A7rentrepo%E6%84%9F%E6%83%B3/</guid>
       <description>2018年9月6日 19:30 上海文化广场 音乐剧《Rent》repo。其实还是很惊异于Rent居然过了审，在首演20年后终于来到了中国上海。Rent这部戏一点都没有古老的感觉，到现在都非常切中现实，描绘了我们在现实与理想中的挣扎。虽然卡司整体弱了些，但整体很赞，比看视频有共鸣的多。</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十九）Eureka Server集群同步</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B9%9Deureka-server%E9%9B%86%E7%BE%A4%E5%90%8C%E6%AD%A5/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B9%9Deureka-server%E9%9B%86%E7%BE%A4%E5%90%8C%E6%AD%A5/</link>
       <pubDate>Tue, 28 Aug 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B9%9Deureka-server%E9%9B%86%E7%BE%A4%E5%90%8C%E6%AD%A5/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B9%9Deureka-server%E9%9B%86%E7%BE%A4%E5%90%8C%E6%AD%A5/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 在Eureka Server启动的过程中(EurekaBootStrap)，会进行initEurekaEnvironment()以及initEurekaServerContext()，initEurekaEnvironment()方法中初始化各种环境变量，在此不多加关注，在initEurekaServerContext(</description>
     </item>
     
     <item>
       <title>Blog养成记(16) 自建Hugo的TOC模板</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B016-%E8%87%AA%E5%BB%BAhugo%E7%9A%84toc%E6%A8%A1%E6%9D%BF/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B016-%E8%87%AA%E5%BB%BAhugo%E7%9A%84toc%E6%A8%A1%E6%9D%BF/</link>
       <pubDate>Sat, 25 Aug 2018 22:59:59 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B016-%E8%87%AA%E5%BB%BAhugo%E7%9A%84toc%E6%A8%A1%E6%9D%BF/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B016-%E8%87%AA%E5%BB%BAhugo%E7%9A%84toc%E6%A8%A1%E6%9D%BF/</guid>
       <description>Table Of Content是一个十分常用的功能，这个系列的第13篇Blog养成记13 增加一个TOC侧边栏就是为了这个做准备，只不过是在静态页面上尝试想要的样式。本文用到的样式都基于第13篇中增加的css样式。</description>
     </item>
     
     <item>
       <title>Blog养成记(15) 创建shortcode模板便捷高亮内容</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B015-%E5%88%9B%E5%BB%BAshortcode%E6%A8%A1%E6%9D%BF%E4%BE%BF%E6%8D%B7%E9%AB%98%E4%BA%AE%E5%86%85%E5%AE%B9/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B015-%E5%88%9B%E5%BB%BAshortcode%E6%A8%A1%E6%9D%BF%E4%BE%BF%E6%8D%B7%E9%AB%98%E4%BA%AE%E5%86%85%E5%AE%B9/</link>
       <pubDate>Tue, 21 Aug 2018 21:59:02 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B015-%E5%88%9B%E5%BB%BAshortcode%E6%A8%A1%E6%9D%BF%E4%BE%BF%E6%8D%B7%E9%AB%98%E4%BA%AE%E5%86%85%E5%AE%B9/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B015-%E5%88%9B%E5%BB%BAshortcode%E6%A8%A1%E6%9D%BF%E4%BE%BF%E6%8D%B7%E9%AB%98%E4%BA%AE%E5%86%85%E5%AE%B9/</guid>
       <description>为什么使用shortcode 由于Hugo支持在文本内容中使用html标签，因此在文本中的文字如果需要高亮可以直接使用&amp;lt;mark&amp;gt;标签即可。但是code fence中的代码如何进行高亮呢？直接在code fence中使用html标签会被默认为文本（理应有办法转义，但暂时还不了解）。 之前我的方案是使用highlight shortcode(参见Blog养成记3 Hugo的语法高亮配置)，但是由于h</description>
     </item>
     
     <item>
       <title>Blog养成记(14) 让同页滚动更平滑</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B014-%E8%AE%A9%E5%90%8C%E9%A1%B5%E6%BB%9A%E5%8A%A8%E6%9B%B4%E5%B9%B3%E6%BB%91/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B014-%E8%AE%A9%E5%90%8C%E9%A1%B5%E6%BB%9A%E5%8A%A8%E6%9B%B4%E5%B9%B3%E6%BB%91/</link>
       <pubDate>Sat, 18 Aug 2018 20:14:59 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B014-%E8%AE%A9%E5%90%8C%E9%A1%B5%E6%BB%9A%E5%8A%A8%E6%9B%B4%E5%B9%B3%E6%BB%91/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B014-%E8%AE%A9%E5%90%8C%E9%A1%B5%E6%BB%9A%E5%8A%A8%E6%9B%B4%E5%B9%B3%E6%BB%91/</guid>
       <description>&lt;p&gt;上一期说到增加toc侧边栏，但是直接跳转非常突兀，因此特地找了让同页跳转滚动更平滑的插件。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Blog养成记(13) 增加一个TOC侧边栏</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B013-%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AAtoc%E4%BE%A7%E8%BE%B9%E6%A0%8F/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B013-%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AAtoc%E4%BE%A7%E8%BE%B9%E6%A0%8F/</link>
       <pubDate>Fri, 17 Aug 2018 21:01:32 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B013-%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AAtoc%E4%BE%A7%E8%BE%B9%E6%A0%8F/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B013-%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AAtoc%E4%BE%A7%E8%BE%B9%E6%A0%8F/</guid>
       <description>想在页面右侧保留一个固定在屏幕上的TOC导航栏(Table Of Content)，可以直接选择跳转的网页段落位置，此外也可以提醒文章结构。 Scrollspy 这个插件bootstrap中有，起名叫scrollspy滚动监听，但是原版的实在不是我想要的样式。之前在blog养成记10-实现幻灯片轮播效果中使用的mdb的这个插件有更好的样式，不过可惜这个是pro的样式，所以只能自己动手丰衣足食啦。 Bootstrap基础版 sc</description>
     </item>
     
     <item>
       <title>前端试水(3) 自适应与响应式布局</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B43-%E8%87%AA%E9%80%82%E5%BA%94%E4%B8%8E%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B43-%E8%87%AA%E9%80%82%E5%BA%94%E4%B8%8E%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80/</link>
       <pubDate>Tue, 14 Aug 2018 22:03:03 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B43-%E8%87%AA%E9%80%82%E5%BA%94%E4%B8%8E%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B43-%E8%87%AA%E9%80%82%E5%BA%94%E4%B8%8E%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80/</guid>
       <description>前言 其实一开始并没想考虑响应式布局的问题，但由于在幻灯片大图时找的样例有考虑到这个，就想对浮在幻灯片上的文字能否也有响应式的效果。昨晚研究一下，虽然没太掌握，效果也没有达到最优，但总算完成基础需求。 自适应布局与响应式布局 自适应布局和响应式布局网上有不少介绍，我比较认同以下这种。 自适应布局是很显然易见的概念，就是网页能自动适配不同大小屏幕，根据屏幕大小自动调整网页内容的宽度和高度，但是内容和布局还是</description>
     </item>
     
     <item>
       <title>Blog养成记(12) 给网页的图片加个蒙版</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B012-%E7%BB%99%E7%BD%91%E9%A1%B5%E7%9A%84%E5%9B%BE%E7%89%87%E5%8A%A0%E4%B8%AA%E8%92%99%E7%89%88/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B012-%E7%BB%99%E7%BD%91%E9%A1%B5%E7%9A%84%E5%9B%BE%E7%89%87%E5%8A%A0%E4%B8%AA%E8%92%99%E7%89%88/</link>
       <pubDate>Mon, 13 Aug 2018 00:40:13 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B012-%E7%BB%99%E7%BD%91%E9%A1%B5%E7%9A%84%E5%9B%BE%E7%89%87%E5%8A%A0%E4%B8%AA%E8%92%99%E7%89%88/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B012-%E7%BB%99%E7%BD%91%E9%A1%B5%E7%9A%84%E5%9B%BE%E7%89%87%E5%8A%A0%E4%B8%AA%E8%92%99%E7%89%88/</guid>
       <description>&lt;p&gt;上一期说到想给网站图标的图片加个蒙版，然而没有成功。那么网页中的图片么？经常看到个人图片都是圆形的，然而实际上上传的原图是方的。如果使用了蒙版功能，就可以对同一张图想怎么变形状就怎么变了。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Blog养成记(11) 给网站加个小icon</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B011-%E7%BB%99%E7%BD%91%E7%AB%99%E5%8A%A0%E4%B8%AA%E5%B0%8Ficon/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B011-%E7%BB%99%E7%BD%91%E7%AB%99%E5%8A%A0%E4%B8%AA%E5%B0%8Ficon/</link>
       <pubDate>Mon, 13 Aug 2018 00:14:19 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B011-%E7%BB%99%E7%BD%91%E7%AB%99%E5%8A%A0%E4%B8%AA%E5%B0%8Ficon/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B011-%E7%BB%99%E7%BD%91%E7%AB%99%E5%8A%A0%E4%B8%AA%E5%B0%8Ficon/</guid>
       <description>&lt;p&gt;这部分其实很简单，只需要在&lt;code&gt;index.html&lt;/code&gt;的&lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt;部分增加以下一句话就好&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>音乐剧《Cat》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-08/%E9%9F%B3%E4%B9%90%E5%89%A7catrepo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-08/%E9%9F%B3%E4%B9%90%E5%89%A7catrepo/</link>
       <pubDate>Sun, 12 Aug 2018 23:03:12 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-08/%E9%9F%B3%E4%B9%90%E5%89%A7catrepo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-08/%E9%9F%B3%E4%B9%90%E5%89%A7catrepo/</guid>
       <description>2018年8月1日 19:30 上海大剧院 音乐剧《Cat》repo。还好没有错过，值得一看。</description>
     </item>
     
     <item>
       <title>Blog养成记(10) 实现幻灯片(轮播)效果</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B010-%E5%AE%9E%E7%8E%B0%E5%B9%BB%E7%81%AF%E7%89%87%E8%BD%AE%E6%92%AD%E6%95%88%E6%9E%9C/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B010-%E5%AE%9E%E7%8E%B0%E5%B9%BB%E7%81%AF%E7%89%87%E8%BD%AE%E6%92%AD%E6%95%88%E6%9E%9C/</link>
       <pubDate>Sun, 12 Aug 2018 01:41:43 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B010-%E5%AE%9E%E7%8E%B0%E5%B9%BB%E7%81%AF%E7%89%87%E8%BD%AE%E6%92%AD%E6%95%88%E6%9E%9C/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B010-%E5%AE%9E%E7%8E%B0%E5%B9%BB%E7%81%AF%E7%89%87%E8%BD%AE%E6%92%AD%E6%95%88%E6%9E%9C/</guid>
       <description>前言 设计中首页有个大图，希望它能实现幻灯片的轮播效果，同时如果能够满足自适应的需求就更好了。对于幻灯片的轮播效果，一年前我试过一个在Github上的js插件，这次使用Bootstrap4发现这已经集成进Bootstrap的框架了，如果不是非要在网页上实现一个真的幻灯片，没必要再去整一个幻灯片的插件。 Carousel 基础版 在Bootstrap4中轮播组件称为Carousel，在官网就有对其使用的简单介绍。 简单说来</description>
     </item>
     
     <item>
       <title>Blog养成记(9) 项目结构&amp;前端环境配置</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B09-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%89%8D%E7%AB%AF%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B09-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%89%8D%E7%AB%AF%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Sat, 11 Aug 2018 19:00:35 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B09-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%89%8D%E7%AB%AF%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B09-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%89%8D%E7%AB%AF%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
       <description>其实如果只是对静态页面进行修改，不需要配什么环境，只需要对html进行修改就好。 哦，不对，因为还是会使用hugo来生成静态页面，hugo还是要配置的，配置的方法详见这个系列的第2篇Blog养成记2 Hugo+Docker在Github上建立Blog。所以重点就在如何自己生成自己喜欢的hugo模板了。 由于仅使用hugo静态页面，所以也不计划使用gulp之类的工具，可能出了hugo外唯一考虑要使用的是s</description>
     </item>
     
     <item>
       <title>Blog养成记(8) 页面设计demo</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B08-%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1demo/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B08-%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1demo/</link>
       <pubDate>Sat, 11 Aug 2018 17:27:55 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B08-%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1demo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/blog%E5%85%BB%E6%88%90%E8%AE%B08-%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1demo/</guid>
       <description>实际上前几个月就已经将页面原型设计完成，中间经过需求梳理和页面demo两个部分，不过设计完后就停滞了不少时间。最近才又开始折腾静态页面，在公司也尝试搭一个简单网站（尝试了flask，最后还是回归hugo生成静态页面），所以为了能将之后的部分继续，所以赶紧补上。 需求梳理 首先需要将应用场景进行梳理，细化需求，还特地做了对应的思维导图明确所需要的功能。 需求场景方面主要是以下几个点： 生活类：能满足基本的博</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （二十）PeerEurekaNodes Server 对等集群</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81peereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81peereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</link>
       <pubDate>Sat, 04 Aug 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81peereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E5%8D%81peereurekanodes-server-%E5%AF%B9%E7%AD%89%E9%9B%86%E7%BE%A4/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 PeerEurekaNodes Server 对等集群 PeerEurekaNodes中管理PeerEurekaNode的集合，每一个PeerEurekaNode代表的就是一个可同步共享数据的Eureka Server。在PeerEurekaNode中，具有register()、cancel()、heartbeat()、statusUpdate()等诸多用于向pe</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十八） Eureka Server 自我保护</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AB-eureka-server-%E8%87%AA%E6%88%91%E4%BF%9D%E6%8A%A4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AB-eureka-server-%E8%87%AA%E6%88%91%E4%BF%9D%E6%8A%A4/</link>
       <pubDate>Sat, 04 Aug 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AB-eureka-server-%E8%87%AA%E6%88%91%E4%BF%9D%E6%8A%A4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-08/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AB-eureka-server-%E8%87%AA%E6%88%91%E4%BF%9D%E6%8A%A4/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 自我保护 在上面的解析中，多次提到过了自我保护机制，下面对此作一定的补充介绍。 以下是euerka官网中对自我保护的描述： In Netflix, the above safeguard is called as self-preservation mode and is primarily used as a protection in scenarios where there is a network partition between a group of clients and the Eureka Server. In these scenarios, the server tries to protect the information it already has. There may be scenarios in case of a mass outage that this may cause the clients to get the instances that do not exist anymore. The clients must make sure they are resilient to eureka server returning an instance that is non-existent or un-responsive. The best protection in these scenarios is to timeout quickly</description>
     </item>
     
     <item>
       <title>前端试水(2) 使用docker镜像的Sass配置</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B42-%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E7%9A%84sass%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B42-%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E7%9A%84sass%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Thu, 02 Aug 2018 15:49:22 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B42-%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E7%9A%84sass%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B42-%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E7%9A%84sass%E9%85%8D%E7%BD%AE/</guid>
       <description>前言 半年前，由于终于将博客主题初版设计出来准备开始实施，在less和sass中纠结良久选择了sass。为了保持环境纯净性，想用docker装sass，用node-sass，试了几次中间都失败，无奈放弃。几乎半年后的今天，莫名又开始有搭建网页的欲望，于是又开始折腾。不过这次运气不错，终于折腾成功。 Sass是什么 Sass 是一个 css的预编译器。它在css语法的基础上，引入了更多的变量、规则等功能，可以帮助c</description>
     </item>
     
     <item>
       <title>前端试水(1) 前端技术路线</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B41-%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B41-%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF/</link>
       <pubDate>Wed, 01 Aug 2018 10:23:48 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B41-%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-08/%E5%89%8D%E7%AB%AF%E8%AF%95%E6%B0%B41-%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF/</guid>
       <description>前言 对于前端的了解欲望实际上是从想对博客主题进行修改开始的。但是前端这部分一直对我来说是个谜，虽然这些名词都能搜索到，但一直傻傻的不得其门而入。总算在一年后的今天，尽管还有很多地方暂时是迷雾状态，但貌似略了解一点前端的整体框架。现在算是开了新的一个系列，在此算是记录一下我了解的前端的技术路线，如果那些和我一样的前端小白们能通过这个也大概了解一点到底现在需要学的、用的是什么，就再好不过了。 对了，先声</description>
     </item>
     
     <item>
       <title>每周Paper精读(2) Sentence Representation系列泛读</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</link>
       <pubDate>Mon, 30 Jul 2018 17:41:23 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</guid>
       <description>前言 原本计划是每周一篇论文精读，然而实际上由于项目上安排较紧，距离上一次论文精读已经过了几个月。现在项目算是告一段落，在项目中也算是找到一些问题所在，正在看感兴趣的论文（这期是赶不上了）。正好媛源的实习生肖风顺正在做关于句向量的调研，找了些相关论文，我也旁听了两次，顺便就把这两次旁听的结果记录一下，顺便也对其中内容也简要的过一遍大概思路，虽然这样算不上什么“论文精读”，但本来精读和泛读就要结合么😄</description>
     </item>
     
     <item>
       <title>每周Paper精读(2) Sentence Representation系列泛读</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</link>
       <pubDate>Mon, 30 Jul 2018 17:41:23 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-07/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB2-sentence-representation%E7%B3%BB%E5%88%97%E6%B3%9B%E8%AF%BB/</guid>
       <description>前言 原本计划是每周一篇论文精读，然而实际上由于项目上安排较紧，距离上一次论文精读已经过了几个月。现在项目算是告一段落，在项目中也算是找到一些问题所在，正在看感兴趣的论文（这期是赶不上了）。正好媛源的实习生肖风顺正在做关于句向量的调研，找了些相关论文，我也旁听了两次，顺便就把这两次旁听的结果记录一下，顺便也对其中内容也简要的过一遍大概思路，虽然这样算不上什么“论文精读”，但本来精读和泛读就要结合么😄</description>
     </item>
     
     <item>
       <title>音乐剧《Kinkyboots》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-07/%E9%9F%B3%E4%B9%90%E5%89%A7kinkybootsrepo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-07/%E9%9F%B3%E4%B9%90%E5%89%A7kinkybootsrepo/</link>
       <pubDate>Fri, 27 Jul 2018 18:25:30 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-07/%E9%9F%B3%E4%B9%90%E5%89%A7kinkybootsrepo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-07/%E9%9F%B3%E4%B9%90%E5%89%A7kinkybootsrepo/</guid>
       <description>2018年7月22日 19:30 上海文化广场 音乐剧《Kinkyboots》 repo</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十七） Eureka Server服务剔除</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%83-eureka-server%E6%9C%8D%E5%8A%A1%E5%89%94%E9%99%A4/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%83-eureka-server%E6%9C%8D%E5%8A%A1%E5%89%94%E9%99%A4/</link>
       <pubDate>Mon, 23 Jul 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%83-eureka-server%E6%9C%8D%E5%8A%A1%E5%89%94%E9%99%A4/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%83-eureka-server%E6%9C%8D%E5%8A%A1%E5%89%94%E9%99%A4/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务剔除 如果服务在注册后，既没有续约，也没有下线(服务崩溃或者网络异常等原因)，那么服务的状态就处于未可知的状态，不能保证能够从该服务中获取到回馈，所以需要服务剔除evict()来定时清理这些不稳定的服务，该方法会将注册表中所有过期的租约全部剔除。 @Override public void evict() { evict(0l); } public void evict(long additionalLeaseMs) { // 自我保护相关，如果出现该状态，不允许剔除服务 if</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十六） Eureka Server服务续约</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AD-eureka-server%E6%9C%8D%E5%8A%A1%E7%BB%AD%E7%BA%A6/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AD-eureka-server%E6%9C%8D%E5%8A%A1%E7%BB%AD%E7%BA%A6/</link>
       <pubDate>Tue, 03 Jul 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AD-eureka-server%E6%9C%8D%E5%8A%A1%E7%BB%AD%E7%BA%A6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-07/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%85%AD-eureka-server%E6%9C%8D%E5%8A%A1%E7%BB%AD%E7%BA%A6/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务续约 接着上一篇文章，我么来看下服务续约 renew()方法，即单纯的续租操作，不像register()方法携带了服务实例信息InstanceInfo，仅更新Server中的注册表的租约的时间。 public boolean renew(String appName, String id, boolean isReplication) { RENEW.increment(isReplication); // 根据appName获取到服务集群的租约集合 Map&amp;lt;String, Lease&amp;lt;InstanceInfo&amp;gt;&amp;gt; gMap = registry.get(appName); Lease&amp;lt;InstanceInfo&amp;gt; leaseToRenew = null; if (gMap != null) { leaseToRenew = gMap.get(id); } // 租约不存在，直接返回fa</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十五） Eureka Server 服务注册</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%94-eureka-server-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%94-eureka-server-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/</link>
       <pubDate>Wed, 20 Jun 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%94-eureka-server-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%94-eureka-server-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册 // AbstractInstanceRegistry public void register(InstanceInfo registrant, int leaseDuration, boolean isReplication) { try { // 获取读锁 read.lock(); // 这里的registry是 // ConcurrentHashMap&amp;lt;String, Map&amp;lt;String, Lease&amp;lt;InstanceInfo&amp;gt;&amp;gt;&amp;gt; registry // 根据appName对服务实例集群进行分类 Map&amp;lt;String, Lease&amp;lt;InstanceInfo&amp;gt;&amp;gt; gMap = registry.get(registrant.getAppName()); REGISTER.increment(isReplication); if (gMap == null) { final ConcurrentHashMap&amp;lt;String, Lease&amp;lt;InstanceInfo&amp;gt;&amp;gt; gNewMap = new ConcurrentHashMap&amp;lt;String, Lease&amp;lt;InstanceInfo&amp;gt;&amp;gt;(); // 这里有一个比较严谨操作的，防止在添加新的服务实例集群租约时把已有其他的线程 // 添加的集群租约覆盖掉， // 这与putIfAbsent的机制相关 // 如果存在该键值，直</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十四）服务端核心代码</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</link>
       <pubDate>Thu, 14 Jun 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务端核心代码 在Eureka中，eureka-server模块是通过eureka-client、eureka-core、以及eureka-resource(eureka-server运行JSP界面)三个模块打包而成，由于euerka-client已经在上一节进行了较为完整的介绍，所以服务端核心代码主要位于eureka-</description>
     </item>
     
     <item>
       <title>中文版音乐剧《长腿叔叔》repo</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-05/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E9%95%BF%E8%85%BF%E5%8F%94%E5%8F%94repo/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-05/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E9%95%BF%E8%85%BF%E5%8F%94%E5%8F%94repo/</link>
       <pubDate>Sat, 26 May 2018 16:37:59 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-05/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E9%95%BF%E8%85%BF%E5%8F%94%E5%8F%94repo/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-05/%E4%B8%AD%E6%96%87%E7%89%88%E9%9F%B3%E4%B9%90%E5%89%A7%E9%95%BF%E8%85%BF%E5%8F%94%E5%8F%94repo/</guid>
       <description>2018年5月25日 19:30 上海兰心大戏院 中文版音乐剧《长腿叔叔》repo</description>
     </item>
     
     <item>
       <title>爱尔兰踢踏舞《王者之舞∙危险游戏》</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-05/%E7%88%B1%E5%B0%94%E5%85%B0%E8%B8%A2%E8%B8%8F%E8%88%9E%E7%8E%8B%E8%80%85%E4%B9%8B%E8%88%9E%E5%8D%B1%E9%99%A9%E6%B8%B8%E6%88%8F/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-05/%E7%88%B1%E5%B0%94%E5%85%B0%E8%B8%A2%E8%B8%8F%E8%88%9E%E7%8E%8B%E8%80%85%E4%B9%8B%E8%88%9E%E5%8D%B1%E9%99%A9%E6%B8%B8%E6%88%8F/</link>
       <pubDate>Thu, 24 May 2018 20:22:13 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-05/%E7%88%B1%E5%B0%94%E5%85%B0%E8%B8%A2%E8%B8%8F%E8%88%9E%E7%8E%8B%E8%80%85%E4%B9%8B%E8%88%9E%E5%8D%B1%E9%99%A9%E6%B8%B8%E6%88%8F/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-05/%E7%88%B1%E5%B0%94%E5%85%B0%E8%B8%A2%E8%B8%8F%E8%88%9E%E7%8E%8B%E8%80%85%E4%B9%8B%E8%88%9E%E5%8D%B1%E9%99%A9%E6%B8%B8%E6%88%8F/</guid>
       <description>2018年5月4日 19:30 上海文化广场 爱尔兰踢踏舞《王者之舞∙危险游戏》repo</description>
     </item>
     
     <item>
       <title>现实与幻想的距离——观《深夜小狗离奇事件》repo&amp;感想</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-05/%E7%8E%B0%E5%AE%9E%E4%B8%8E%E5%B9%BB%E6%83%B3%E7%9A%84%E8%B7%9D%E7%A6%BB%E8%A7%82%E6%B7%B1%E5%A4%9C%E5%B0%8F%E7%8B%97%E7%A6%BB%E5%A5%87%E4%BA%8B%E4%BB%B6repo%E6%84%9F%E6%83%B3/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-05/%E7%8E%B0%E5%AE%9E%E4%B8%8E%E5%B9%BB%E6%83%B3%E7%9A%84%E8%B7%9D%E7%A6%BB%E8%A7%82%E6%B7%B1%E5%A4%9C%E5%B0%8F%E7%8B%97%E7%A6%BB%E5%A5%87%E4%BA%8B%E4%BB%B6repo%E6%84%9F%E6%83%B3/</link>
       <pubDate>Thu, 24 May 2018 10:17:35 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-05/%E7%8E%B0%E5%AE%9E%E4%B8%8E%E5%B9%BB%E6%83%B3%E7%9A%84%E8%B7%9D%E7%A6%BB%E8%A7%82%E6%B7%B1%E5%A4%9C%E5%B0%8F%E7%8B%97%E7%A6%BB%E5%A5%87%E4%BA%8B%E4%BB%B6repo%E6%84%9F%E6%83%B3/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-05/%E7%8E%B0%E5%AE%9E%E4%B8%8E%E5%B9%BB%E6%83%B3%E7%9A%84%E8%B7%9D%E7%A6%BB%E8%A7%82%E6%B7%B1%E5%A4%9C%E5%B0%8F%E7%8B%97%E7%A6%BB%E5%A5%87%E4%BA%8B%E4%BB%B6repo%E6%84%9F%E6%83%B3/</guid>
       <description>2018年5月16日 19:30 上海文化广场 英国国家剧院 National Theatre话剧《深夜小狗离奇事件》repo。《小狗》是一部充满科技元素的话剧，话剧主题通过患有自闭症的少年直指人心最柔软的地方，结尾老师戛然而止的话语将整部戏剧推向最高潮。</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十三） Eureka Server 配置类介绍</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/</link>
       <pubDate>Thu, 24 May 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server 配置类介绍 从spring-cloud-starter-netflix-eureka-server的spring.factories中 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\ org.springframework.cloud.netflix.eureka.server.EurekaServerAutoConfiguration 可以发现EurekaServerAutoConfiguration配置文件被激活。 打开SpringBoot的Debug模式： logging:level:org.springfram</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十二）服务下线</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/</link>
       <pubDate>Sat, 12 May 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务下线 到此为止，已经通过DiscoveryClient的构造方法，遍历了DiscoveryClient上基本所有方法，也了解Eureka Client如何服务发现(fetchRegistry()拉取Eureka Server上的注册表信息，之后通过定时任务CacheRefreshThread定时拉取)，服务注册(第一次注</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十一）服务注册与服务按需注册</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%80%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%8C%89%E9%9C%80%E6%B3%A8%E5%86%8C/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%80%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%8C%89%E9%9C%80%E6%B3%A8%E5%86%8C/</link>
       <pubDate>Sat, 21 Apr 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%80%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%8C%89%E9%9C%80%E6%B3%A8%E5%86%8C/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%80%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%8C%89%E9%9C%80%E6%B3%A8%E5%86%8C/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册与服务按需注册 介绍到这里，似乎发现Eureka Client的与Eureka Server的服务注册和发现基本上都是实现了，但是好像缺了点什么，如果Eureka Client的InstanceInfo中的信息发生改变时(例如status发生改变)，是不是应该更新在Server上的注册表中的服务实例的信息？ 重新回到in</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （十）注册表缓存刷新定时器与续租(心跳)定时器</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%BC%93%E5%AD%98%E5%88%B7%E6%96%B0%E5%AE%9A%E6%97%B6%E5%99%A8%E4%B8%8E%E7%BB%AD%E7%A7%9F%E5%BF%83%E8%B7%B3%E5%AE%9A%E6%97%B6%E5%99%A8/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%BC%93%E5%AD%98%E5%88%B7%E6%96%B0%E5%AE%9A%E6%97%B6%E5%99%A8%E4%B8%8E%E7%BB%AD%E7%A7%9F%E5%BF%83%E8%B7%B3%E5%AE%9A%E6%97%B6%E5%99%A8/</link>
       <pubDate>Wed, 11 Apr 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%BC%93%E5%AD%98%E5%88%B7%E6%96%B0%E5%AE%9A%E6%97%B6%E5%99%A8%E4%B8%8E%E7%BB%AD%E7%A7%9F%E5%BF%83%E8%B7%B3%E5%AE%9A%E6%97%B6%E5%99%A8/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-04/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E6%B3%A8%E5%86%8C%E8%A1%A8%E7%BC%93%E5%AD%98%E5%88%B7%E6%96%B0%E5%AE%9A%E6%97%B6%E5%99%A8%E4%B8%8E%E7%BB%AD%E7%A7%9F%E5%BF%83%E8%B7%B3%E5%AE%9A%E6%97%B6%E5%99%A8/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 注册表缓存刷新定时器与续租(心跳)定时器 很明显，服务注册应该是一个持续的过程，所以DiscoveryClient中通过一个定时任务完成，不间断地与Eureka Server进行通信，维持自己在注册表上的租约。 在initScheduledTasks()方法中初始化了两个定时器任务，一个用于刷新本地注册表的信息，一个用于注册</description>
     </item>
     
     <item>
       <title>2018Fall申请季总结</title>
-      <link>https://qingting-zheng.github.io:443/blog/2018-03/2018fall%E7%94%B3%E8%AF%B7%E5%AD%A3%E6%80%BB%E7%BB%93/</link>
+      <link>https://qingting-zheng.github.io:1443/blog/2018-03/2018fall%E7%94%B3%E8%AF%B7%E5%AD%A3%E6%80%BB%E7%BB%93/</link>
       <pubDate>Mon, 26 Mar 2018 23:58:45 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/blog/2018-03/2018fall%E7%94%B3%E8%AF%B7%E5%AD%A3%E6%80%BB%E7%BB%93/</guid>
+      <guid>https://qingting-zheng.github.io:1443/blog/2018-03/2018fall%E7%94%B3%E8%AF%B7%E5%AD%A3%E6%80%BB%E7%BB%93/</guid>
       <description>终于，在周日上午收到umd的拒信后宣告北美5所学校的PhD申请全军覆没。2018Fall申请季就这样渐渐落下帷幕。原本就知道这两年计算机视觉很难申，但没想到这么难，而且听说18fall申请难度一下子大了很多T^T几乎每所学校都说今年竞争有多激烈，几乎是去年申请人数的1.5倍。伤心之际，进行一下总结，希望明年能引以为鉴。</description>
     </item>
     
     <item>
       <title>Computer Graphics资源整理</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-03/computer-graphics%E8%B5%84%E6%BA%90%E6%95%B4%E7%90%86/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-03/computer-graphics%E8%B5%84%E6%BA%90%E6%95%B4%E7%90%86/</link>
       <pubDate>Sun, 25 Mar 2018 23:48:35 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-03/computer-graphics%E8%B5%84%E6%BA%90%E6%95%B4%E7%90%86/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-03/computer-graphics%E8%B5%84%E6%BA%90%E6%95%B4%E7%90%86/</guid>
       <description>&lt;p&gt;主要是针对Computer Animation，但现在还未入门，调研的是Computer Graphics大方向。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>慢学Docker(3) Docker Hub速度蜗牛爬怎么办?</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</link>
       <pubDate>Tue, 20 Mar 2018 23:47:17 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</guid>
       <description>前言 其实两三个月前使用docker hub不管push还是pull虽然算不上光速但也不错。但今天修铭哥问我关于docker的使用，直接用Dockerfile建镜像不知道为什么成功不了，于是想直接pull我已经上传到docker hub中的镜像，结果就这1.3G左右的东西，下了整整一天。其中某layer就52M也能下半天。 晚上回家想下vue的docker镜像，几个四五十M的layer也慢悠悠下着，终于确</description>
     </item>
     
     <item>
       <title>慢学Docker(3) Docker Hub速度蜗牛爬怎么办?</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</link>
       <pubDate>Tue, 20 Mar 2018 23:47:17 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-03/%E6%85%A2%E5%AD%A6docker3-docker-hub%E9%80%9F%E5%BA%A6%E8%9C%97%E7%89%9B%E7%88%AC%E6%80%8E%E4%B9%88%E5%8A%9E/</guid>
       <description>前言 其实两三个月前使用docker hub不管push还是pull虽然算不上光速但也不错。但今天修铭哥问我关于docker的使用，直接用Dockerfile建镜像不知道为什么成功不了，于是想直接pull我已经上传到docker hub中的镜像，结果就这1.3G左右的东西，下了整整一天。其中某layer就52M也能下半天。 晚上回家想下vue的docker镜像，几个四五十M的layer也慢悠悠下着，终于确</description>
     </item>
     
     <item>
       <title>Blog养成记(7) Hugo多级列表无法显示? —— Cocoa主题的Markdown bug合集</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B07-hugo%E5%A4%9A%E7%BA%A7%E5%88%97%E8%A1%A8%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA-cocoa%E4%B8%BB%E9%A2%98%E7%9A%84markdown-bug%E5%90%88%E9%9B%86/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B07-hugo%E5%A4%9A%E7%BA%A7%E5%88%97%E8%A1%A8%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA-cocoa%E4%B8%BB%E9%A2%98%E7%9A%84markdown-bug%E5%90%88%E9%9B%86/</link>
       <pubDate>Tue, 20 Mar 2018 16:46:17 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B07-hugo%E5%A4%9A%E7%BA%A7%E5%88%97%E8%A1%A8%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA-cocoa%E4%B8%BB%E9%A2%98%E7%9A%84markdown-bug%E5%90%88%E9%9B%86/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B07-hugo%E5%A4%9A%E7%BA%A7%E5%88%97%E8%A1%A8%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA-cocoa%E4%B8%BB%E9%A2%98%E7%9A%84markdown-bug%E5%90%88%E9%9B%86/</guid>
       <description>前言 又一次开始折腾Markdown了，不过这一次是因为好好的md文件，在typora中显示的好好的，但在Hugo渲染后格式就不对了，引起我这次探究主要问题在多级列表。考虑到毕竟两个软件的markdown渲染引擎不同，我并没有用到很特别的语法。之前在引用上也碰到了问题，typora中能很好地识别我想要的引用段落，但是Hugo不行。所以这次探究下是哪里出了问题，以及对应的解决方案。 既然已经提到了mar</description>
     </item>
     
     <item>
       <title>Blog养成记(6) Hugo中的LaTeX渲染</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B06-hugo%E4%B8%AD%E7%9A%84latex%E6%B8%B2%E6%9F%93/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B06-hugo%E4%B8%AD%E7%9A%84latex%E6%B8%B2%E6%9F%93/</link>
       <pubDate>Mon, 19 Mar 2018 22:33:45 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B06-hugo%E4%B8%AD%E7%9A%84latex%E6%B8%B2%E6%9F%93/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-03/blog%E5%85%BB%E6%88%90%E8%AE%B06-hugo%E4%B8%AD%E7%9A%84latex%E6%B8%B2%E6%9F%93/</guid>
       <description>Hugo本身并不支持(\LaTeX)，但可以通过javascript进行渲染。Hugo官网提供了多种方法，由于这篇博客我决定选择(\KaTeX)，而不是MathJax。</description>
     </item>
     
     <item>
       <title>每周Paper精读(1) Understanding Deep Learning Requires Rethinking Generalization</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-03/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB1-understanding-deep-learning-requires-rethinking-generalization/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-03/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB1-understanding-deep-learning-requires-rethinking-generalization/</link>
       <pubDate>Wed, 14 Mar 2018 10:40:55 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-03/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB1-understanding-deep-learning-requires-rethinking-generalization/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-03/%E6%AF%8F%E5%91%A8paper%E7%B2%BE%E8%AF%BB1-understanding-deep-learning-requires-rethinking-generalization/</guid>
       <description>前言 上周五小仓鼠说有篇论文很有意思，问我看过没，是ICLR 2017 的 Best Paper [Zhang et al. 2017] Understanding Deep Learning Requires Rethinking Generalization。汗颜的确很久没有关心会议论文，现在更多都是关心项目技术点方向的论文。这篇论文一看的确很有意思，而且在学术界引起了非常激烈的讨论。有些人认为论文深度不够，提出的观点在泛化的理论学界已经研究很久，更偏向于实验报告不足以Best Paper，有人说中间有些逻辑问题，也有不少人觉得是对传统理论发</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （九）Eureka 客户端增量式拉取注册表信息</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B9%9Deureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%8B%89%E5%8F%96%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B9%9Deureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%8B%89%E5%8F%96%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF/</link>
       <pubDate>Sun, 11 Mar 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B9%9Deureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%8B%89%E5%8F%96%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B9%9Deureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A2%9E%E9%87%8F%E5%BC%8F%E6%8B%89%E5%8F%96%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 增量式拉取注册表信息 接着查看一下增量式的拉取方式，一般发生在第一次拉取注册表信息之后，拉取的信息定义为从某一段时间之后发生的所有变更的信息，通常来讲是3分钟，在获取到更新的delta，会根据delta中的增量更新对本地的数据进行更新，与getAndStoreFullRegistry()一样，也通过fetchRegist</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （八）Eureka 客户端拉取信息</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%ABeureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%89%E5%8F%96%E4%BF%A1%E6%81%AF/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%ABeureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%89%E5%8F%96%E4%BF%A1%E6%81%AF/</link>
       <pubDate>Wed, 07 Mar 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%ABeureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%89%E5%8F%96%E4%BF%A1%E6%81%AF/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-03/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%ABeureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%89%E5%8F%96%E4%BF%A1%E6%81%AF/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 从Eureka Server中拉取注册表信息 通过如下的逻辑判断： if (clientConfig.shouldFetchRegistry() &amp;amp;&amp;amp; !fetchRegistry(false)) { fetchRegistryFromBackup(); } 如果EurekaClientConfig.shouldFetchRegistry()为true时，那么fetchRegistry()方法将会被调用，，在Eureka Client向Eureka Server注册前，需要先从Eureka Server拉</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （七）Eureka 客户端的服务注册与发现</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%83eureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%83eureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/</link>
       <pubDate>Tue, 27 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%83eureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%83eureka-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 客户端的服务注册与发现 在DiscoveryClient的代码中，有实现服务注册与发现的功能的具体代码。在DiscoveryClient构造函数中，Eureka Client会执行从Eureka Server中拉取注册表信息，注册自身等操作。 DiscoveryClient的构造函数如下： DiscoveryClient(ApplicationInfoManager applicationInfoManager, EurekaClientConfig config, AbstractDiscoveryClientOptionalArgs args, Provider&amp;lt;BackupRegistry&amp;gt; backupRegistryProvider) Application</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （六） Eureka Client 客户端核心代码</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</link>
       <pubDate>Mon, 26 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%85%AD-eureka-client-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 包结构 主要的代码位于eureka-client中，项目的module为eureka-client，版本为v1.8.7，这是Finchley版本的Spring Cloud所依赖的eureka版本 包结构如下 简要的包介绍: com.netflix.appinfo: 主要是关于eureka-client的配置信息类，如上面提及的EurekaInstanceConfig，</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （五） Eureka Client 源码分析</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Tue, 20 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%94-eureka-client-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 在Finchley版本的SpringCloud中，不需要添加任何的额外的注解就可以登记为Eureka Client，只需要在pom文件中添加spring-cloud-starter-netflix-eureka-client的依赖。 为了跟踪Eureka的运行机制，读者可以打开SpringBoot的Debug模式来查看更多</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （四） Eureka 核心架构图</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%9B%9B-eureka-%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%9B%BE/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%9B%9B-eureka-%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%9B%BE/</link>
       <pubDate>Fri, 16 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%9B%9B-eureka-%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%9B%BE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%9B%9B-eureka-%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%9B%BE/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 核心架构图 目前SpringCloud的Finchley版本中采用的Eureka的版本的为1.8，本部分的架构图主要基于Eureka 1.0的进行介绍。 这幅图来自于Eureka的官方提供的架构图，GitHub地址为https://github.com/Netflix/eureka，下面将对这里的概念以及工作过程进行介绍，以</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （三）微服务接入 Eureka </title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%89%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%85%A5-eureka/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%89%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%85%A5-eureka/</link>
       <pubDate>Mon, 12 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%89%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%85%A5-eureka/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%89%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%85%A5-eureka/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 与服务注册中心交换信息 当一个服务实例拥有DiscovryClient就可以从Eureka Server中发现其他的服务实例，以下例子在Eureka Client注入一个DiscoveryClient，并从Eureka Server获取服务实例的信息。 在chapter2-eureka-client添加一个ServiceInst</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （二）使用 Eureka 作为服务发现组件</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E4%BD%BF%E7%94%A8-eureka-%E4%BD%9C%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%BB%84%E4%BB%B6/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E4%BD%BF%E7%94%A8-eureka-%E4%BD%9C%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%BB%84%E4%BB%B6/</link>
       <pubDate>Thu, 08 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E4%BD%BF%E7%94%A8-eureka-%E4%BD%9C%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%BB%84%E4%BB%B6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%BA%8C%E4%BD%BF%E7%94%A8-eureka-%E4%BD%9C%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%BB%84%E4%BB%B6/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 搭建Eureka服务注册中心 可以通过Idea快速搭建包含Eurake Server依赖的SpringBoot项目 主要依赖 &amp;lt;dependency&amp;gt;// eureka-client相关依赖&amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&amp;lt;artifactId&amp;gt;spring-cl</description>
     </item>
     
     <item>
       <title>Docker for datascience: 从纠结到放弃</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</link>
       <pubDate>Tue, 06 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</guid>
       <description>表示我是不纠结不死星人。 先是由jupyter stacks突发奇想，于是纠结于想建立属于自己的docker族系，特别是用来做数据科学&amp;amp;机器学习。想要不用Anaconda、甚至不用conda，自己按照使用习惯安装我自己需要的包、想使用最小的alpine作为基镜像，因此开始走上不归路。 想要使用bash而不是ash，想要默认调用bash，想要调用bash时能默认出现现在使用用户及现在所在文件夹。折</description>
     </item>
     
     <item>
       <title>Docker for datascience: 从纠结到放弃</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</link>
       <pubDate>Tue, 06 Feb 2018 10:01:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-02/docker-for-datascience-%E4%BB%8E%E7%BA%A0%E7%BB%93%E5%88%B0%E6%94%BE%E5%BC%83/</guid>
       <description>表示我是不纠结不死星人。 先是由jupyter stacks突发奇想，于是纠结于想建立属于自己的docker族系，特别是用来做数据科学&amp;amp;机器学习。想要不用Anaconda、甚至不用conda，自己按照使用习惯安装我自己需要的包、想使用最小的alpine作为基镜像，因此开始走上不归路。 想要使用bash而不是ash，想要默认调用bash，想要调用bash时能默认出现现在使用用户及现在所在文件夹。折</description>
     </item>
     
     <item>
       <title>Pycharm vs Notebook</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/pycharm-vs-notebook/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/pycharm-vs-notebook/</link>
       <pubDate>Tue, 30 Jan 2018 21:07:19 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/pycharm-vs-notebook/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/pycharm-vs-notebook/</guid>
       <description>严格说来题目起的有些问题，pycharm是一个IDE (Integrated Development Environment)，而且在pycharm里同样也可以使用Notebook。这里主要是指传统的编程方式和Notebook交互式方式的比较和选择。这篇博客希望对那些和我一样有选择恐惧症并且非常迷茫的人有所帮助。 缘起 说起来接触python也已经一年半的时间。去年7月，哦不，应该是前年7月，刚入职才开始因为工作学习的python，首先遇到的就是</description>
     </item>
     
     <item>
       <title>Mac小白探索记(2) Finder设置</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B02-finder%E8%AE%BE%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B02-finder%E8%AE%BE%E7%BD%AE/</link>
       <pubDate>Tue, 30 Jan 2018 20:21:13 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B02-finder%E8%AE%BE%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B02-finder%E8%AE%BE%E7%BD%AE/</guid>
       <description>Finder是mac的资源管理器，它的使用和配置与Windows区别还是挺多。习惯了Windows的使用使得Finder使用总觉得有些不便。配置好Finder能很大幅度提高我们的工作效率。 我会从遇到的问题着手，查找可以解决问题提高效率的解决方案。 Finder显示设置 显示隐藏文件夹 Mac系统Finder中的 /usr、/etc等文件夹都是隐藏文件，如果不进行设置用户是无法见到的。估计是因为mac用户并</description>
     </item>
     
     <item>
       <title>Mac小白探索记(1) 基本设置与常用软件</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B01-%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B01-%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/</link>
       <pubDate>Tue, 30 Jan 2018 15:04:48 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B01-%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/mac%E5%B0%8F%E7%99%BD%E6%8E%A2%E7%B4%A2%E8%AE%B01-%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE%E4%B8%8E%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/</guid>
       <description>序 原本打算将所有相关内容只写在一篇博文里，但后面发现越加越多，内容越来越零散，最后决定进行拆分，也变为一个系列。我是2017年底才刚开始深入使用mac，算是mac小白一枚，在探索的过程中想将一些我觉得高效实用的信息记录下来，希望其他和我一样刚开始学习mac的小伙伴们能看了后有所帮助。 第一篇主要介绍新入手mac后的基本设置与常用软件安装。终于转到有terminal的电脑上了，既然换了Mac OS，需要</description>
     </item>
     
     <item>
       <title>Blog养成记(5) 要让Github Pages被索引到</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B05-%E8%A6%81%E8%AE%A9github-pages%E8%A2%AB%E7%B4%A2%E5%BC%95%E5%88%B0/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B05-%E8%A6%81%E8%AE%A9github-pages%E8%A2%AB%E7%B4%A2%E5%BC%95%E5%88%B0/</link>
       <pubDate>Sun, 28 Jan 2018 22:04:23 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B05-%E8%A6%81%E8%AE%A9github-pages%E8%A2%AB%E7%B4%A2%E5%BC%95%E5%88%B0/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B05-%E8%A6%81%E8%AE%A9github-pages%E8%A2%AB%E7%B4%A2%E5%BC%95%E5%88%B0/</guid>
       <description>居然都找不到！ 其实Blog我主要是用来做一些记录，更何况忙起来经常不更新，因此尽管有加上一些流量统计的功能，但实际上也不怎么关心到底有多少访问量。在浏览网上其他人的博客布局寻找灵感时，突然看到有博客提到GitHub Pages屏蔽了百度的爬虫，所以百度是搜索不到GitHub Pages上的网页的。 什么？所以百度搜索搜不到我的个人博客？不死心，尝试一下，找得到github、gist主页，但是就是找不到g</description>
     </item>
     
     <item>
       <title>Mac中Git忽略.DS_Store文件</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/mac%E4%B8%ADgit%E5%BF%BD%E7%95%A5.ds_store%E6%96%87%E4%BB%B6/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/mac%E4%B8%ADgit%E5%BF%BD%E7%95%A5.ds_store%E6%96%87%E4%BB%B6/</link>
       <pubDate>Sun, 28 Jan 2018 13:36:28 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/mac%E4%B8%ADgit%E5%BF%BD%E7%95%A5.ds_store%E6%96%87%E4%BB%B6/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/mac%E4%B8%ADgit%E5%BF%BD%E7%95%A5.ds_store%E6%96%87%E4%BB%B6/</guid>
       <description>Git中多出来的.DS_Store 虽然不是第一次使用mac，也不是第一次在mac上使用git，但对mac实际上非常不熟悉。每次git上传时多出来的.DS_Store文件虽然不清楚具体做什么，但看上去并没什么问题。git一般也是自己一个人单机使用，就算换机也一般是直接换，没有遇到过两个同时使用的时候，上传.DS_Store也就默认都上传了。 但这次用两个mac，一个mac提交了修改，第二个mac想要拉</description>
     </item>
     
     <item>
       <title>慢学Docker(2) Docker初探</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker2-docker%E5%88%9D%E6%8E%A2/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker2-docker%E5%88%9D%E6%8E%A2/</link>
       <pubDate>Sat, 27 Jan 2018 15:04:18 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker2-docker%E5%88%9D%E6%8E%A2/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker2-docker%E5%88%9D%E6%8E%A2/</guid>
       <description>Introduction 什么是docker？ 什么是Docker？Docker是一个开源的容器应用引擎。开发者可以将应用及依赖打包上传到一个可移植的容器中执行，由于容器是可移植的，于是，这个应用就可以在任何其他可以运行这个容器的地方运行了。换句话说，只要其他可以运行docker的地方就可以运行这个容器（因为是可移植的），也就可以运行你的应用，而docker在很多平台都可以安装运行，这样完全不用担心由于平台环境的不同对应用</description>
     </item>
     
     <item>
       <title>慢学Docker(1) Preface</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker1-preface/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker1-preface/</link>
       <pubDate>Sat, 27 Jan 2018 12:32:58 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker1-preface/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/%E6%85%A2%E5%AD%A6docker1-preface/</guid>
       <description>初闻 作为一个一向不怎么关心各种资讯动态的人，我经常脱节于前沿新闻及热点，更何况对于非专业方向，我更是不会去主动关心，所以对于之前很火的容器和docker我是一点都不了解。第一次听说这个还是因为前人渣组长李想要求写份标书文档，什么技术热门可用就写进去。他听说了docker容器部署及环境配置的便利性，想利用到项目中的宣传中，更好地作为对外的卖点。不管怎么说，这是第一次听说并尝试了解docker和容器，</description>
     </item>
     
     <item>
       <title>服务发现：Spring Cloud Netflix Eureka （一）介绍</title>
-      <link>https://qingting-zheng.github.io:443/tech/2018-01/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%80%E4%BB%8B%E7%BB%8D/</link>
+      <link>https://qingting-zheng.github.io:1443/tech/2018-01/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%80%E4%BB%8B%E7%BB%8D/</link>
       <pubDate>Fri, 26 Jan 2018 12:32:58 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/tech/2018-01/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%80%E4%BB%8B%E7%BB%8D/</guid>
+      <guid>https://qingting-zheng.github.io:1443/tech/2018-01/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E4%B8%80%E4%BB%8B%E7%BB%8D/</guid>
       <description>系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 在传统的单体应用中，组件之间的调用通过有规范约束的接口进行，实现不同模块间良好协作。在微服务架构中，原本的“巨石”应用按照业务被分割成相对独立的、提供特定功能的微服务，每一个微服务都可以通过集群或者其他方式进行动态的扩展，每一个微服务实例的网络地址都可能动态变化，这使得原本通过硬编码地址的调用方式失去了作用。微服务架构</description>
     </item>
     
     <item>
       <title>在公司建立python虚拟环境</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/%E5%9C%A8%E5%85%AC%E5%8F%B8%E5%BB%BA%E7%AB%8Bpython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/%E5%9C%A8%E5%85%AC%E5%8F%B8%E5%BB%BA%E7%AB%8Bpython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
       <pubDate>Thu, 18 Jan 2018 09:14:15 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/%E5%9C%A8%E5%85%AC%E5%8F%B8%E5%BB%BA%E7%AB%8Bpython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/%E5%9C%A8%E5%85%AC%E5%8F%B8%E5%BB%BA%E7%AB%8Bpython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</guid>
       <description>前言 尽管官方已经声明python2.7在2020年就不再进行维护，但很多企业应用和第三方包还是建立在python2.7的版本上，进行切换有一定成本。而相比python3，python2对于中文编码处理也相对繁琐的多，因此新的应用一般都会建立在python3上。而python3的版本选择也有分歧，比如说，尽管截止目前为止最新的版本是python3.6，但是链接oracle的包cx_Oracle只在p</description>
     </item>
     
     <item>
       <title>Blog养成记(4) Hugo中增加tags等分类</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B04-hugo%E4%B8%AD%E5%A2%9E%E5%8A%A0tags%E7%AD%89%E5%88%86%E7%B1%BB/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B04-hugo%E4%B8%AD%E5%A2%9E%E5%8A%A0tags%E7%AD%89%E5%88%86%E7%B1%BB/</link>
       <pubDate>Tue, 09 Jan 2018 18:22:25 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B04-hugo%E4%B8%AD%E5%A2%9E%E5%8A%A0tags%E7%AD%89%E5%88%86%E7%B1%BB/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B04-hugo%E4%B8%AD%E5%A2%9E%E5%8A%A0tags%E7%AD%89%E5%88%86%E7%B1%BB/</guid>
       <description>自定义分类 Hugo是支持用户自定义分类的，这个称为taxonomy，可以来对网页内容进行逻辑划分，详情可以在这里查看。 分类taxonomy有3个概念： Taxonomy 分类: 可以用来对内容进行分类的类别 Term 术语: 分类的一个键 Value 值: 分配给这个Term的具体内容 例如我需要增加3个分类，分别是： tag：文章标签 topic：文章主题/文章系列 category：文章分类 以tag为例，则对应Taxonomy是tag，Term是</description>
     </item>
     
     <item>
       <title>Blog养成记(3) Hugo的语法高亮配置</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B03-hugo%E7%9A%84%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE%E9%85%8D%E7%BD%AE/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B03-hugo%E7%9A%84%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 09 Jan 2018 17:52:25 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B03-hugo%E7%9A%84%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B03-hugo%E7%9A%84%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE%E9%85%8D%E7%BD%AE/</guid>
       <description>前言 Hugo官网在这里给出了详细的语法高亮配置说明。 一般有以下几种常见方法： 使用Hugo默认Chroma (弃，一些代码无法高亮) 使用Pygments (弃，一些代码无法高亮) 使用Highlight Shortcode (弃，高亮颜色渲染问题) 使用Highlight.js ✔️ 使用Pygments进行高亮 Hugo从0.28版本开始默认使用Chroma来作语法高亮。Chroma使用go编写的，渲染速度很快。 如果需要使用Pyg</description>
     </item>
     
     <item>
       <title>Blog养成记(2) Hugo&#43;Docker在Github上建立Blog</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B02-hugo-docker%E5%9C%A8github%E4%B8%8A%E5%BB%BA%E7%AB%8Bblog/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B02-hugo-docker%E5%9C%A8github%E4%B8%8A%E5%BB%BA%E7%AB%8Bblog/</link>
       <pubDate>Sun, 07 Jan 2018 11:05:25 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B02-hugo-docker%E5%9C%A8github%E4%B8%8A%E5%BB%BA%E7%AB%8Bblog/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B02-hugo-docker%E5%9C%A8github%E4%B8%8A%E5%BB%BA%E7%AB%8Bblog/</guid>
       <description>Introduction 正如上一篇说的，我选择了Hugo作为静态网页生成器。Hugo是一个用go写的静态网页生成器，它被提及最多的优点就是它生成网站的速度快。此外，Hugo的安装配置看上去也并不麻烦，直接在这里选择合适的版本和环境下载对应release版并配置环境变量即可。整体来说非常方便。 在决定使用Hugo之外，我还决定用Docker来做环境配置。因为新买了mac，不愿意弄乱环境，也希望以后能够跨平台使用，方便配置，</description>
     </item>
     
     <item>
       <title>Blog养成记(1) Preface</title>
-      <link>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B01-preface/</link>
+      <link>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B01-preface/</link>
       <pubDate>Mon, 01 Jan 2018 16:05:25 +0800</pubDate>
       
-      <guid>https://qingting-zheng.github.io:443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B01-preface/</guid>
+      <guid>https://qingting-zheng.github.io:1443/sci-tech/2018-01/blog%E5%85%BB%E6%88%90%E8%AE%B01-preface/</guid>
       <description>初始 养个Blog的想法从很早就有了，但是&amp;hellip; 从本科开始就一直想要一个自己的Blog，一直没有行动。本身我没有记日记的习惯，也没有需求和冲动写下什么，本科虽然有时想记下学下的内容，但笔记就够了，也没写什么技术博客的想法。除了很久之前偶尔在qq空间或者人人po两篇直抒胸臆的文章，也就没有其他了。此外，虽说博客最重要的是内容，但没有一个好的生态环境和前端界面设计，至少对于我来说，没有兴趣花时</description>
     </item>
     

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
-  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <head><script src="/livereload.js?port=1443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="HandheldFriendly" content="True">
@@ -12,7 +12,7 @@
   <meta property="og:title" content="深入解析负载均衡组件 Ribbon（八）负载均衡策略实现" />
 <meta property="og:description" content="系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 负载均衡策略实现 IRule是定义Ribbon负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在RibbonClientConfiguration中给出。IRule接口的choose函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/" />
+<meta property="og:url" content="https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/" />
 <meta property="article:published_time" content="2019-02-06T10:01:15+08:00" />
 <meta property="article:modified_time" content="2019-02-06T10:01:15+08:00" />
 
@@ -24,29 +24,29 @@
   
   </title>
 
-  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/">
+  <link rel="canonical" href="https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%85%AB%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5%E5%AE%9E%E7%8E%B0/">
 
   
   
 
   
-  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:1443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
 
   
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
-  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:1443/css/font.css" rel="stylesheet"> 
     
   
-  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
-  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
-  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
-  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:1443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:1443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:1443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:1443/css/main.css" rel="stylesheet">
 
 
   
   <link rel="shortcut icon"
   
-      href="https://qingting-zheng.github.io:443/img/zheng.png"
+      href="https://qingting-zheng.github.io:1443/img/zheng.png"
   
   >
 
@@ -69,7 +69,7 @@
 
   
     
-    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:1443/css/vendors/highlight/github-gist.css">
   
 
 </head>
@@ -87,9 +87,9 @@
     <div class="container">
 
       
-      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:1443/">
           
-        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        <img class="avatar" src="https://qingting-zheng.github.io:1443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
         
         <strong> QingTing</strong>
       </a>
@@ -106,26 +106,21 @@
         
         <ul class="navbar-nav mr-auto ">
           <li class="nav-item ">
-            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+            <a class="nav-link" href="https://qingting-zheng.github.io:1443/">Home</a>
           </li>
              
             <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+              <a class="nav-link" href="https://qingting-zheng.github.io:1443/tech/" >技术  </a>
             </li>
           
              
             <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+              <a class="nav-link" href="https://qingting-zheng.github.io:1443/sci-tech/" >Science  </a>
             </li>
           
              
             <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
-            </li>
-          
-             
-            <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+              <a class="nav-link" href="https://qingting-zheng.github.io:1443/about/" >关于  </a>
             </li>
           
           
@@ -158,7 +153,7 @@
 
         
         <div class="carousel-item active">
-          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:1443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
 
             
             <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -185,15 +180,15 @@
     <div class="row mx-0 headfont mt-3 pt-4">
       
       <div class="col-12 col-sm-5 align-middle">
-        <a href="https://qingting-zheng.github.io:443/">
+        <a href="https://qingting-zheng.github.io:1443/">
           
-            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:1443/img/profile.jpg" alt="" >
           
         </a>
       </div>
       
       <div class="col-12 col-sm-7 text-left pl-2">
-        <a href="https://qingting-zheng.github.io:443/">
+        <a href="https://qingting-zheng.github.io:1443/">
           <h1 class="mb-2 h1" style="font-weight: 300;" >
             <strong>QingTing</strong>
           </h1>
@@ -257,12 +252,12 @@
   <ul class="post-meta li-x">
     
       
-        <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
+        <li><a href="https://qingting-zheng.github.io:1443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
       
     
     
       
-        <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
+        <li><a href="https://qingting-zheng.github.io:1443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
       
     
   </ul>
@@ -290,7 +285,7 @@
 </blockquote>
 <h3 id="负载均衡策略实现">负载均衡策略实现</h3>
 <p><code>IRule</code>是定义<code>Ribbon</code>负载均衡策略的接口，你可以通过实现该接口来自定义自己的负载均衡策略。该接口的默认Bean实例在<code>RibbonClientConfiguration</code>中给出。<code>IRule</code>接口的<code>choose</code>函数就是从一堆服务器中根据一定规则选出一个服务器。IRule有很多默认的实现类，这些实现类根据不同的算法和逻辑来处理负载均衡。Ribbon实现的<code>IRule</code>有一下。在大多数情况下，这些默认的实现类是可以满足需求的，如果有特性的需求，可以自己实现。</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/IRule%E7%B1%BB%E5%9B%BE.png" alt="IRule的类图"></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/ribbon/IRule%E7%B1%BB%E5%9B%BE.png" alt="IRule的类图"></p>
 <p>如图8.2所示，<code>Ribbon</code>内置的<code>IRule</code>的子类有：</p>
 <ul>
 <li>BestAvailableRule 选择最小请求数</li>
@@ -313,7 +308,7 @@ public IRule ribbonRule(IClientConfig config) {
     return rule;
 }
 </code></pre><p><code>ZoneAvoidanceRule</code>是使用<code>CompositePredicate</code>来基于zone和可用性来过滤服务器。<code>ZoneAvoidanceRule</code>相关的类图如图8.3所示。</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/ZoneAvoidanceRule.png" alt="ZoneAvoidanceRule的类图"></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/ribbon/ZoneAvoidanceRule.png" alt="ZoneAvoidanceRule的类图"></p>
 <p><code>ZoneAvoidanceRule</code>是<code>Ribbon</code>默认的<code>IRule</code>实例，较为复杂，在本小节的后续部分再进行讲解。而<code>ClientConfigEnabledRoundRobinRule</code>是比较常用的<code>IRule</code>的子类之一，它使用的负载均衡策略是最为常见的Round Robin策略，也就是简单轮询策略。</p>
 <pre><code>public class ClientConfigEnabledRoundRobinRule extends AbstractLoadBalancerRule {
 
@@ -469,7 +464,7 @@ public Optional&lt;Server&gt; chooseRoundRobinAfterFiltering(List&lt;Server&gt; 
 
 </code></pre><p><code>ZoneAvoidanceRule</code>类中<code>CompositePredicate</code>对象的<code>apply</code>函数就会依次调用<code>ZoneAvoidancePredicate</code>和<code>AvailabilityPredicate</code>的<code>apply</code>函数。</p>
 <p><code>ZoneAvoidancePredicate</code>以一个区域(也就是一个Zone)为单位考察可用性，对于不可用的区域整个丢弃，从剩下区域中选可用的server。判断出最差的区域，排除掉最差区域。在剩下的区域中，将按照服务器实例数的概率抽样法选择，从而判断判定一个zone的运行性能是否可用，剔除不可用的zone中的所有server。</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/ZoneAvoidancePredicate.png" alt="ZoneAvoidancePredicate类图"></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/ribbon/ZoneAvoidancePredicate.png" alt="ZoneAvoidancePredicate类图"></p>
 <pre><code>//ZoneAvoidancePredicate.java
 @Override
 public boolean apply(@Nullable PredicateKey input) {
@@ -525,7 +520,7 @@ static Map&lt;String, ZoneSnapshot&gt; createSnapshot(LoadBalancerStats lbStats)
     return map;
 }
 </code></pre><p><code>getAvailableZones</code>函数是用来筛选Zone列表的，首先，它会遍历一遍Zone列表，在遍历的过程中，它会做两件事情，它会依据Zone内的实例数，实例的平均负载时间，实例故障率等指标将Zone从列表中删除；它会维护一个最坏Zone列表，当某个Zone的平均负载时间小于但是接近全局最坏负载时间时，就会将该Zone加入到最坏Zone列表，如果某个Zone的平均负载时间大于最坏负载时间时，它将会清楚掉之前的最坏Zone列表，以该Zone的平均负载时间为全局最坏负载时间，继续最坏Zone列表的构建。在函数最后，如果全局最坏负载数据大于系统设定的负载时间，则在最坏Zone列表中随机选择出一个Zone，将其从Zone列表中删除。</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/getAvaiableList.png" alt=" getAvailableZones的zone筛选流程"></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/ribbon/getAvaiableList.png" alt=" getAvailableZones的zone筛选流程"></p>
 <pre><code>public static Set&lt;String&gt; getAvailableZones(
         Map&lt;String, ZoneSnapshot&gt; snapshot, double triggeringLoad,
         double triggeringBlackoutPercentage) {
@@ -586,7 +581,7 @@ static Map&lt;String, ZoneSnapshot&gt; createSnapshot(LoadBalancerStats lbStats)
     return availableZones;
 }
 </code></pre><p><code>ZoneAvoidancePredicate</code>的<code>apply</code>调用结束之后，<code>AvailabilityPredicate</code>的<code>apply</code>也会被调用。它是依据掉断路器是否断开或者服务器链接数是否超出阈值来进行服务过滤的预测规则。</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/ribbon/AvailabilityPredicate.png" alt="图8.6 AvailabilityPredicate类图"></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/ribbon/AvailabilityPredicate.png" alt="图8.6 AvailabilityPredicate类图"></p>
 <pre><code>//AvailabilityPredicate.java
 @Override
 public boolean apply(@Nullable PredicateKey input) {
@@ -635,13 +630,13 @@ private boolean shouldSkipServer(ServerStats stats) {
               <div class="mb-5">
                 
 <div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:1443/tags/"><i class="fas fa-tags"></i></a></li>
   <div class="tags-sm">
     
-      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
+      <li><a href="https://qingting-zheng.github.io:1443/tags/ribbon" role="button">Ribbon </a></li>
       
     
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      <li><a href="https://qingting-zheng.github.io:1443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
       
     
   </div>
@@ -657,7 +652,7 @@ private boolean shouldSkipServer(ServerStats stats) {
           <div class="row pt-3">
             <div class="col-md-6">
               
-                <a href=https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/ class="post-meta">Previous
+                <a href=https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B8%83iloadbalancer/ class="post-meta">Previous
                   <div class="pt-2 pb-5 d-flex">
                     <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
                     <span>深入解析负载均衡组件 Ribbon（七）ILoadBalancer</span>
@@ -668,7 +663,7 @@ private boolean shouldSkipServer(ServerStats stats) {
             
             <div class="col-md-6 text-right" >
               
-                <a href=https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/ class="post-meta">Next
+                <a href=https://qingting-zheng.github.io:1443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/ class="post-meta">Next
                   <div class="pt-2 pb-5 flex-reverse">
                     <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
                     <span>深入解析负载均衡组件 Ribbon（九）IPing与server列表</span>
@@ -814,7 +809,7 @@ private boolean shouldSkipServer(ServerStats stats) {
   
   <div class="copyright py-4">
     
-    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+    <span>  2016 - 2021 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
   </div>
   
 
@@ -828,23 +823,23 @@ private boolean shouldSkipServer(ServerStats stats) {
 
 
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
 
 
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/mdb/mdb.min.js"></script>
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/main.js"></script>
 
 
 
   
-  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script src="https://qingting-zheng.github.io:1443/js/vendors/highlight.pack.js"> </script>
   <script>hljs.initHighlightingOnLoad();</script>
 
 

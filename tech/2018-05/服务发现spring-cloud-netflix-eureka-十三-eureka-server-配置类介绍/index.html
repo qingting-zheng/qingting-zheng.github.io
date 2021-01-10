@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
-  <head><script src="/livereload.js?port=443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+  <head><script src="/livereload.js?port=1443&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="HandheldFriendly" content="True">
@@ -12,7 +12,7 @@
   <meta property="og:title" content="服务发现：Spring Cloud Netflix Eureka （十三） Eureka Server 配置类介绍" />
 <meta property="og:description" content="系列文章《Spring Cloud Netflix Eureka》的介绍与深入讲解。欢迎关注、转发、评论。 Eureka Server 配置类介绍 从spring-cloud-starter-netflix-eureka-server的spring.factories中 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\ org.springframework.cloud.netflix.eureka.server.EurekaServerAutoConfiguration 可以发现EurekaServerAutoConfiguration配置文件被激活。 打开SpringBoot的Debug模式： logging:level:org.springfram" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/" />
+<meta property="og:url" content="https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/" />
 <meta property="article:published_time" content="2018-05-24T10:01:15+08:00" />
 <meta property="article:modified_time" content="2018-05-24T10:01:15+08:00" />
 
@@ -24,29 +24,29 @@
   
   </title>
 
-  <link rel="canonical" href="https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/">
+  <link rel="canonical" href="https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%B8%89-eureka-server-%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%8B%E7%BB%8D/">
 
   
   
 
   
-  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:1443/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
 
   
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
-  <link href="https://qingting-zheng.github.io:443/css/font.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:1443/css/font.css" rel="stylesheet"> 
     
   
-  <link href="https://qingting-zheng.github.io:443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
-  <link href="https://qingting-zheng.github.io:443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
-  <link href="https://qingting-zheng.github.io:443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
-  <link href="https://qingting-zheng.github.io:443/css/main.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:1443/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://qingting-zheng.github.io:1443/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:1443/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://qingting-zheng.github.io:1443/css/main.css" rel="stylesheet">
 
 
   
   <link rel="shortcut icon"
   
-      href="https://qingting-zheng.github.io:443/img/zheng.png"
+      href="https://qingting-zheng.github.io:1443/img/zheng.png"
   
   >
 
@@ -69,7 +69,7 @@
 
   
     
-    <link rel="stylesheet" href="https://qingting-zheng.github.io:443/css/vendors/highlight/github-gist.css">
+    <link rel="stylesheet" href="https://qingting-zheng.github.io:1443/css/vendors/highlight/github-gist.css">
   
 
 </head>
@@ -87,9 +87,9 @@
     <div class="container">
 
       
-      <a class="navbar-brand" href="https://qingting-zheng.github.io:443/">
+      <a class="navbar-brand" href="https://qingting-zheng.github.io:1443/">
           
-        <img class="avatar" src="https://qingting-zheng.github.io:443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        <img class="avatar" src="https://qingting-zheng.github.io:1443/img/zheng.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
         
         <strong> QingTing</strong>
       </a>
@@ -106,26 +106,21 @@
         
         <ul class="navbar-nav mr-auto ">
           <li class="nav-item ">
-            <a class="nav-link" href="https://qingting-zheng.github.io:443/">Home</a>
+            <a class="nav-link" href="https://qingting-zheng.github.io:1443/">Home</a>
           </li>
              
             <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/tech/" >技术  </a>
+              <a class="nav-link" href="https://qingting-zheng.github.io:1443/tech/" >技术  </a>
             </li>
           
              
             <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/sci-tech/" >Science  </a>
+              <a class="nav-link" href="https://qingting-zheng.github.io:1443/sci-tech/" >Science  </a>
             </li>
           
              
             <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/blog/" >生活  </a>
-            </li>
-          
-             
-            <li class="nav-item ">
-              <a class="nav-link" href="https://qingting-zheng.github.io:443/about/" >关于  </a>
+              <a class="nav-link" href="https://qingting-zheng.github.io:1443/about/" >关于  </a>
             </li>
           
           
@@ -158,7 +153,7 @@
 
         
         <div class="carousel-item active">
-          <div class="view" style="background-image: url('https://qingting-zheng.github.io:443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
+          <div class="view" style="background-image: url('https://qingting-zheng.github.io:1443/img/header-slides/leaf.jpg'); background-repeat: no-repeat; background-size: cover;">
 
             
             <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -185,15 +180,15 @@
     <div class="row mx-0 headfont mt-3 pt-4">
       
       <div class="col-12 col-sm-5 align-middle">
-        <a href="https://qingting-zheng.github.io:443/">
+        <a href="https://qingting-zheng.github.io:1443/">
           
-            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:443/img/profile.jpg" alt="" >
+            <img class="pull-right avatar avatar-md" src="https://qingting-zheng.github.io:1443/img/profile.jpg" alt="" >
           
         </a>
       </div>
       
       <div class="col-12 col-sm-7 text-left pl-2">
-        <a href="https://qingting-zheng.github.io:443/">
+        <a href="https://qingting-zheng.github.io:1443/">
           <h1 class="mb-2 h1" style="font-weight: 300;" >
             <strong>QingTing</strong>
           </h1>
@@ -257,12 +252,12 @@
   <ul class="post-meta li-x">
     
       
-        <li><a href="https://qingting-zheng.github.io:443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
+        <li><a href="https://qingting-zheng.github.io:1443/categories/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90eureka"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 深入解析Eureka </a></li>
       
     
     
       
-        <li><a href="https://qingting-zheng.github.io:443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
+        <li><a href="https://qingting-zheng.github.io:1443/series/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90spring-cloud-netflix-eureka"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>深入解析《Spring Cloud Netflix Eureka》</a></li>
       
     
   </ul>
@@ -326,7 +321,7 @@
 
 </code></pre></div><h4 id="instanceregistry">InstanceRegistry</h4>
 <p><code>InstanceRegistry</code>是SpringCloud中对Eureka Server的注册表实现类<code>PeerAwareInstanceRegistryImpl</code>进行了继承和扩展，使其适配与SpringCloud的使用环境，主要实现是由<code>PeerAwareInstanceRegistryImpl</code>提供，类图如下:</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/InstanceRegister.png" alt=""></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/eureka/InstanceRegister.png" alt=""></p>
 <p>值得注意的是在<code>com.netflix.eureka.registry</code>中也有一个<code>InstanceRegistry</code>接口，这是定义在Eureka Server用于服务发现和注册的接口。</p>
 <h4 id="peereurekanodes">PeerEurekaNodes</h4>
 <p>管理了Eureka Server的<code>peer</code>节点生命周期的列表，其中<code>peer</code>的信息封装在<code>PeerEurekaNode</code>类中。</p>
@@ -371,7 +366,7 @@
 <p><strong>EurekaServerInitializerConfiguration</strong></p>
 <p>该配置类做的事情很简单，将<code>EurekaServerAutoConfiguration</code>中注入的bean通过<code>EurekaServerBootstrap</code>来初始化Eureka Server的应用上下文</p>
 <p>总结一下Eureka Server的启动流程，其中省略的对Client的启动配置过程的描述，这部分已经在Eureka Client的介绍中进行：</p>
-<p><img src="https://qingting-zheng.github.io:443/images/series/eureka/Eureka_Server_Bootstrap.png" alt=""></p>
+<p><img src="https://qingting-zheng.github.io:1443/images/series/eureka/Eureka_Server_Bootstrap.png" alt=""></p>
 <p><code>EurekaServerAutoConfiguration</code>负责注入Eureka Server所需要的各种Bean，<code>EurekaServerInitializerConfiguration</code>调用其中的<code>EurekaServerBootstrap</code>完成对Eureka Serve的环境和上下文的初始化，完成对Eureka Server的初始化配置。</p>
 <h3 id="小结">小结</h3>
 <p>本文主要介绍了 Spring Cloud Netflix Eureka Server 的主要配置类，下面我们开始分析 server 的具体实现。</p>
@@ -402,13 +397,13 @@
               <div class="mb-5">
                 
 <div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:1443/tags/"><i class="fas fa-tags"></i></a></li>
   <div class="tags-sm">
     
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
+      <li><a href="https://qingting-zheng.github.io:1443/tags/%E6%B7%B1%E5%85%A5eureka" role="button">深入Eureka </a></li>
       
     
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      <li><a href="https://qingting-zheng.github.io:1443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
       
     
   </div>
@@ -424,7 +419,7 @@
           <div class="row pt-3">
             <div class="col-md-6">
               
-                <a href=https://qingting-zheng.github.io:443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/ class="post-meta">Previous
+                <a href=https://qingting-zheng.github.io:1443/tech/2018-05/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E4%BA%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%BA%BF/ class="post-meta">Previous
                   <div class="pt-2 pb-5 d-flex">
                     <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
                     <span>服务发现：Spring Cloud Netflix Eureka （十二）服务下线</span>
@@ -435,7 +430,7 @@
             
             <div class="col-md-6 text-right" >
               
-                <a href=https://qingting-zheng.github.io:443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/ class="post-meta">Next
+                <a href=https://qingting-zheng.github.io:1443/tech/2018-06/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0spring-cloud-netflix-eureka-%E5%8D%81%E5%9B%9B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81/ class="post-meta">Next
                   <div class="pt-2 pb-5 flex-reverse">
                     <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
                     <span>服务发现：Spring Cloud Netflix Eureka （十四）服务端核心代码</span>
@@ -813,7 +808,7 @@
   
   <div class="copyright py-4">
     
-    <span>  2016 - 2020 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+    <span>  2016 - 2021 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
   </div>
   
 
@@ -827,23 +822,23 @@
 
 
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
 
 
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/popper.min.js"></script>
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/holder.min.js"></script>
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/vendors/mdb/mdb.min.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/vendors/mdb/mdb.min.js"></script>
 
-<script type="text/javascript" src="https://qingting-zheng.github.io:443/js/main.js"></script>
+<script type="text/javascript" src="https://qingting-zheng.github.io:1443/js/main.js"></script>
 
 
 
   
-  <script src="https://qingting-zheng.github.io:443/js/vendors/highlight.pack.js"> </script>
+  <script src="https://qingting-zheng.github.io:1443/js/vendors/highlight.pack.js"> </script>
   <script>hljs.initHighlightingOnLoad();</script>
 
 

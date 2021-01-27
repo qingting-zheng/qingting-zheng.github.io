@@ -423,6 +423,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -446,7 +450,7 @@
             
             <li class="py-1">
               <a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90">
-                <span>微服务网关解析 (37)</span>
+                <span>微服务网关解析 (39)</span>
               </a>
             </li>           
           
@@ -669,6 +673,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -689,10 +697,10 @@
         
         
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (88)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (90)</span></a></li>
           
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (37)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (39)</span></a></li>
           
         
             <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button"><span>深入eureka (25)</span></a></li>
@@ -729,6 +737,10 @@
   
 
           
+  
+
+  
+
   
 
   
@@ -964,7 +976,7 @@
               
                 <div class="px-2 middot"></div>
                 <div>
-                  91 posts
+                  93 posts
                 </div>
               
             </div>
@@ -1019,6 +1031,128 @@
 
 
           </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%83%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析负载均衡组件 Feign（七）实例初始化</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Aug 19, 2019</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>4 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 实例初始化 FeignClientFactoryBean是工厂类，Spring容器通过调用它的getObject函数来获取对应的Bean实例。由此，被@FeignClient修饰的接口类就可以被Spring容器实例化了。 public Object getObject() throws Exception { FeignContext context = applicationContext.getBean(FeignContext.class); Feign.Builder builder = feign(context); //如果url为空，则需要负载均衡 if (!StringUtils.hasText(this.url)) { String url; if (!this.name.startsWith(&#34;http&#34;)) { url = &#34;http://&#34; &#43; this.name; } else { url = this.name; }......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Feign 解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Feign 解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/feign" role="button">Feign </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2019-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E5%85%AD%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8Cbeandefinition%E7%BB%AD/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析负载均衡组件 Feign（六）动态注册BeanDefinition续</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Aug 6, 2019</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>4 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 接着上一篇，我们继续讲解动态注册BeanDefinition`。 registerFeignClients函数中有一些实现上的细节值得大家认真了解并学习的，有利于大家对Spring框架的深度了解。首先是如何自定义Spring类扫描器。也就是如何使用ClassPathScanningCandidateComponentPr......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Feign 解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Feign 解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/feign" role="button">Feign </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
 
           
               <div class="post-wrapper white-bg post-card">
@@ -1163,128 +1297,6 @@
 
     
       系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务消费者 Feign是声明式RESTful客户端，所以构建Feign项目的关键在于构建服务消费者。通过下面六步可以创建一个Spring Cloud Feign的服务消费者。 第一步: 创建普通的Spring Boot工程 首先创建一个普通的Spring Boot工程，取名为chapter-feign-client。 第二步：添加依赖 需要在po......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Feign 解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Feign 解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/feign" role="button">Feign </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2019-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%BA%8C%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析负载均衡组件 Feign（二）快速入门</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Jun 1, 2019</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>2 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务注册中心 Feign可以配合eureka等服务注册中心同时使用。eureka来作为服务注册中心，为Feign提供关于服务端信息的获取，比如说IP地址。关于eureka的具体使用可以参考第四章中关于eureka的快速入门介绍。 服务提供者 Spring Cloud Feign是声明式RESTful请求客户端，所以它不会侵入服务提供者程序的实现。......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Feign 解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/feign-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>Feign 解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/feign" role="button">Feign </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2019-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-feign%E4%B8%80%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析负载均衡组件 Feign（一）总体介绍</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>May 11, 2019</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>4 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《Feign 解析》的介绍与深入讲解。欢迎关注、转发、评论。 微服务之间的交互 微服务是软件系统架构上的一种设计风格，它倡导将一个原本独立的服务系统分成多个小型服务，这些小型服务都在独立的进程中运行，通过各个小型服务之间的协作来实现原本独立系统的所有业务功能。小型服务基于多种跨进程的方式进行通信协作，而在Spring Cloud架构中比较常见的跨进程的方式是RESTful HTTP请求......
     
   </a>
 

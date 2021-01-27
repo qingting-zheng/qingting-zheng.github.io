@@ -423,6 +423,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -446,7 +450,7 @@
             
             <li class="py-1">
               <a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90">
-                <span>微服务网关解析 (37)</span>
+                <span>微服务网关解析 (39)</span>
               </a>
             </li>           
           
@@ -669,6 +673,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -689,10 +697,10 @@
         
         
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (88)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (90)</span></a></li>
           
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (37)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (39)</span></a></li>
           
         
             <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button"><span>深入eureka (25)</span></a></li>
@@ -729,6 +737,10 @@
   
 
           
+  
+
+  
+
   
 
   
@@ -964,7 +976,7 @@
               
                 <div class="px-2 middot"></div>
                 <div>
-                  91 posts
+                  93 posts
                 </div>
               
             </div>
@@ -1019,6 +1031,128 @@
 
 
           </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2019-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%8D%81serverlistfilter-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析负载均衡组件 Ribbon（十）ServerListFilter 服务列表过滤</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Mar 4, 2019</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>One minute read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 服务列表 DomainExtractingServerList的getInitialListOfServers的实现十分简单，就是直接返回从Eureka中获取的服务器列表。 @Override public List&lt;DiscoveryEnabledServer&gt; getInitialListOfServers() { List&lt;DiscoveryEnabledServer&gt; servers = setZones(this.list .getInitialListOfServers()); return servers; } @Override public List&lt;DiscoveryEnabledServer&gt; getUpdatedListOfServers() { List&lt;DiscoveryEnabledServer&gt; servers = setZones(this.list .getUpdatedListOfServers()); return servers; } //添加zone相关的信息 private List&lt;DiscoveryEnabledServer&gt; setZones(List&lt;DiscoveryEnabledServer&gt; servers) { List&lt;DiscoveryEnabledServer&gt; result = new ArrayList&lt;&gt;(); //判断是否secure和是否使用ip地址 boolean isSecure = this.clientConfig.getPropertyAsBoolean( CommonClientConfigKey.IsSecure, Boolean.TRUE); boolean shouldUseIpAddr = this.clientConfig.getPropertyAsBoolean( CommonClientConfigKey.UseIPAddrForServer,......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2019-02/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%B9%9Diping%E4%B8%8Eserver%E5%88%97%E8%A1%A8/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析负载均衡组件 Ribbon（九）IPing与server列表</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Feb 22, 2019</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>4 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 IPing IPing是Ribbon用来定义检查server是否可用的接口。 public interface IPing { //检查server是否可用。 public boolean isAlive(Server server); } Ribbon默认提供IPing接口的实现类是DummyPing。其实它并没有去真正的判断server是否是可用的，而是直接返回了true。 public class DummyPing extends AbstractLoadBalancerPing { public DummyPing() { } public boolean isAlive(Server server) { return true; } @Override public void initWithNiwsConfig(IClientConfig clientConfig) { } } 除了DummyPing之外，......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
 
           
               <div class="post-wrapper white-bg post-card">
@@ -1163,128 +1297,6 @@
 
     
       系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 LoadBalancerClient 通过之前两个小节的讲述，相信读者已经对Ribbon与RestTemplate和Feign之间的工作原理有了一定的了解。接下来，本小节会对LoadBalancerClient进行负载均衡的具体原理和实现。 LoadBalancerClient是Ribbon项目的核心类之一，可以在RestTemplate发送网络请求时替代RestTe......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E4%BA%94-%E5%92%8Cfeign%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析负载均衡组件 Ribbon（五） 和Feign一起使用</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Jan 16, 2019</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>6 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 和Feign一起使用 Ribbon除了显示的和RestTemplate一起使用之外，还会是Feign有关负载均衡的默认实现。 在前面的文章有关Feign的中讲解了Feign相关实例的初始化过程。FeignClientFactoryBean是创造FeignClient的工厂类。在其getObject方法中有一个分支判断，如果请求URL不......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> Ribbon 解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/ribbon-%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《Ribbon 解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/ribbon" role="button">Ribbon </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2019-01/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%BB%84%E4%BB%B6-ribbon%E5%9B%9B%E5%92%8Cresttemplate%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析负载均衡组件 Ribbon（四）和RestTemplate一起使用</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Jan 4, 2019</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>5 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系列文章《Ribbon 解析》的介绍与深入讲解。欢迎关注、转发、评论。 和RestTemplate一起使用 在前面快速入门一节中已经说明了Ribbon和RestTemplate之间的关系，而使二者产生联系的就是@LoadBalanced注解。@LoadBalanced是一个标记注解，可以表明被修饰的RestTemplate应该使用RibbonLoadBalancerClient来发送HTTP请求。Rib......
     
   </a>
 

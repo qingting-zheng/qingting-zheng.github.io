@@ -423,6 +423,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -446,7 +450,7 @@
             
             <li class="py-1">
               <a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90">
-                <span>微服务网关解析 (37)</span>
+                <span>微服务网关解析 (39)</span>
               </a>
             </li>           
           
@@ -669,6 +673,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -689,10 +697,10 @@
         
         
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (88)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (90)</span></a></li>
           
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (37)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (39)</span></a></li>
           
         
             <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button"><span>深入eureka (25)</span></a></li>
@@ -729,6 +737,10 @@
   
 
           
+  
+
+  
+
   
 
   
@@ -964,7 +976,7 @@
               
                 <div class="px-2 middot"></div>
                 <div>
-                  91 posts
+                  93 posts
                 </div>
               
             </div>
@@ -1019,6 +1031,128 @@
 
 
           </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-06/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84-routedefinitionlocator/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（九）缓存方式的 RouteDefinitionLocator</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Jun 7, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的 RouteDefinitionLocator 该路由定义定位器结合了缓存，使用时需要传入具体的代理定位器，通过CAS操作获取完整的路由定义信息。 public class CachingRouteDefinitionLocator implements RouteDefinitionLocator { private final RouteDefinitionLocator delegate; private final AtomicReference&lt;List&lt;RouteDefinition&gt;&gt; cachedRoutes = new AtomicReference&lt;&gt;(); public CachingRouteDefinitionLocator(RouteDefinitionLocator delegate) { this.delegate = delegate; //原子类中提供的CAS操作，设置给定的更新值到当前值。 this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&lt;RouteDefinition&gt; collectRoutes() { return this.delegate.getRouteDefinitions().collectList().block(); } @Override public Flux&lt;RouteDefinition&gt; getRouteDefinitions() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 由于赋值操作不是线程安全的。若想不用锁来实现，可......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%85%AB%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%B9%89%E5%AE%9A%E4%BD%8D%E5%99%A8/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（八）路由定义定位器</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>May 19, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>3 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定义定位器 RouteDefinitionLocator是路由定义定位器的顶级接口，具体的路由定义定位器都继承自该接口，其类图如下。 public interface RouteDefinitionLocator { Flux&lt;RouteDefinition&gt; getRouteDefinitions(); } 可以看到定义了唯一一个方法，用以获取RouteDefinition。RouteDefinition对象作为属性定义在GatewayProperties中，......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
 
           
               <div class="post-wrapper white-bg post-card">
@@ -1163,128 +1297,6 @@
 
     
       系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 源码解析 作为系统的统一入口，API网关可提供请求路由与组合、协议转换、安全认证、服务鉴权、流量控制与日志监控等服务。当企业将所有的应用使用微服务的架构管理起来，那么API网关就起到了微服务网关的作用。 而当企业只是将系统与系统之间的调用使用REST方式进行访问时使用API网关对调用进行管理，那么API网......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%9B%9B%E7%BD%91%E5%85%B3%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（四）网关的其他应用</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Mar 19, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>2 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 kotlin自定义路由 Spring Cloud Gateway可以使用kotlin自定义路由： @Configuration class AdditionalRoutes { @Bean fun additionalRouteLocator(builder: RouteLocatorBuilder): RouteLocator = builder.routes { route(id = &#34;test-kotlin&#34;) { path(&#34;/image/png&#34;) filters { addResponseHeader(&#34;X-TestHeader&#34;, &#34;foobar&#34;) } uri(&#34;http://httpbin.org:80&#34;) } } } 当请求的路径是/image/png，将会转发到http://httpbin.org:80，并设置了过滤器，在其响应头中加上了X-TestHeader: foobar头部。 websocket 还可以配......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-03/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%B8%89%E6%90%AD%E5%BB%BA%E7%BD%91%E5%85%B3/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（三）搭建网关</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Mar 2, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>2 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关服务 网关服务提供多种路由配置、路由断言工厂和过滤器工厂等功能。 依赖 需要引入的依赖： &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-actuator&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--依赖于webflux，必须引入--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-gateway-core&lt;/artifactId&gt; &lt;/dependency&gt; &lt;!--服务发现组件，排除web依赖--&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-consul-discovery&lt;/artifactId&gt; &lt;version&gt;2.0.0.M6&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; //kotlin依赖 &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-stdlib&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt; &lt;artifactId&gt;kotlin-reflect&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; 如上引入了kotli......
     
   </a>
 

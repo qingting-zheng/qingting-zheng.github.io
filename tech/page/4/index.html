@@ -423,6 +423,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -446,7 +450,7 @@
             
             <li class="py-1">
               <a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90">
-                <span>微服务网关解析 (37)</span>
+                <span>微服务网关解析 (39)</span>
               </a>
             </li>           
           
@@ -669,6 +673,10 @@
 
   
 
+  
+
+  
+
 
 
 
@@ -689,10 +697,10 @@
         
         
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (88)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button"><span>微服务 (90)</span></a></li>
           
         
-            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (37)</span></a></li>
+            <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button"><span>微服务网关 (39)</span></a></li>
           
         
             <li><a href="https://qingting-zheng.github.io:443/tags/%E6%B7%B1%E5%85%A5eureka" role="button"><span>深入eureka (25)</span></a></li>
@@ -729,6 +737,10 @@
   
 
           
+  
+
+  
+
   
 
   
@@ -964,7 +976,7 @@
               
                 <div class="px-2 middot"></div>
                 <div>
-                  91 posts
+                  93 posts
                 </div>
               
             </div>
@@ -1013,6 +1025,128 @@
 
 
           </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%B8%89%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4%E5%99%A8/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（二十三）网关过滤器</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 16, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 网关过滤器 GatewayFilter网关过滤器用于拦截和链式处理web请求，可以实现横切的、与应用无关的需求，比如安全、访问超时的设定等等。 public interface GatewayFilter { Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain); } 接口中定义了唯一的方法#filter，处理web请求，并且可以通过给定的过滤器链传递到下一个过滤器。该接口有多个实现类，下面看一下该接口的类图......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://qingting-zheng.github.io:443/tech/2020-10/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E4%BA%8C%E5%8D%81%E4%BA%8C%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80%E7%BB%AD3/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（二十二）进阶应用路由断言续3</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 11, 2020</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>3 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 HeaderRoutePredicateFactory HeaderRoutePredicateFactory属于header类型的路由断言工厂，接收两个参数：header名和一个正则表达式。 spring: cloud: gateway: routes: - id: header_route uri: http://example.org predicates: - Header=X-Request-Id, \d&#43; header_route中路由断言的配置，如果请求的头部中有X-Request-Id，并且该头部值匹配\d&#43;正则表达式，则与该路由匹配。具......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
+        
+      
+      
+        
+          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
+      
+    
+      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
 
           
               <div class="post-wrapper white-bg post-card">
@@ -1157,128 +1291,6 @@
 
     
       系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由断言 Spring Cloud Gateway 创建 Route 对象时，使用 RoutePredicateFactory 创建 Predicate对象。Predicate对象可以赋值给 Route。简单来说，路由断言用于匹配请求对应的 Route。路由决策工厂RoutePredicateFactory的定义如下： public interface RoutePredicateFactory&lt;C&gt; extends ShortcutConfigurable, Configurable&lt;C&gt; { String PATTERN_KEY = &#34;pattern&#34;; // useful for javadsl default Predicate&lt;ServerWebExchange&gt; apply(Consumer&lt;C&gt; consumer) { C config = newConfig(); consumer.accept(config); beforeApply(config); return apply(config); } default void beforeApply(C config) {} default String name() { return NameUtils.normalizeRoutePredicateName(getClass()); }......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E4%B9%9D%E7%BC%93%E5%AD%98%E6%96%B9%E5%BC%8F%E7%9A%84routelocator/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（十九）缓存方式的RouteLocator</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Aug 31, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>One minute read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 缓存方式的RouteLocator CachingRouteLocator是缓存路由的RouteLocator实现类。想要获取路由，只需要调用RouteLocator接口的getRoutes() 方法即可。 public class CachingRouteLocator implements RouteLocator { private final RouteLocator delegate; private final AtomicReference&lt;List&lt;Route&gt;&gt; cachedRoutes = new AtomicReference&lt;&gt;(); public CachingRouteLocator(RouteLocator delegate) { this.delegate = delegate; this.cachedRoutes.compareAndSet(null, collectRoutes()); } private List&lt;Route&gt; collectRoutes() { List&lt;Route&gt; routes = this.delegate.getRoutes().collectList().block(); AnnotationAwareOrderComparator.sort(routes); return routes; } @Override public Flux&lt;Route&gt; getRoutes() { return Flux.fromIterable(this.cachedRoutes.get()); } //... } 这......
-    
-  </a>
-
-  
-  
-  <div class="post-meta li-x mt-2 div-x">
-    <div>
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 微服务网关解析 </a></li>
-        
-      
-      
-        
-          <li><a href="https://qingting-zheng.github.io:443/series/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E8%A7%A3%E6%9E%90"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>《微服务网关解析》</a></li>
-        
-      
-    </div>
-   
-    <div>
-      
-        
-<div class="li-x div-x post-meta">
-  <li class="pr-0"><a href="https://qingting-zheng.github.io:443/tags/"><i class="fas fa-tags"></i></a></li>
-  <div class="tags-sm">
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" role="button">微服务网关 </a></li>
-      
-    
-      <li><a href="https://qingting-zheng.github.io:443/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" role="button">微服务 </a></li>
-      
-    
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-</div>
-
-          
-              <div class="post-wrapper white-bg post-card">
-  
-  <a href="https://qingting-zheng.github.io:443/tech/2020-08/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3spring-cloud-gateway%E5%8D%81%E5%85%AB%E7%BB%84%E5%90%88%E7%9A%84routedefinitionlocator/">
-    <div class="post-header text-center">
-      <div class="px-4 post-heading">深入解析微服务网关Spring Cloud Gateway（十八）组合的RouteDefinitionLocator</div>
-      <ul class="post-meta li-x mt-1">
-        
-          <li>Aug 29, 2020</li>
-        
-    
-        
-          <li class="middot"></li>
-          <li>3 minutes read</li>
-        
-      </ul>
-    </div>
-    
-
-    
-      系新的组件解析系列文章《微服务网关 Spring Cloud Gageway解析》的介绍与深入讲解。欢迎关注、转发、评论。 路由定位器 直接获取路由的方法是通过RouteLocator接口获取。同样，该顶级接口有多个实现类，如下为RouteLocator的类图。 public interface RouteLocator { Flux&lt;Route&gt; getRoutes(); } 与上一节介绍的RouteDefinitionLocator接口类似，只有一个getRoutes方法用以获取路由信息。 public class Route implements Ordered { //路由Id private final String id; //......
     
   </a>
 
